@@ -1,0 +1,28 @@
+{
+  "name": "vkb-gravenproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YassiraRaddahi/VKB-Gravenproject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/YassiraRaddahi/VKB-Gravenproject/issues"
+  },
+  "homepage": "https://github.com/YassiraRaddahi/VKB-Gravenproject#readme",
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "axios": "^1.13.6",
+    "express": "^5.2.1",
+    "mysql": "^2.18.1"
+  }
+}
