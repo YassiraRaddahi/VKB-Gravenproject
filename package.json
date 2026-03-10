@@ -1,7 +1,7 @@
 {
   "name": "vkb-gravenproject",
   "version": "1.0.0",
-  "description": "",
+  "description": "Beheersysteem voor kerkelijke begraafplaatsen",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/YassiraRaddahi/VKB-Gravenproject.git"
   },
   "keywords": [],
-  "author": "",
+  "authors": "Liza, Bram, Bea en Yassira",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
