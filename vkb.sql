@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 09 mrt 2026 om 20:13
+-- Gegenereerd op: 10 mrt 2026 om 10:58
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `vkb`
 --
-CREATE DATABASE IF NOT EXISTS `vkb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `vkb`;
 
 -- --------------------------------------------------------
 
@@ -85,7 +83,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `phone_number` varchar(20) NOT NULL,
-  `relation_to_deceased` varchar(100) NOT NULL,
+  `relation_to_deceased` varchar(100) DEFAULT NULL,
   `password_hash` varchar(255) DEFAULT NULL,
   `remember_token` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
