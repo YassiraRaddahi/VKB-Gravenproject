@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 16 mrt 2026 om 22:34
+-- Gegenereerd op: 16 mrt 2026 om 23:18
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
@@ -47,7 +47,7 @@ CREATE TABLE `cemeteries` (
 --
 
 INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `municipalityID`, `created_at`, `updated_at`) VALUES
-(1, 'Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', '/images/kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35');
+(1, 'Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', 'public\\images\\kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35');
 
 -- --------------------------------------------------------
 
