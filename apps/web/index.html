@@ -3,36 +3,23 @@
 
 <head>
     <title>VKB Begraafplaatsbeheer</title>
-    <script src="https://unpkg.com/vue@3"></script>
-    <script src="https://unpkg.com/vue-router@4"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
-        integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/vue@next"></script>
 </head>
 
 <body>
    
   <div id="app"></div>
-
+   
   <script>
-    // --- Componenten ---
-    const Home = { template: `<h2>Home Pagina</h2>` }
-    const About = { template: `<h2>Over Ons</h2>` }
-
-    // --- Router configuratie ---
-    const routes = [
-      { path: '/', component: Home },
-      { path: '/about', component: About }
-    ]
-
-    const router = VueRouter.createRouter({
-      history: VueRouter.createWebHashHistory(), // belangrijk voor simpele SPA
-      routes
-    })
-
+  
     // --- Vue app ---
-    const app = Vue.createApp({})
-    app.use(router)
+    const app = Vue.createApp({
+      data() {
+        return {
+          // --- Data ---
+        }
+      }
+    })
     app.mount('#app')
   </script>
 
