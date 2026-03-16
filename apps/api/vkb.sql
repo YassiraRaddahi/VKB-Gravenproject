@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 16 mrt 2026 om 20:59
+-- Gegenereerd op: 16 mrt 2026 om 22:34
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `cemeteries` (
   `address` varchar(255) NOT NULL,
   `zip_code` varchar(7) NOT NULL,
   `city` varchar(100) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `website_url` varchar(1024) DEFAULT NULL,
   `image_url` varchar(1024) DEFAULT NULL,
@@ -41,6 +41,13 @@ CREATE TABLE `cemeteries` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cemeteries`
+--
+
+INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `municipalityID`, `created_at`, `updated_at`) VALUES
+(1, 'Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', '/images/kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35');
 
 -- --------------------------------------------------------
 
@@ -53,6 +60,13 @@ CREATE TABLE `cemetery_manager` (
   `cemetery_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `cemetery_manager`
+--
+
+INSERT INTO `cemetery_manager` (`user_id`, `cemetery_id`) VALUES
+(6, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +77,13 @@ CREATE TABLE `municipalities` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `municipalities`
+--
+
+INSERT INTO `municipalities` (`id`, `name`) VALUES
+(1, 'Zwolle');
 
 -- --------------------------------------------------------
 
@@ -291,13 +312,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT voor een tabel `cemeteries`
 --
 ALTER TABLE `cemeteries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT voor een tabel `municipalities`
 --
 ALTER TABLE `municipalities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT voor een tabel `permissions`
