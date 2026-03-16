@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Gegenereerd op: 10 mrt 2026 om 18:56
--- Serverversie: 10.4.28-MariaDB
--- PHP-versie: 8.2.4
+-- Host: 127.0.0.1
+-- Gegenereerd op: 16 mrt 2026 om 20:59
+-- Serverversie: 10.4.32-MariaDB
+-- PHP-versie: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,49 @@ SET time_zone = "+00:00";
 --
 -- Database: `vkb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cemeteries`
+--
+
+CREATE TABLE `cemeteries` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `zip_code` varchar(7) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `website_url` varchar(1024) DEFAULT NULL,
+  `image_url` varchar(1024) DEFAULT NULL,
+  `municipalityID` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cemetery_manager`
+--
+
+CREATE TABLE `cemetery_manager` (
+  `user_id` int(11) NOT NULL,
+  `cemetery_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `municipalities`
+--
+
+CREATE TABLE `municipalities` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -154,33 +197,56 @@ CREATE TABLE `users` (
   `infix` varchar(20) DEFAULT NULL,
   `last_name` varchar(100) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `zip_code` varchar(7) NOT NULL,
   `city` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `phone_number` varchar(20) NOT NULL,
+  `profile_picture_url` varchar(1024) DEFAULT NULL,
   `relation_to_deceased` varchar(100) DEFAULT NULL,
   `password_hash` varchar(255) DEFAULT NULL,
   `remember_token` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `infix`, `last_name`, `address`, `city`, `email`, `email_verified_at`, `phone_number`, `relation_to_deceased`, `password_hash`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Jetze', NULL, 'Kempenaar', 'Leliegracht 415', 'Amsterdam', 'j.kempenaar@kerkrentmeester.nl', NULL, '06 – 22 54 94 53', '', '$argon2id$v=19$m=65536,t=3,p=4$3eq+8GJkXrcRxe3zKN/OOw$XhrX8ccRUX/8s5N7r6AyWn3x4I28M7GTwm5savJuhIc', NULL, '2026-03-10 09:51:34', '2026-03-10 09:51:34'),
-(2, 'Bea', NULL, 'Bakker', 'Vondelpark 777', 'Amsterdam', 'beabakkerr@gmail.com', NULL, '06 – 22 34 54 53', '', '$argon2id$v=19$m=65536,t=3,p=4$JoYC7NkZIIweymNGsgEc7w$ffpiotccKl4bxKJWENp0qor5l2DowI9Y0uxNv3TLsG4', NULL, '2026-03-10 09:51:34', '2026-03-10 09:51:34'),
-(3, 'Liza ', NULL, 'Petrushenko', 'Bloemgracht 390', 'Amsterdam', 'liza2511liza@gmail.com', NULL, '06 – 43 54 21 53', NULL, '$argon2id$v=19$m=65536,t=3,p=4$GCgYLUej/n2kgwyl7nkqlA$E5Vhl60WNw5Wg/gFSUX5btTnvOPXrvBbh+sOfM8aZCk', NULL, '2026-03-10 11:51:40', '2026-03-10 11:51:40'),
-(4, 'Yassira', NULL, 'Raddahi', 'Egelantiersgracht 401', 'Amsterdam', 'yassiraraddahi@gmail.com', NULL, '06 – 98 49 94 33', NULL, '$argon2id$v=19$m=65536,t=3,p=4$4HLJsTaaRCw9356kQ9PcZA$Q3qYGxPovVdLWzCYmVe7PXE2SZ2aWqsJppia7AQolmQ', NULL, '2026-03-10 11:53:52', '2026-03-10 11:53:52'),
-(5, 'Bram', NULL, 'Meijer', 'Lheebroek 27', 'Dwingeloo', 'brammeijer16@hotmail.com', NULL, '06 - 12 13 93 96', NULL, '$argon2id$v=19$m=65536,t=3,p=4$DEXaorJa8Je5pIyHoKknvA$8Af2sodmaTmLQaTCqJbKNqfB8PUiFvNlrMIYXBjvA04', NULL, '2026-03-10 11:55:40', '2026-03-10 11:55:40'),
-(6, 'Lisa', 'de', 'Vries', 'Keizersgracht 45', 'Amsterdam', 'lisa.devries@gmail.com', NULL, '06 - 12 34 56 78', NULL, '$argon2id$v=19$m=65536,t=3,p=4$iqmiC/UIViGMs/AGxt2vBA$gKfLyPzyMxOGZTjnLlGPPqeLov8O67fsBWVeaXabRFk', NULL, '2026-03-10 11:57:08', '2026-03-10 11:57:08'),
-(7, 'Thomas', 'van den', 'Berg', 'Wilhelminastraat 12', 'Utrecht', 'thomas.vdberg@outlook.com', NULL, '06 - 87 65 43 21', NULL, '$argon2id$v=19$m=65536,t=3,p=4$quMZOUaUXPkNjMfakB7bVg$qD5Fci+cGLleDiBAEmeMssz+oAT1zsYpxo057IKvREo', NULL, '2026-03-10 11:57:08', '2026-03-10 11:57:08');
+INSERT INTO `users` (`id`, `first_name`, `infix`, `last_name`, `address`, `zip_code`, `city`, `email`, `email_verified_at`, `phone_number`, `profile_picture_url`, `relation_to_deceased`, `password_hash`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Jetze', NULL, 'Kempenaar', 'Leliegracht 415', '3129 AB', 'Amsterdam', 'j.kempenaar@kerkrentmeester.nl', NULL, '06 – 22 54 94 53', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$3eq+8GJkXrcRxe3zKN/OOw$XhrX8ccRUX/8s5N7r6AyWn3x4I28M7GTwm5savJuhIc', NULL, '2026-03-10 09:51:34', '2026-03-10 09:51:34'),
+(2, 'Bea', NULL, 'Bakker', 'Vondelpark 777', '2348 GJ', 'Amsterdam', 'beabakkerr@gmail.com', NULL, '06 – 22 34 54 53', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$JoYC7NkZIIweymNGsgEc7w$ffpiotccKl4bxKJWENp0qor5l2DowI9Y0uxNv3TLsG4', NULL, '2026-03-10 09:51:34', '2026-03-10 09:51:34'),
+(3, 'Liza ', NULL, 'Petrushenko', 'Bloemgracht 390', '3467 JH', 'Amsterdam', 'liza2511liza@gmail.com', NULL, '06 – 43 54 21 53', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$GCgYLUej/n2kgwyl7nkqlA$E5Vhl60WNw5Wg/gFSUX5btTnvOPXrvBbh+sOfM8aZCk', NULL, '2026-03-10 11:51:40', '2026-03-10 11:51:40'),
+(4, 'Yassira', NULL, 'Raddahi', 'Egelantiersgracht 401', '2349 OV', 'Amsterdam', 'yassiraraddahi@gmail.com', NULL, '06 – 98 49 94 33', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$4HLJsTaaRCw9356kQ9PcZA$Q3qYGxPovVdLWzCYmVe7PXE2SZ2aWqsJppia7AQolmQ', NULL, '2026-03-10 11:53:52', '2026-03-10 11:53:52'),
+(5, 'Bram', NULL, 'Meijer', 'Lheebroek 27', '8923 HF', 'Dwingeloo', 'brammeijer16@hotmail.com', NULL, '06 - 12 13 93 96', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$DEXaorJa8Je5pIyHoKknvA$8Af2sodmaTmLQaTCqJbKNqfB8PUiFvNlrMIYXBjvA04', NULL, '2026-03-10 11:55:40', '2026-03-10 11:55:40'),
+(6, 'Lisa', 'de', 'Vries', 'Keizersgracht 45', '4389 YJ', 'Amsterdam', 'lisa.devries@gmail.com', NULL, '06 - 12 34 56 78', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$iqmiC/UIViGMs/AGxt2vBA$gKfLyPzyMxOGZTjnLlGPPqeLov8O67fsBWVeaXabRFk', NULL, '2026-03-10 11:57:08', '2026-03-10 11:57:08'),
+(7, 'Thomas', 'van den', 'Berg', 'Wilhelminastraat 12', '6679 TK', 'Utrecht', 'thomas.vdberg@outlook.com', NULL, '06 - 87 65 43 21', NULL, NULL, '$argon2id$v=19$m=65536,t=3,p=4$quMZOUaUXPkNjMfakB7bVg$qD5Fci+cGLleDiBAEmeMssz+oAT1zsYpxo057IKvREo', NULL, '2026-03-10 11:57:08', '2026-03-10 11:57:08');
 
 --
 -- Indexen voor geëxporteerde tabellen
 --
+
+--
+-- Indexen voor tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `municipalityID` (`municipalityID`);
+
+--
+-- Indexen voor tabel `cemetery_manager`
+--
+ALTER TABLE `cemetery_manager`
+  ADD PRIMARY KEY (`user_id`,`cemetery_id`),
+  ADD KEY `cemetery_id` (`cemetery_id`);
+
+--
+-- Indexen voor tabel `municipalities`
+--
+ALTER TABLE `municipalities`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexen voor tabel `permissions`
@@ -222,6 +288,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT voor een tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT voor een tabel `municipalities`
+--
+ALTER TABLE `municipalities`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT voor een tabel `permissions`
 --
 ALTER TABLE `permissions`
@@ -242,6 +320,19 @@ ALTER TABLE `users`
 --
 -- Beperkingen voor geëxporteerde tabellen
 --
+
+--
+-- Beperkingen voor tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  ADD CONSTRAINT `cemeteries_ibfk_1` FOREIGN KEY (`municipalityID`) REFERENCES `municipalities` (`id`) ON UPDATE CASCADE;
+
+--
+-- Beperkingen voor tabel `cemetery_manager`
+--
+ALTER TABLE `cemetery_manager`
+  ADD CONSTRAINT `cemetery_manager_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cemetery_manager_ibfk_2` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`);
 
 --
 -- Beperkingen voor tabel `permission_role`

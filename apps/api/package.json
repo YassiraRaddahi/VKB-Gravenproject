@@ -21,7 +21,6 @@
   "homepage": "https://github.com/YassiraRaddahi/VKB-Gravenproject#readme",
   "dependencies": {
     "argon2": "^0.44.0",
-    "axios": "^1.13.6",
     "express": "^5.2.1",
     "mysql": "^2.18.1"
   },
