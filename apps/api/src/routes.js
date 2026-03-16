@@ -72,7 +72,7 @@ module.exports = function (app) {
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id`;
 
-            conn_db.query(sql, async function (err, rows) {
+            conn_db.query(sql, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -114,7 +114,7 @@ module.exports = function (app) {
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE roles.name = 'admin'`;
 
-            conn_db.query(sql, async function (err, rows) {
+            conn_db.query(sql, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -136,7 +136,7 @@ module.exports = function (app) {
                     }});
             })
         } catch (error) {
-            console.error("Error tijdens login:", error);
+            console.error("Error tijdens ophalen van users:", error);
             res.status(500).json({ error: 'Interne server error' });
 
         }
@@ -151,7 +151,7 @@ module.exports = function (app) {
                 WHERE roles.name = 'beheerder'
                 `;
 
-            conn_db.query(sql, async function (err, rows) {
+            conn_db.query(sql, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -178,7 +178,7 @@ module.exports = function (app) {
                 res.send({ "beheerders": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens login:", error);
+            console.error("Error tijdens ophalen van beheerders:", error);
             res.status(500).json({ error: 'Interne server error' });
 
         }
@@ -194,7 +194,7 @@ module.exports = function (app) {
                 WHERE roles.name = 'grafonderhouder'
                 `;
 
-            conn_db.query(sql, async function (err, rows) {
+            conn_db.query(sql, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -221,7 +221,7 @@ module.exports = function (app) {
                 res.send({ "grafonderhouders": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens login:", error);
+            console.error("Error tijdens ophalen van grafonderhouders:", error);
             res.status(500).json({ error: 'Interne server error' });
 
         }
@@ -237,7 +237,7 @@ module.exports = function (app) {
                 WHERE roles.name = 'rechthebbende'
                 `;
 
-            conn_db.query(sql, async function (err, rows) {
+            conn_db.query(sql, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -264,12 +264,55 @@ module.exports = function (app) {
                 res.send({ "rechthebbenden": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens login:", error);
+            console.error("Error tijdens ophalen van rechthebbenden:", error);
             res.status(500).json({ error: 'Interne server error' });
 
         }
     });
 
-    
+ 
+    app.get('/api/begraafplaatsen', (req, res) => {
+        try {
+            let sql = `SELECT c.id, c.name, c.image_url, u.first_name, u.infix, u.last_name
+                FROM cemeteries AS c
+                JOIN cemetery_manager AS cm ON c.id = cm.cemetery_id
+                JOIN users AS u ON cm.user_id= u.id`;
+
+            conn_db.query(sql, function (err, rows) {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+
+                // Als er geen begraafplaatsen zijn, geef een foutmelding
+                if (!rows || rows.length === 0) {
+                    return res.status(404).json({ error: 'Geen begraafplaatsen gevonden' });
+                }
+
+
+                let begraafplaatsen = rows;
+                let begraafplaatsenJSON = [];
+
+                begraafplaatsen.forEach(element => {
+                    begraafplaatsenJSON.push({
+                        "id": element.id,
+                        "naam": element.name,
+                        "foto_url": element.image_url,
+                        "beheerder": {
+                            "voornaam": element.first_name,
+                            "tussenvoegsel": element.infix,
+                            "achternaam": element.last_name
+                        }
+                    });
+                });
+
+                res.send({ "begraafplaatsen": begraafplaatsenJSON});
+            })
+        } catch (error) {
+            console.error("Error tijdens ophalen van begraafplaatsen:", error);
+            res.status(500).json({ error: 'Interne server error' });
+
+        }
+    });
    
 }
