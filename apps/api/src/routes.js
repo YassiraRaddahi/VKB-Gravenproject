@@ -144,7 +144,7 @@ module.exports = function (app) {
 
     app.get('/api/beheerders', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
+            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -170,7 +170,11 @@ module.exports = function (app) {
                         "voornaam": element.first_name,
                         "tussenvoegsel": element.infix,
                         "achternaam": element.last_name,
+                        "postcode": element.zip_code,
+                        "stad": element.city,
                         "e-mail": element.email,
+                        "telefoonnummer": element.phone_number,
+                        "foto_url": element.profile_picture_url,
                         "rol": element.role_name
                     });
                 });

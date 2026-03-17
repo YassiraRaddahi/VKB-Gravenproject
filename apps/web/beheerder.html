@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <title>VKB Begraafplaatsbeheer</title>
+    <link rel="stylesheet" href="publuc/css/styles.css">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
+        integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+<body>
+
+    <div id="app">
+        <h2>Beheerders</h2>
+        <div v-for="beheerder in beheerders">
+
+            <div v-for="header in headers">{{beheerder[header.field]}}</div>
+            <img :src="beheerder.foto_url" :alt="beheerder.naam">
+            <br>
+        </div>
+    </div>
+
+    <script>
+
+        // --- Vue app ---
+        Vue.createApp({
+            data() {
+                return {
+                    beheerders: [],
+                    headers: [
+                        { field: "voornaam" },
+                        { field: "tussenvoegsel" },
+                        { field: "achternaam" },
+                        { field: "e-mail" },
+                        { field: "telefoonnummer" },
+                    ]
+                }
+            },
+            mounted() {
+                url = "http://localhost:3001/api/beheerders"
+
+                axios.get(url)
+                    .then(response => {
+                        this.beheerders = response.data.beheerders
+                    })
+                    .catch(error => {
+                        console.error("Fout bij ophalen beheerders:", error)
+                    })
+            }
+        }).mount('#app')
+    </script>
+
+</body>
+
+</html>
