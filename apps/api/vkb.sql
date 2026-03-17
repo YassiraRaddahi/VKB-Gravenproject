@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Gegenereerd op: 17 mrt 2026 om 13:27
+-- Gegenereerd op: 17 mrt 2026 om 13:37
 -- Serverversie: 10.4.28-MariaDB
 -- PHP-versie: 8.2.4
 
@@ -20,6 +20,86 @@ SET time_zone = "+00:00";
 --
 -- Database: `vkb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cemeteries`
+--
+
+CREATE TABLE `cemeteries` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `zip_code` varchar(7) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `website_url` varchar(1024) DEFAULT NULL,
+  `image_url` varchar(1024) DEFAULT NULL,
+  `municipalityID` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cemeteries`
+--
+
+INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `municipalityID`, `created_at`, `updated_at`) VALUES
+(1, 'Begraafplaats Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', 'public\\images\\kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35'),
+(2, 'Begraafplaats Meppelerstraatweg', 'Meppelerstraatweg', '8014 RT', 'Zwolle', 'info.meppeler@cemetery.nl', NULL, 'https://www.zwolle.nl', 'public\\images\\meppelerstraatweg.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(3, 'Begraafplaats Voorst', 'Ridder Zwederlaan 1a', '8042 CC', 'Zwolle', 'contact.voorst@cemetery.nl', NULL, NULL, 'public\\images\\voorst.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(4, 'Begraafplaats Windesheim', 'Pastorieweg', '8015 PK', 'Zwolle', 'beheer.windesheim@cemetery.nl', NULL, NULL, 'public\\images\\windesheim.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(5, 'Begraafplaats Bergklooster', 'Bergkloosterweg 92', '8034 PL', 'Zwolle', 'info@bergklooster.nl', '+31384532281', 'http://www.bergklooster.nl', 'public\\images\\bergklooster.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(6, 'R.K. Kerkhof Zwolle', 'Bisschop Willebrandlaan 62', '8021 GA', 'Zwolle', 'admin.rkkerkhof@cemetery.nl', '+31384533853', 'https://www.rkkerkhofzwolle.nl', 'public\\images\\R.K._Kerkhof_zwolle.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(7, 'Joodse Begraafplaats Kuyerhuislaan', 'Kuyerhuislaan 16', '8025 AS', 'Zwolle', 'info.joods@cemetery.nl', NULL, NULL, 'public\\images\\Kuyerhuislaan.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(8, 'Begraafplaats Het Heilige Kruis', 'Buitengasthuisstraat', '8011 AG', 'Zwolle', 'contact.kruis@cemetery.nl', NULL, NULL, 'public\\images\\het_heilige_kruis.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cemetery_manager`
+--
+
+CREATE TABLE `cemetery_manager` (
+  `user_id` int(11) NOT NULL,
+  `cemetery_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cemetery_manager`
+--
+
+INSERT INTO `cemetery_manager` (`user_id`, `cemetery_id`) VALUES
+(2, 1),
+(3, 1),
+(9, 3),
+(10, 4),
+(11, 5),
+(12, 6),
+(13, 7),
+(14, 8),
+(15, 2),
+(16, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `municipalities`
+--
+
+CREATE TABLE `municipalities` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `municipalities`
+--
+
+INSERT INTO `municipalities` (`id`, `name`) VALUES
+(1, 'Zwolle');
 
 -- --------------------------------------------------------
 
@@ -201,6 +281,27 @@ INSERT INTO `users` (`id`, `first_name`, `infix`, `last_name`, `address`, `zip_c
 --
 
 --
+-- Indexen voor tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `municipalityID` (`municipalityID`);
+
+--
+-- Indexen voor tabel `cemetery_manager`
+--
+ALTER TABLE `cemetery_manager`
+  ADD PRIMARY KEY (`user_id`,`cemetery_id`),
+  ADD KEY `cemetery_id` (`cemetery_id`);
+
+--
+-- Indexen voor tabel `municipalities`
+--
+ALTER TABLE `municipalities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexen voor tabel `permissions`
 --
 ALTER TABLE `permissions`
@@ -240,6 +341,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT voor een tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT voor een tabel `municipalities`
+--
+ALTER TABLE `municipalities`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT voor een tabel `permissions`
 --
 ALTER TABLE `permissions`
@@ -260,6 +373,19 @@ ALTER TABLE `users`
 --
 -- Beperkingen voor geëxporteerde tabellen
 --
+
+--
+-- Beperkingen voor tabel `cemeteries`
+--
+ALTER TABLE `cemeteries`
+  ADD CONSTRAINT `cemeteries_ibfk_1` FOREIGN KEY (`municipalityID`) REFERENCES `municipalities` (`id`) ON UPDATE CASCADE;
+
+--
+-- Beperkingen voor tabel `cemetery_manager`
+--
+ALTER TABLE `cemetery_manager`
+  ADD CONSTRAINT `cemetery_manager_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cemetery_manager_ibfk_2` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`);
 
 --
 -- Beperkingen voor tabel `permission_role`
