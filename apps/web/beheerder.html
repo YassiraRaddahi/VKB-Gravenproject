@@ -8,23 +8,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
         integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<style>
+    .title {
+        font-size: 28pt;
+        color: #0d475a;
+        display: block;
+        position: relative;
+        width: fit-content;
+    }
+
+    .title:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        bottom: 0.2em;
+        left: -0.25em;
+        right: 0;
+        border-bottom: 0.307em solid #bee1e0;
+    }
+</style>
+
+<body class="flex mx-40">
 
     <div id="app">
-        <h2>Beheerders</h2>
-        <div v-for="beheerder in beheerders">
-
-            <div v-for="header in headers">{{beheerder[header.field]}}</div>
-            <img :src="beheerder.foto_url" :alt="beheerder.naam">
-            <br>
+        <h2 class="title">
+            Lijst met beheerders
+        </h2>
+        <div class="grid grid-cols-4 gap-10">
+            <div v-for="beheerder in beheerders">
+                <img :src="beheerder.foto_url" :alt="beheerder.naam">
+                <div class="flex gap-1">
+                    <span v-for="header in headers">{{beheerder[header.field]}} </span>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-
         // --- Vue app ---
         Vue.createApp({
             data() {
@@ -34,8 +57,8 @@
                         { field: "voornaam" },
                         { field: "tussenvoegsel" },
                         { field: "achternaam" },
-                        { field: "e-mail" },
-                        { field: "telefoonnummer" },
+                        // { field: "e-mail" },
+                        // { field: "telefoonnummer" },
                     ]
                 }
             },
