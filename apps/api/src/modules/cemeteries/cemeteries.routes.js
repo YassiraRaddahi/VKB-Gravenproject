@@ -2,10 +2,11 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/begraafplaatsen', (req, res) => {
         try {
-            let sql = `SELECT c.id, c.name, c.image_url, u.first_name, u.infix, u.last_name
+            let sql = `SELECT c.id, c.name, c.image_url, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', u.id, 'first_name', u.first_name, 'infix', u.infix, 'last_name', u.last_name)), ']') AS beheerders
                 FROM cemeteries AS c
                 JOIN cemetery_manager AS cm ON c.id = cm.cemetery_id
-                JOIN users AS u ON cm.user_id= u.id`;
+                JOIN users AS u ON cm.user_id= u.id
+                GROUP BY c.id`;
 
             conn_db.query(sql, function (err, rows) {
                 if (err) {
@@ -27,11 +28,7 @@ module.exports = function (app, conn_db) {
                         "id": element.id,
                         "naam": element.name,
                         "foto_url": element.image_url,
-                        "beheerder": {
-                            "voornaam": element.first_name,
-                            "tussenvoegsel": element.infix,
-                            "achternaam": element.last_name
-                        }
+                        "beheerders": JSON.parse(element.beheerders)
                     });
                 });
 

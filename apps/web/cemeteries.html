@@ -3,7 +3,7 @@
 
 <head>
 	<title>VKB Begraafplaatsbeheer</title>
-	<link rel="stylesheet" href="publuc/css/styles.css">
+	<link rel="stylesheet" href="public/css/styles.css">
 	<script src="https://unpkg.com/vue@3"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
 		integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
@@ -19,8 +19,12 @@
 				<img :src="begraafplaats.foto_url" :alt="begraafplaats.naam">
 			</div>
 			<h2>{{ begraafplaats.naam }}</h2>
-			<p>Beheerder: {{ begraafplaats.beheerder.voornaam }} {{ begraafplaats.beheerder.tussenvoegsel }} {{
-				begraafplaats.beheerder.achternaam }}</p>
+			<div v-for="beheerder in begraafplaats.beheerders" :key="beheerder.id">
+				<p>Beheerder: {{ beheerder.first_name }} {{ beheerder.infix }} {{
+					beheerder.last_name }}</p>
+			</div>
+
+
 		</div>
 	</div>
 
