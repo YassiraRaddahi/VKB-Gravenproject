@@ -6,6 +6,7 @@ module.exports = function (app) {
     require('../modules/users/users.routes.js')(app, conn_db);
     require('../modules/auth/auth.routes.js')(app, conn_db);
     require('../modules/cemeteries/cemeteries.routes.js')(app,conn_db);
+    require('../modules/graves/graves.routes.js')(app,conn_db);
 
     
 }

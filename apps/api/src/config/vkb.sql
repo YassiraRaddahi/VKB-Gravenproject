@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Gegenereerd op: 18 mrt 2026 om 11:58
--- Serverversie: 10.4.32-MariaDB
--- PHP-versie: 8.2.12
+-- Host: localhost
+-- Gegenereerd op: 18 mrt 2026 om 21:02
+-- Serverversie: 10.4.28-MariaDB
+-- PHP-versie: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -82,6 +82,69 @@ INSERT INTO `cemetery_manager` (`user_id`, `cemetery_id`) VALUES
 (14, 8),
 (15, 2),
 (16, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `cleanups`
+--
+
+CREATE TABLE `cleanups` (
+  `id` int(11) NOT NULL,
+  `grave_id` int(11) NOT NULL,
+  `date_of_cleaned` date NOT NULL,
+  `status` enum('volledig','gedeeltelijk','niet_schoon') NOT NULL,
+  `remarks` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `cleanups`
+--
+
+INSERT INTO `cleanups` (`id`, `grave_id`, `date_of_cleaned`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
+(1, 1, '2024-01-15', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(2, 1, '2024-06-20', 'gedeeltelijk', 'Onkruid deels verwijderd', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(3, 2, '2024-03-10', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(4, 3, '2024-05-05', 'niet_schoon', 'Steen te beschadigd om schoon te maken', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(5, 4, '2024-08-18', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(6, 5, '2023-11-30', 'gedeeltelijk', 'Grafrecht verlopen, minimaal onderhoud', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `graves`
+--
+
+CREATE TABLE `graves` (
+  `id` int(11) NOT NULL,
+  `cemetery_id` int(11) NOT NULL,
+  `last_cleanup_id` int(11) DEFAULT NULL,
+  `status_id` int(11) NOT NULL,
+  `type` varchar(60) DEFAULT NULL,
+  `sort` varchar(60) DEFAULT NULL,
+  `latitude` decimal(10,7) NOT NULL,
+  `longitude` decimal(10,7) NOT NULL,
+  `image_hash_url` varchar(1024) DEFAULT NULL,
+  `grave_number` int(11) NOT NULL,
+  `remarks` text DEFAULT NULL,
+  `grave_right_start` date DEFAULT NULL,
+  `grave_right_end` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `graves`
+--
+
+INSERT INTO `graves` (`id`, `cemetery_id`, `last_cleanup_id`, `status_id`, `type`, `sort`, `latitude`, `longitude`, `image_hash_url`, `grave_number`, `remarks`, `grave_right_start`, `grave_right_end`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 'kistgraf', 'algemeen', 52.1234567, 6.7890123, 'public\\images\\cemeteries\\bergklooster.png', 101, NULL, '2010-03-15', '2035-03-15', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(2, 1, 3, 2, 'urnengraf', 'eigen', 52.1235567, 6.7891123, 'hash_002', 102, NULL, NULL, NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(3, 5, 4, 3, 'kistgraf', 'ereperk', 52.1236567, 6.7892123, 'hash_003', 103, 'Steen is beschadigd', '2015-06-01', '2040-06-01', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(4, 4, 5, 1, 'kindergraf', 'algemeen', 52.1237567, 6.7893123, NULL, 104, NULL, '2020-01-10', '2045-01-10', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(5, 8, 6, 4, 'kistgraf', 'algemeen', 52.1238567, 6.7894123, 'hash_005', 105, 'Grafrecht verlopen', '2000-05-20', '2020-05-20', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
 
 -- --------------------------------------------------------
 
@@ -233,6 +296,27 @@ INSERT INTO `role_user` (`user_id`, `role_id`, `created_at`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `statuses`
+--
+
+CREATE TABLE `statuses` (
+  `id` int(11) NOT NULL,
+  `naam` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `statuses`
+--
+
+INSERT INTO `statuses` (`id`, `naam`) VALUES
+(1, 'bezet'),
+(2, 'vrij'),
+(3, 'gereserveerd'),
+(4, 'verlopen');
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `users`
 --
 
@@ -296,6 +380,22 @@ ALTER TABLE `cemetery_manager`
   ADD KEY `cemetery_id` (`cemetery_id`);
 
 --
+-- Indexen voor tabel `cleanups`
+--
+ALTER TABLE `cleanups`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `grave_id` (`grave_id`);
+
+--
+-- Indexen voor tabel `graves`
+--
+ALTER TABLE `graves`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `status_id` (`status_id`) USING BTREE,
+  ADD KEY `cemetery_id` (`cemetery_id`) USING BTREE,
+  ADD KEY `last_cleanup_id` (`last_cleanup_id`) USING BTREE;
+
+--
 -- Indexen voor tabel `municipalities`
 --
 ALTER TABLE `municipalities`
@@ -330,6 +430,12 @@ ALTER TABLE `role_user`
   ADD KEY `role_id` (`role_id`);
 
 --
+-- Indexen voor tabel `statuses`
+--
+ALTER TABLE `statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexen voor tabel `users`
 --
 ALTER TABLE `users`
@@ -347,6 +453,18 @@ ALTER TABLE `cemeteries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT voor een tabel `cleanups`
+--
+ALTER TABLE `cleanups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT voor een tabel `graves`
+--
+ALTER TABLE `graves`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT voor een tabel `municipalities`
 --
 ALTER TABLE `municipalities`
@@ -362,6 +480,12 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT voor een tabel `roles`
 --
 ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT voor een tabel `statuses`
+--
+ALTER TABLE `statuses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -386,6 +510,20 @@ ALTER TABLE `cemeteries`
 ALTER TABLE `cemetery_manager`
   ADD CONSTRAINT `cemetery_manager_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `cemetery_manager_ibfk_2` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`);
+
+--
+-- Beperkingen voor tabel `cleanups`
+--
+ALTER TABLE `cleanups`
+  ADD CONSTRAINT `cleanups_ibfk_1` FOREIGN KEY (`grave_id`) REFERENCES `graves` (`id`);
+
+--
+-- Beperkingen voor tabel `graves`
+--
+ALTER TABLE `graves`
+  ADD CONSTRAINT `graves_ibfk_1` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`),
+  ADD CONSTRAINT `graves_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`),
+  ADD CONSTRAINT `graves_ibfk_3` FOREIGN KEY (`last_cleanup_id`) REFERENCES `cleanups` (`id`);
 
 --
 -- Beperkingen voor tabel `permission_role`

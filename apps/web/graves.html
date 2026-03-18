@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <title>VKB Begraafplaatsbeheer</title>
+    <link rel="stylesheet" href="publuc/css/styles.css">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
+        integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<style>
+    .title {
+        font-size: 28pt;
+        color: #0d475a;
+        display: block;
+        position: relative;
+        width: fit-content;
+    }
+
+    .title:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        bottom: 0.2em;
+        left: -0.25em;
+        right: 0;
+        border-bottom: 0.307em solid #bee1e0;
+    }
+</style>
+
+<body class="flex mx-40">
+
+    <div id="app">
+        <h2 class="title">
+            Lijst met graven
+        </h2>
+        <div v-for="graaf in graven" :key="graaf.graf_nummer">
+            <img :src="graaf.foto_url" :alt="graaf.graf_nummer">
+
+            <p>Graf: {{ graaf.graf_nummer }}</p>
+            <p>Type: {{ graaf.type }}</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Vue app ---
+        Vue.createApp({
+            data() {
+                return {
+                    graven: [],
+                    headers: [
+                        { field: "" },
+                    ]
+                }
+            },
+            mounted() {
+                url = "http://localhost:3001/api/graven"
+
+                axios.get(url)
+                    .then(response => {
+                        this.graven = response.data.graven
+                    })
+                    .catch(error => {
+                        console.error("Fout bij ophalen graven:", error)
+                    })
+            }
+        }).mount('#app')
+    </script>
+
+</body>
+
+</html>
