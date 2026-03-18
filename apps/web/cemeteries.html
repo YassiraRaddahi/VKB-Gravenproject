@@ -14,8 +14,8 @@
 
 <body>
 
-	<div id="app">
-		<div class="flex justify-center">
+	<div id="app" class="container mx-auto px-4" >
+		<div class="flex justify-center mt-10 mb-20">
 			<h2 class="title">
 				Lijst met begraafplaatsen
 			</h2>
@@ -23,17 +23,22 @@
 		<div class="grid grid-cols-3 gap-10">
 			<div v-for="begraafplaats in begraafplaatsen " :key="begraafplaats.id">
 
-				<div>
-					<img :src="begraafplaats.foto_url" :alt="begraafplaats.naam">
+				<div class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+					<img :src="begraafplaats.foto_url" :alt="begraafplaats.naam"
+						class="w-full h-full object-cover border border-gray-200 shadow-lg rounded-lg">
 				</div>
-				<h2>{{ begraafplaats.naam }}</h2>
-				<div v-for="beheerder in begraafplaats.beheerders" :key="beheerder.id">
-					<p>Beheerder: {{ beheerder.first_name }} {{ beheerder.infix }} {{
-						beheerder.last_name }}</p>
+
+				<div class="p-4 flex justify-center">
+					<div class="flex flex-col items-center gap-2">
+						<h2 class="text-xl font-bold">{{ begraafplaats.naam }}</h2>
+						<div v-for="beheerder in begraafplaats.beheerders" :key="beheerder.id">
+							<p>Beheerder: {{ beheerder.first_name }} {{ beheerder.infix }} {{
+								beheerder.last_name }}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 
 	<script>
