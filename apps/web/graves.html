@@ -3,7 +3,7 @@
 
 <head>
     <title>VKB Begraafplaatsbeheer</title>
-    <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="stylesheet" href="publuc/css/styles.css">
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js"
         integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
@@ -35,15 +35,13 @@
 
     <div id="app">
         <h2 class="title">
-            Lijst met beheerders
+            Lijst met graven
         </h2>
-        <div class="grid grid-cols-4 gap-10">
-            <div v-for="beheerder in beheerders">
-                <img :src="beheerder.foto_url" :alt="beheerder.naam">
-                <div class="flex gap-1">
-                    <span v-for="header in headers">{{beheerder[header.field]}} </span>
-                </div>
-            </div>
+        <div v-for="graaf in graven" :key="graaf.graf_nummer">
+            <img :src="graaf.foto_url" :alt="graaf.graf_nummer">
+
+            <p>Graf: {{ graaf.graf_nummer }}</p>
+            <p>Type: {{ graaf.type }}</p>
         </div>
     </div>
 
@@ -52,25 +50,21 @@
         Vue.createApp({
             data() {
                 return {
-                    beheerders: [],
+                    graven: [],
                     headers: [
-                        { field: "voornaam" },
-                        { field: "tussenvoegsel" },
-                        { field: "achternaam" },
-                        // { field: "e-mail" },
-                        // { field: "telefoonnummer" },
+                        { field: "" },
                     ]
                 }
             },
             mounted() {
-                url = "http://localhost:3001/api/beheerders"
+                url = "http://localhost:3001/api/graven"
 
                 axios.get(url)
                     .then(response => {
-                        this.beheerders = response.data.beheerders
+                        this.graven = response.data.graven
                     })
                     .catch(error => {
-                        console.error("Fout bij ophalen beheerders:", error)
+                        console.error("Fout bij ophalen graven:", error)
                     })
             }
         }).mount('#app')
