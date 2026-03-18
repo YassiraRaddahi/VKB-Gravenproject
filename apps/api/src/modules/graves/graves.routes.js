@@ -26,14 +26,14 @@ module.exports = function (app, conn_db) {
                 graven.forEach(element => {
                     gravenJSON.push({
                         "graf_nummer": element.grave_number,
-                    "type": element.type,
-                    "soort": element.sort,
-                    "locatie": {
-                        "latitude": element.latitude,
-                        "longitude": element.longitude
-                    },
-                    "foto_url": element.image_hash_url,
-                    "opmerkingen": element.remarks,
+                        "type": element.type,
+                        "soort": element.sort,
+                        "locatie": {
+                            "latitude": element.latitude,
+                            "longitude": element.longitude
+                        },
+                        "foto_url": element.image_hash_url,
+                        "opmerkingen": element.remarks,
                     });
                 });
 

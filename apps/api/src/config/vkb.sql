@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Gegenereerd op: 18 mrt 2026 om 21:02
--- Serverversie: 10.4.28-MariaDB
--- PHP-versie: 8.2.4
+-- Host: 127.0.0.1
+-- Gegenereerd op: 18 mrt 2026 om 21:56
+-- Serverversie: 10.4.32-MariaDB
+-- PHP-versie: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,6 +37,7 @@ CREATE TABLE `cemeteries` (
   `phone_number` varchar(20) DEFAULT NULL,
   `website_url` varchar(1024) DEFAULT NULL,
   `image_url` varchar(1024) DEFAULT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
   `municipalityID` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -46,15 +47,15 @@ CREATE TABLE `cemeteries` (
 -- Gegevens worden geëxporteerd voor tabel `cemeteries`
 --
 
-INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `municipalityID`, `created_at`, `updated_at`) VALUES
-(1, 'Begraafplaats Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', 'public\\images\\cemeteries\\kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35'),
-(2, 'Begraafplaats Meppelerstraatweg', 'Meppelerstraatweg', '8014 RT', 'Zwolle', 'info.meppeler@cemetery.nl', NULL, 'https://www.zwolle.nl', 'public\\images\\cemeteries\\meppelerstraatweg.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(3, 'Begraafplaats Voorst', 'Ridder Zwederlaan 1a', '8042 CC', 'Zwolle', 'contact.voorst@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\voorst.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(4, 'Begraafplaats Windesheim', 'Pastorieweg', '8015 PK', 'Zwolle', 'beheer.windesheim@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\windesheim.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(5, 'Begraafplaats Bergklooster', 'Bergkloosterweg 92', '8034 PL', 'Zwolle', 'info@bergklooster.nl', '+31384532281', 'http://www.bergklooster.nl', 'public\\images\\cemeteries\\bergklooster.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(6, 'R.K. Kerkhof Zwolle', 'Bisschop Willebrandlaan 62', '8021 GA', 'Zwolle', 'admin.rkkerkhof@cemetery.nl', '+31384533853', 'https://www.rkkerkhofzwolle.nl', 'public\\images\\cemeteries\\R.K._Kerkhof_zwolle.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(7, 'Joodse Begraafplaats Kuyerhuislaan', 'Kuyerhuislaan 16', '8025 AS', 'Zwolle', 'info.joods@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\Kuyerhuislaan.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(8, 'Begraafplaats Het Heilige Kruis', 'Buitengasthuisstraat', '8011 AG', 'Zwolle', 'contact.kruis@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\het_heilige_kruis.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49');
+INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `remarks`, `municipalityID`, `created_at`, `updated_at`) VALUES
+(1, 'Begraafplaats Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', 'public\\images\\cemeteries\\kranenburg.webp', '', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35'),
+(2, 'Begraafplaats Meppelerstraatweg', 'Meppelerstraatweg', '8014 RT', 'Zwolle', 'info.meppeler@cemetery.nl', NULL, 'https://www.zwolle.nl', 'public\\images\\cemeteries\\meppelerstraatweg.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(3, 'Begraafplaats Voorst', 'Ridder Zwederlaan 1a', '8042 CC', 'Zwolle', 'contact.voorst@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\voorst.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(4, 'Begraafplaats Windesheim', 'Pastorieweg', '8015 PK', 'Zwolle', 'beheer.windesheim@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\windesheim.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(5, 'Begraafplaats Bergklooster', 'Bergkloosterweg 92', '8034 PL', 'Zwolle', 'info@bergklooster.nl', '+31384532281', 'http://www.bergklooster.nl', 'public\\images\\cemeteries\\bergklooster.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(6, 'R.K. Kerkhof Zwolle', 'Bisschop Willebrandlaan 62', '8021 GA', 'Zwolle', 'admin.rkkerkhof@cemetery.nl', '+31384533853', 'https://www.rkkerkhofzwolle.nl', 'public\\images\\cemeteries\\R.K._Kerkhof_zwolle.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(7, 'Joodse Begraafplaats Kuyerhuislaan', 'Kuyerhuislaan 16', '8025 AS', 'Zwolle', 'info.joods@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\Kuyerhuislaan.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(8, 'Begraafplaats Het Heilige Kruis', 'Buitengasthuisstraat', '8011 AG', 'Zwolle', 'contact.kruis@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\het_heilige_kruis.png', '', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49');
 
 -- --------------------------------------------------------
 
