@@ -32,10 +32,12 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
 			<div v-for="begraafplaats in begraafplaatsen " :key="begraafplaats.id">
 
-				<div class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
-					<img :src="begraafplaats.foto_url" :alt="begraafplaats.naam"
-						class="w-full h-full object-cover border border-gray-200 shadow-lg rounded-lg">
-				</div>
+				<a :href="`graves.html?cemetery_id=${begraafplaats.id}`">
+					<div class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+						<img :src="begraafplaats.foto_url" :alt="begraafplaats.naam"
+							class="w-full h-full object-cover border border-gray-200 shadow-lg rounded-lg">
+					</div>
+				</a>
 
 				<div class="p-4 flex justify-center">
 					<div class="flex flex-col items-center text-center gap-2">
