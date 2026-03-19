@@ -2,6 +2,7 @@
 <html lang="nl">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>VKB Begraafplaatsbeheer</title>
     <link rel="stylesheet" href="public/css/styles.css">
     <script src="https://unpkg.com/vue@3"></script>
@@ -11,15 +12,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="flex mx-40">
+<body>
 
-    <div id="app">
-        <h2 class="title">
-            Lijst met beheerders
-        </h2>
-        <div class="grid grid-cols-4 gap-10">
-            <div v-for="beheerder in beheerders">
-                <img :src="beheerder.foto_url" :alt="beheerder.naam">
+    <div id="app" class="container mx-auto p-10">
+        <nav>
+            <ul class="flex gap-4 p-4">
+                <li><a href="index.html" class="text-blue-500 hover:underline">Home</a></li>
+                <li><a href="cemeteries.html" class="text-blue-500 hover:underline">Begraafplaatsen</a></li>
+                <li><a href="cemetery_managers.html" class="text-blue-500 hover:underline">Beheerders</a></li>
+                <li><a href="graves.html" class="text-blue-500 hover:underline">Graven</a></li>
+            </ul>
+        </nav>
+
+        <div class="flex justify-center mt-10 mb-20">
+            <h2 class="title">
+                Lijst met beheerders
+            </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            <div v-for="beheerder in beheerders" :key="beheerder.id" class="flex flex-col items-center text-center gap-4">
+                <div class="h-40 w-40 mb-4">
+                    <img :src="beheerder.foto_url" :alt="beheerder.naam">
+                </div>
                 <div class="flex gap-1">
                     <span v-for="header in headers">{{beheerder[header.field]}} </span>
                 </div>
