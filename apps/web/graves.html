@@ -12,7 +12,7 @@
 </head>
 
 <style>
-   
+
 </style>
 
 <body class="flex mx-40">
@@ -41,7 +41,9 @@
                 }
             },
             mounted() {
-                url = "http://localhost:3001/api/graven"
+                const params = new URLSearchParams(window.location.search)
+                const cemetery_id = params.get('cemetery_id')
+                url = `http://localhost:3001/api/graven?cemetery_id=${cemetery_id}`
 
                 axios.get(url)
                     .then(response => {
