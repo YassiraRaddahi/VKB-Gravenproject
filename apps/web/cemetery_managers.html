@@ -20,7 +20,6 @@
                 <li><a href="index.html" class="text-blue-500 hover:underline">Home</a></li>
                 <li><a href="cemeteries.html" class="text-blue-500 hover:underline">Begraafplaatsen</a></li>
                 <li><a href="cemetery_managers.html" class="text-blue-500 hover:underline">Beheerders</a></li>
-                <li><a href="graves.html" class="text-blue-500 hover:underline">Graven</a></li>
             </ul>
         </nav>
 
@@ -30,7 +29,8 @@
             </h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-            <div v-for="beheerder in beheerders" :key="beheerder.id" class="flex flex-col items-center text-center gap-4">
+            <div v-for="beheerder in beheerders" :key="beheerder.id"
+                class="flex flex-col items-center text-center gap-4">
                 <div class="h-40 w-40 mb-4">
                     <img :src="beheerder.foto_url" :alt="beheerder.naam">
                 </div>

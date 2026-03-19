@@ -4,7 +4,8 @@ module.exports = function (app, conn_db) {
         try {
             const { cemetery_id } = req.query
 
-            let sql = `SELECT graves.id, graves.grave_number, graves.type, graves.sort, graves.latitude, graves.longitude, graves.image_hash_url, graves.remarks, graves.grave_right_start, graves.grave_right_end, graves.created_at, graves.updated_at 
+            let sql = `SELECT graves.id, graves.grave_number, graves.type, graves.sort, graves.latitude, graves.longitude, graves.image_hash_url, graves.remarks, graves.grave_right_start, graves.grave_right_end, graves.created_at, graves.updated_at, 
+            statuses.name AS status
             FROM graves
             JOIN statuses ON graves.status_id = statuses.id
             JOIN cemeteries ON graves.cemetery_id = cemeteries.id
@@ -31,6 +32,7 @@ module.exports = function (app, conn_db) {
                         "graf_nummer": element.grave_number,
                         "type": element.type,
                         "soort": element.sort,
+                        "status": element.status,
                         "locatie": {
                             "latitude": element.latitude,
                             "longitude": element.longitude
