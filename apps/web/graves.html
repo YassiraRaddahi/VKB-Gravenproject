@@ -25,7 +25,6 @@
                 <li><a href="index.html" class="text-blue-500 hover:underline">Home</a></li>
                 <li><a href="cemeteries.html" class="text-blue-500 hover:underline">Begraafplaatsen</a></li>
                 <li><a href="cemetery_managers.html" class="text-blue-500 hover:underline">Beheerders</a></li>
-                <li><a href="graves.html" class="text-blue-500 hover:underline">Graven</a></li>
             </ul>
         </nav>
 
@@ -34,11 +33,21 @@
                 Lijst met graven
             </h2>
         </div>
-        <div v-for="graaf in graven" :key="graaf.graf_nummer">
-            <img :src="graaf.foto_url" :alt="graaf.graf_nummer">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-10">
+            <div v-for="graaf in graven" :key="graaf.graf_nummer">
 
-            <p>Graf: {{ graaf.graf_nummer }}</p>
-            <p>Type: {{ graaf.type }}</p>
+                <div class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+                    <img :src="graaf.foto_url" :alt="graaf.graf_nummer"
+                        class="w-full h-full object-cover border border-gray-200 shadow-lg rounded-lg">
+                </div>
+
+                <div class="p-4 flex justify-center">
+                    <div class="flex flex-col items-center text-center gap-2">
+                        <h2 class="text-lg font-bold">{{ graaf.graf_nummer }}</h2>
+                        <p>Status: {{graaf.status}}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
