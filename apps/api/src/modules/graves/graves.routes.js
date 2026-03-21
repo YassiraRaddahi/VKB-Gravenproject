@@ -4,13 +4,10 @@ module.exports = function (app, conn_db) {
         try {
             const { cemetery_id } = req.query
 
-            let sql = `SELECT graves.id, graves.grave_number, graves.type, graves.sort, graves.latitude, graves.longitude, graves.image_hash_url, graves.remarks, graves.grave_right_start, graves.grave_right_end, graves.created_at, graves.updated_at, 
-            statuses.name AS status
+            let sql = `SELECT graves.id, graves.grave_number, graves.type, graves.sort, graves.latitude, graves.longitude, graves.image_url, graves.remarks, graves.status, graves.last_opened_at, graves.last_cleared_at, graves.created_at, graves.updated_at
             FROM graves
-            JOIN statuses ON graves.status_id = statuses.id
             JOIN cemeteries ON graves.cemetery_id = cemeteries.id
-            LEFT JOIN cleanups ON graves.last_cleanup_id = cleanups.id
-            WHERE cemetery_id = ?`;
+            WHERE graves.cemetery_id = ?`;
 
             conn_db.query(sql, [cemetery_id], function (err, rows) {
                 if (err) {
@@ -37,7 +34,7 @@ module.exports = function (app, conn_db) {
                             "latitude": element.latitude,
                             "longitude": element.longitude
                         },
-                        "foto_url": element.image_hash_url,
+                        "foto_url": element.image_url,
                         "opmerkingen": element.remarks,
                     });
                 });

@@ -2,8 +2,9 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/begraafplaatsen', (req, res) => {
         try {
-            let sql = `SELECT c.id, c.name, c.image_url, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', u.id, 'first_name', u.first_name, 'infix', u.infix, 'last_name', u.last_name)), ']') AS beheerders
+            let sql = `SELECT c.id, c.name, ci.image_url, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', u.id, 'first_name', u.first_name, 'infix', u.infix, 'last_name', u.last_name)), ']') AS beheerders
                 FROM cemeteries AS c
+                JOIN cemetery_images AS ci ON c.id = ci.cemetery_id
                 JOIN cemetery_manager AS cm ON c.id = cm.cemetery_id
                 JOIN users AS u ON cm.user_id= u.id
                 GROUP BY c.id`;

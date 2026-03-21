@@ -163,13 +163,12 @@ CREATE TABLE `graves` (
 --
 -- Gegevens worden geëxporteerd voor tabel `graves`
 --
-
 INSERT INTO `graves` (`id`, `cemetery_id`, `type`, `sort`, `grave_number`, `latitude`, `longitude`, `image_url`, `remarks`, `status`, `last_opened_at`, `last_cleared_at`, `created_at`, `updated_at`) VALUES
-(1, 1, 'algemeen graf', 'enkel graf', '101', 52.1234567, 6.7890123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2010-03-14 23:00:00', '2035-03-14 23:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(2, 1, 'particulier graf', 'dubbel graf', '102', 52.1235567, 6.7891123, 'public\\images\\graves\\graf-nummer.png', NULL, 'in gebruik', NULL, NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(3, 5, 'algemeen graf', 'urnengraf', '103', 52.1236567, 6.7892123, 'public\\images\\graves\\graf-nummer.png', 'Steen is beschadigd', 'gereserveerd', '2015-05-31 22:00:00', '0000-00-00 00:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(4, 4, 'algemeen graf', 'kindergraf', '104', 52.1237567, 6.7893123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2020-01-09 23:00:00', '0000-00-00 00:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(5, 8, 'algemeen graf', 'dubbel graf', '105', 52.1238567, 6.7894123, 'public\\images\\graves\\graf-nummer.png', 'Grafrecht verlopen', '', '2000-05-19 22:00:00', '2020-05-19 22:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
+(1, 1, 'algemeen graf', 'dubbel graf', 'A.01.04.23', 52.1234567, 6.7890123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2026-03-21 22:34:43', '2026-03-21 22:34:43', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(2, 1, 'particulier graf', 'dubbel graf', 'A.01.04.23', 52.1235567, 6.7891123, 'public\\images\\graves\\graf-nummer.png', NULL, 'in gebruik', '2026-03-14 22:34:43', '2026-03-21 22:34:43', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(3, 5, 'algemeen graf', 'urnengraf', 'D.04.02.49', 52.1236567, 6.7892123, 'public\\images\\graves\\graf-nummer.png', 'Steen is beschadigd', 'gereserveerd', '2026-03-21 22:34:43', '2026-03-21 22:34:43', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(4, 4, 'algemeen graf', 'kindergraf', 'B.02.09.22', 52.1237567, 6.7893123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2026-03-21 22:34:43', '2026-03-21 22:34:43', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(5, 8, 'algemeen graf', 'dubbel graf', 'A.13.10.13', 52.1238567, 6.7894123, 'public\\images\\graves\\graf-nummer.png', 'Grafrecht verlopen', 'in gebruik', '2026-03-21 22:34:43', '2026-03-21 22:34:43', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
 
 -- --------------------------------------------------------
 
