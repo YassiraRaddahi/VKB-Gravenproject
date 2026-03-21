@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Gegenereerd op: 19 mrt 2026 om 15:02
--- Serverversie: 10.4.28-MariaDB
--- PHP-versie: 8.2.4
+-- Host: 127.0.0.1
+-- Gegenereerd op: 21 mrt 2026 om 18:08
+-- Serverversie: 10.4.32-MariaDB
+-- PHP-versie: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,7 +36,7 @@ CREATE TABLE `cemeteries` (
   `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `website_url` varchar(1024) DEFAULT NULL,
-  `image_url` varchar(1024) DEFAULT NULL,
+  `remarks` text DEFAULT NULL,
   `municipalityID` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -46,15 +46,15 @@ CREATE TABLE `cemeteries` (
 -- Gegevens worden geëxporteerd voor tabel `cemeteries`
 --
 
-INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `image_url`, `municipalityID`, `created_at`, `updated_at`) VALUES
-(1, 'Begraafplaats Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', 'public\\images\\cemeteries\\kranenburg.webp', 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35'),
-(2, 'Begraafplaats Meppelerstraatweg', 'Meppelerstraatweg', '8014 RT', 'Zwolle', 'info.meppeler@cemetery.nl', NULL, 'https://www.zwolle.nl', 'public\\images\\cemeteries\\meppelerstraatweg.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(3, 'Begraafplaats Voorst', 'Ridder Zwederlaan 1a', '8042 CC', 'Zwolle', 'contact.voorst@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\voorst.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(4, 'Begraafplaats Windesheim', 'Pastorieweg', '8015 PK', 'Zwolle', 'beheer.windesheim@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\windesheim.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(5, 'Begraafplaats Bergklooster', 'Bergkloosterweg 92', '8034 PL', 'Zwolle', 'info@bergklooster.nl', '+31384532281', 'http://www.bergklooster.nl', 'public\\images\\cemeteries\\bergklooster.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(6, 'R.K. Kerkhof Zwolle', 'Bisschop Willebrandlaan 62', '8021 GA', 'Zwolle', 'admin.rkkerkhof@cemetery.nl', '+31384533853', 'https://www.rkkerkhofzwolle.nl', 'public\\images\\cemeteries\\R.K._Kerkhof_zwolle.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(7, 'Joodse Begraafplaats Kuyerhuislaan', 'Kuyerhuislaan 16', '8025 AS', 'Zwolle', 'info.joods@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\Kuyerhuislaan.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
-(8, 'Begraafplaats Het Heilige Kruis', 'Buitengasthuisstraat', '8011 AG', 'Zwolle', 'contact.kruis@cemetery.nl', NULL, NULL, 'public\\images\\cemeteries\\het_heilige_kruis.png', 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49');
+INSERT INTO `cemeteries` (`id`, `name`, `address`, `zip_code`, `city`, `email`, `phone_number`, `website_url`, `remarks`, `municipalityID`, `created_at`, `updated_at`) VALUES
+(1, 'Begraafplaats Kranenburg', 'Kranenburgweg 7', '8024 AC', 'Zwolle', 'bb', '038 454 4148', 'https://www.zwolle.nl/begraven-en-cremeren-op-kranenburg', NULL, 1, '2026-03-16 21:13:35', '2026-03-16 21:13:35'),
+(2, 'Begraafplaats Meppelerstraatweg', 'Meppelerstraatweg', '8014 RT', 'Zwolle', 'info.meppeler@cemetery.nl', NULL, 'https://www.zwolle.nl', NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(3, 'Begraafplaats Voorst', 'Ridder Zwederlaan 1a', '8042 CC', 'Zwolle', 'contact.voorst@cemetery.nl', NULL, NULL, NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(4, 'Begraafplaats Windesheim', 'Pastorieweg', '8015 PK', 'Zwolle', 'beheer.windesheim@cemetery.nl', NULL, NULL, NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(5, 'Begraafplaats Bergklooster', 'Bergkloosterweg 92', '8034 PL', 'Zwolle', 'info@bergklooster.nl', '+31384532281', 'http://www.bergklooster.nl', NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(6, 'R.K. Kerkhof Zwolle', 'Bisschop Willebrandlaan 62', '8021 GA', 'Zwolle', 'admin.rkkerkhof@cemetery.nl', '+31384533853', 'https://www.rkkerkhofzwolle.nl', NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(7, 'Joodse Begraafplaats Kuyerhuislaan', 'Kuyerhuislaan 16', '8025 AS', 'Zwolle', 'info.joods@cemetery.nl', NULL, NULL, NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49'),
+(8, 'Begraafplaats Het Heilige Kruis', 'Buitengasthuisstraat', '8011 AG', 'Zwolle', 'contact.kruis@cemetery.nl', NULL, NULL, NULL, 1, '2026-03-17 10:37:49', '2026-03-17 10:37:49');
 
 -- --------------------------------------------------------
 
@@ -118,9 +118,9 @@ INSERT INTO `cemetery_manager` (`user_id`, `cemetery_id`) VALUES
 CREATE TABLE `cleanups` (
   `id` int(11) NOT NULL,
   `grave_id` int(11) NOT NULL,
-  `date_of_cleaned` date NOT NULL,
-  `status` enum('volledig','gedeeltelijk','niet_schoon') NOT NULL,
+  `status` enum('volledig','gedeeltelijk','niet schoon') NOT NULL,
   `remarks` text DEFAULT NULL,
+  `cleaned_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -129,13 +129,13 @@ CREATE TABLE `cleanups` (
 -- Gegevens worden geëxporteerd voor tabel `cleanups`
 --
 
-INSERT INTO `cleanups` (`id`, `grave_id`, `date_of_cleaned`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
-(1, 1, '2024-01-15', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(2, 1, '2024-06-20', 'gedeeltelijk', 'Onkruid deels verwijderd', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(3, 2, '2024-03-10', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(4, 3, '2024-05-05', 'niet_schoon', 'Steen te beschadigd om schoon te maken', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(5, 4, '2024-08-18', 'volledig', NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(6, 5, '2023-11-30', 'gedeeltelijk', 'Grafrecht verlopen, minimaal onderhoud', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
+INSERT INTO `cleanups` (`id`, `grave_id`, `status`, `remarks`, `cleaned_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 'volledig', NULL, '2024-01-14 23:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(2, 1, 'gedeeltelijk', 'Onkruid deels verwijderd', '2024-06-19 22:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(3, 2, 'volledig', NULL, '2024-03-09 23:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(4, 3, 'niet schoon', 'Steen te beschadigd om schoon te maken', '2024-05-04 22:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(5, 4, 'volledig', NULL, '2024-08-17 22:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(6, 5, 'gedeeltelijk', 'Grafrecht verlopen, minimaal onderhoud', '2023-11-29 23:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
 
 -- --------------------------------------------------------
 
@@ -146,17 +146,16 @@ INSERT INTO `cleanups` (`id`, `grave_id`, `date_of_cleaned`, `status`, `remarks`
 CREATE TABLE `graves` (
   `id` int(11) NOT NULL,
   `cemetery_id` int(11) NOT NULL,
-  `last_cleanup_id` int(11) DEFAULT NULL,
-  `status_id` int(11) NOT NULL,
-  `type` enum('algemeen graf','particulier graf') DEFAULT NULL,
-  `sort` enum('dubbel graf','enkel graf','kindergraf','urnengraf','keldergraf') DEFAULT NULL,
+  `type` enum('algemeen graf','particulier graf') NOT NULL,
+  `sort` enum('dubbel graf','enkel graf','kindergraf','urnengraf','keldergraf') NOT NULL,
+  `grave_number` varchar(20) NOT NULL,
   `latitude` decimal(10,7) NOT NULL,
   `longitude` decimal(10,7) NOT NULL,
-  `image_hash_url` varchar(1024) DEFAULT NULL,
-  `grave_number` int(11) NOT NULL,
+  `image_url` varchar(1024) DEFAULT NULL,
   `remarks` text DEFAULT NULL,
-  `grave_right_start` date DEFAULT NULL,
-  `grave_right_end` date DEFAULT NULL,
+  `status` enum('beschikbaar','in gebruik','gereserveerd') NOT NULL,
+  `last_opened_at` timestamp NULL DEFAULT NULL,
+  `last_cleared_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -165,12 +164,12 @@ CREATE TABLE `graves` (
 -- Gegevens worden geëxporteerd voor tabel `graves`
 --
 
-INSERT INTO `graves` (`id`, `cemetery_id`, `last_cleanup_id`, `status_id`, `type`, `sort`, `latitude`, `longitude`, `image_hash_url`, `grave_number`, `remarks`, `grave_right_start`, `grave_right_end`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 'algemeen graf', 'enkel graf', 52.1234567, 6.7890123, 'public\\images\\graves\\graf-nummer.png', 101, NULL, '2010-03-15', '2035-03-15', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(2, 1, 3, 2, 'particulier graf', 'dubbel graf', 52.1235567, 6.7891123, 'public\\images\\graves\\graf-nummer.png', 102, NULL, NULL, NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(3, 5, 4, 3, 'algemeen graf', 'urnengraf', 52.1236567, 6.7892123, 'public\\images\\graves\\graf-nummer.png', 103, 'Steen is beschadigd', '2015-06-01', '2040-06-01', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(4, 4, 5, 1, 'algemeen graf', 'kindergraf', 52.1237567, 6.7893123, 'public\\images\\graves\\graf-nummer.png', 104, NULL, '2020-01-10', '2045-01-10', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
-(5, 8, 6, 4, 'algemeen graf', 'dubbel graf', 52.1238567, 6.7894123, 'public\\images\\graves\\graf-nummer.png', 105, 'Grafrecht verlopen', '2000-05-20', '2020-05-20', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
+INSERT INTO `graves` (`id`, `cemetery_id`, `type`, `sort`, `grave_number`, `latitude`, `longitude`, `image_url`, `remarks`, `status`, `last_opened_at`, `last_cleared_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 'algemeen graf', 'enkel graf', '101', 52.1234567, 6.7890123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2010-03-14 23:00:00', '2035-03-14 23:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(2, 1, 'particulier graf', 'dubbel graf', '102', 52.1235567, 6.7891123, 'public\\images\\graves\\graf-nummer.png', NULL, 'in gebruik', NULL, NULL, '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(3, 5, 'algemeen graf', 'urnengraf', '103', 52.1236567, 6.7892123, 'public\\images\\graves\\graf-nummer.png', 'Steen is beschadigd', 'gereserveerd', '2015-05-31 22:00:00', '0000-00-00 00:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(4, 4, 'algemeen graf', 'kindergraf', '104', 52.1237567, 6.7893123, 'public\\images\\graves\\graf-nummer.png', NULL, 'beschikbaar', '2020-01-09 23:00:00', '0000-00-00 00:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35'),
+(5, 8, 'algemeen graf', 'dubbel graf', '105', 52.1238567, 6.7894123, 'public\\images\\graves\\graf-nummer.png', 'Grafrecht verlopen', '', '2000-05-19 22:00:00', '2020-05-19 22:00:00', '2026-03-18 20:01:35', '2026-03-18 20:01:35');
 
 -- --------------------------------------------------------
 
@@ -180,15 +179,16 @@ INSERT INTO `graves` (`id`, `cemetery_id`, `last_cleanup_id`, `status_id`, `type
 
 CREATE TABLE `municipalities` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `remarks` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `municipalities`
 --
 
-INSERT INTO `municipalities` (`id`, `name`) VALUES
-(1, 'Zwolle');
+INSERT INTO `municipalities` (`id`, `name`, `remarks`) VALUES
+(1, 'Zwolle', NULL);
 
 -- --------------------------------------------------------
 
@@ -322,27 +322,6 @@ INSERT INTO `role_user` (`user_id`, `role_id`, `created_at`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `statuses`
---
-
-CREATE TABLE `statuses` (
-  `id` int(11) NOT NULL,
-  `name` varchar(60) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Gegevens worden geëxporteerd voor tabel `statuses`
---
-
-INSERT INTO `statuses` (`id`, `name`) VALUES
-(1, 'bezet'),
-(2, 'vrij'),
-(3, 'gereserveerd'),
-(4, 'verlopen');
-
--- --------------------------------------------------------
-
---
 -- Tabelstructuur voor tabel `users`
 --
 
@@ -424,9 +403,7 @@ ALTER TABLE `cleanups`
 --
 ALTER TABLE `graves`
   ADD PRIMARY KEY (`id`) USING BTREE,
-  ADD KEY `status_id` (`status_id`) USING BTREE,
-  ADD KEY `cemetery_id` (`cemetery_id`) USING BTREE,
-  ADD KEY `last_cleanup_id` (`last_cleanup_id`) USING BTREE;
+  ADD KEY `cemetery_id` (`cemetery_id`) USING BTREE;
 
 --
 -- Indexen voor tabel `municipalities`
@@ -461,12 +438,6 @@ ALTER TABLE `roles`
 ALTER TABLE `role_user`
   ADD PRIMARY KEY (`user_id`,`role_id`),
   ADD KEY `role_id` (`role_id`);
-
---
--- Indexen voor tabel `statuses`
---
-ALTER TABLE `statuses`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexen voor tabel `users`
@@ -522,12 +493,6 @@ ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT voor een tabel `statuses`
---
-ALTER TABLE `statuses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
 -- AUTO_INCREMENT voor een tabel `users`
 --
 ALTER TABLE `users`
@@ -566,9 +531,7 @@ ALTER TABLE `cleanups`
 -- Beperkingen voor tabel `graves`
 --
 ALTER TABLE `graves`
-  ADD CONSTRAINT `graves_ibfk_1` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`),
-  ADD CONSTRAINT `graves_ibfk_2` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`),
-  ADD CONSTRAINT `graves_ibfk_3` FOREIGN KEY (`last_cleanup_id`) REFERENCES `cleanups` (`id`);
+  ADD CONSTRAINT `graves_ibfk_1` FOREIGN KEY (`cemetery_id`) REFERENCES `cemeteries` (`id`);
 
 --
 -- Beperkingen voor tabel `permission_role`
