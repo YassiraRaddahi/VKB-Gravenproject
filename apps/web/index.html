@@ -10,13 +10,13 @@
         integrity="sha512-h9644v03pHqrIHThkvXhB2PJ8zf5E9IyVnrSfZg8Yj8k4RsO4zldcQc4Bi9iVLUCCsqNY0b4WXVV4UB+wbWENA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
 </head>
 
 <body>
 
-   
-<div id="app" class="container mx-auto p-10">
+
+    <div id="app" class="container mx-auto p-10">
 
         <nav>
             <ul class="flex gap-4 p-4">
@@ -28,13 +28,13 @@
         </nav>
 
         <div class="flex justify-center mt-10 mb-20">
-            <h2 class="title fancy-title text-[#e07a5f]">
+            <h2 class="title fancy-title1 text-[#e07a5f]">
                 Nederlands Kerkhof
             </h2>
         </div>
 
         <div class="content">
-            <p class="max-w-2xl mx-auto text-center" >
+            <p class="max-w-2xl mx-auto text-center">
                 Donec augue justo, dapibus porttitor sem sit amet, elementum vestibulum leo. Phasellus eget justo in
                 magna pulvinar dictum. Sed tempus sit amet ante eget pulvinar. Ut dictum diam nec quam mattis aliquam.
                 Morbi et porttitor justo. Praesent nisi ante, faucibus eu dui et, sagittis posuere odio. Nulla euismod
@@ -46,16 +46,38 @@
             </p>
         </div>
         <div class="flex justify-center mt-20 mb-20">
-            <h2 class="title">
+            <h2 class="title fancy-title2 text-[#f08360]">
                 Aangesloten begraafplaatsen
             </h2>
         </div>
-        <div class="carousel"></div>
+        <div id="indicators-carousel" class="relative w-full" data-carousel="slide" data-carousel-interval="3000">
+
+            <!-- wrapper -->
+            <div class="relative h-56 overflow-hidden rounded-lg">
+                <!-- slide 1 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                    <img src="public/images/cemeteries/bergklooster.png"
+                        class="absolute block w-full h-full object-cover">
+                </div>
+                <!-- slide 2 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="public/images/cemeteries/het_heilige_kruis.png" class="absolute block w-full h-full object-cover">
+                </div>
+                <!-- slide 3 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="public/images/cemeteries/kranenburg.webp" class="absolute block w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
         <div class="flex justify-center mt-20 mb-20">
-            <button onclick=""></button>
+            <button class="bg-orange-500 text-white px-8 py-4 rounded-full text-lg hover:bg-orange-600 transition"
+                onclick="window.location.href='login.html'">
+                Inloggen
+            </button>
         </div>
     </div>
-    
+
 </body>
 
 </html>
