@@ -1,8 +1,8 @@
 module.exports = function (app, conn_db) {
 
-    app.get('/api/graves', (req, res) => {
+    app.get('/api/graves/:cemetery_id', (req, res) => {
         try {
-            const { cemetery_id } = req.query
+            const cemetery_id = req.params.cemetery_id;
 
             let sql = `SELECT graves.id, graves.grave_number, graves.type, graves.sort, graves.latitude, graves.longitude, graves.image_url, graves.remarks, graves.status, graves.last_opened_at, graves.last_cleared_at, graves.created_at, graves.updated_at
             FROM graves
@@ -15,7 +15,7 @@ module.exports = function (app, conn_db) {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen graven zijn, geef een foutmelding
+                // If there are no graves for this cemetery, return an error message
                 if (!rows || rows.length === 0) {
                     return res.status(404).json({ error: 'No graves found' });
                 }

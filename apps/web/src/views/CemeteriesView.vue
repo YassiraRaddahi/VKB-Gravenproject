@@ -7,7 +7,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
       <div v-for="cemetery in cemeteries" :key="cemetery.id">
 
-        <router-link :to="{ name: 'Graves', query: { cemetery_id: cemetery.id } }">
+        <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }">
           <div class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
             <img :src="cemetery.image_url" :alt="cemetery.name"
               class="w-full h-full object-cover border border-gray-200 shadow-lg rounded-lg">

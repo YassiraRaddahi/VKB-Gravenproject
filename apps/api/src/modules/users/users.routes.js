@@ -13,9 +13,9 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen gebruikers zijn, geef een foutmelding
+                // If there are no users, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen gebruikers gevonden' });
+                    return res.status(404).json({ error: 'No users found' });
                 }
 
 
@@ -24,19 +24,19 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
-                        "voornaam": element.first_name,
-                        "tussenvoegsel": element.infix,
-                        "achternaam": element.last_name,
-                        "e-mail": element.email,
-                        "rol": element.role_name
+                        "first_name": element.first_name,
+                        "infix": element.infix,
+                        "last_name": element.last_name,
+                        "email": element.email,
+                        "role": element.role_name
                     });
                 });
 
                 res.send({ "users": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens login:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during login:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });
@@ -55,29 +55,29 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen gebruiker is met deze rol, geef een foutmelding
+                // If there is no user with this role, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen admin gevonden' });
+                    return res.status(404).json({ error: 'No admin found' });
                 }
 
                 let user = rows[0];
 
                 res.send({"admin" : {
-                        "voornaam": user.first_name,
-                        "tussenvoegsel": user.infix,
-                        "achternaam": user.last_name,
-                        "e-mail": user.email,
-                        "rol": user.role_name
+                        "first_name": user.first_name,
+                        "infix": user.infix,
+                        "last_name": user.last_name,
+                        "email": user.email,
+                        "role": user.role_name
                     }});
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van users:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during retrieval of admin:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });
 
-    app.get('/api/beheerders', (req, res) => {
+    app.get('/api/cemetery-managers', (req, res) => {
         try {
             let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
                 FROM users
@@ -92,9 +92,9 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen gebruikers zijn met deze rol, geef een foutmelding
+                // If there are no users with this role, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen beheerders gevonden' });
+                    return res.status(404).json({ error: 'No managers found' });
                 }
 
                 let users = rows;
@@ -102,29 +102,29 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
-                        "voornaam": element.first_name,
-                        "tussenvoegsel": element.infix,
-                        "achternaam": element.last_name,
-                        "postcode": element.zip_code,
-                        "stad": element.city,
-                        "e-mail": element.email,
-                        "telefoonnummer": element.phone_number,
-                        "foto_url": element.profile_picture_url,
-                        "rol": element.role_name
+                        "first_name": element.first_name,
+                        "infix": element.infix,
+                        "last_name": element.last_name,
+                        "zip_code": element.zip_code,
+                        "city": element.city,
+                        "email": element.email,
+                        "phone_number": element.phone_number,
+                        "profile_picture_url": element.profile_picture_url,
+                        "role": element.role_name
                     });
                 });
 
-                res.send({ "beheerders": usersJSON});
+                res.send({ "cemetery-managers": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van beheerders:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during retrieval of managers:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });
 
 
-    app.get('/api/grafonderhouders', (req, res) => {
+    app.get('/api/grave-caretaker', (req, res) => {
         try {
             let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
                 FROM users
@@ -139,9 +139,9 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen gebruikers zijn met deze rol, geef een foutmelding
+                // If there are no users with this role, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen grafonderhouders gevonden' });
+                    return res.status(404).json({ error: 'No grave caretakers found' });
                 }
 
                 let users = rows;
@@ -149,25 +149,25 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
-                        "voornaam": element.first_name,
-                        "tussenvoegsel": element.infix,
-                        "achternaam": element.last_name,
-                        "e-mail": element.email,
-                        "rol": element.role_name
+                        "first_name": element.first_name,
+                        "infix": element.infix,
+                        "last_name": element.last_name,
+                        "email": element.email,
+                        "role": element.role_name
                     });
                 });
 
-                res.send({ "grafonderhouders": usersJSON});
+                res.send({ "grave-caretakers": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van grafonderhouders:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during retrieval of grave caretakers:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });
 
 
-    app.get('/api/rechthebbenden', (req, res) => {
+    app.get('/api/grave-owner', (req, res) => {
         try {
             let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
                 FROM users
@@ -182,9 +182,9 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen gebruikers zijn met deze rol, geef een foutmelding
+                // If there are no users with this role, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen rechthebbenden gevonden' });
+                    return res.status(404).json({ error: 'No grave owners found' });
                 }
 
                 let users = rows;
@@ -192,19 +192,19 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
-                        "voornaam": element.first_name,
-                        "tussenvoegsel": element.infix,
-                        "achternaam": element.last_name,
-                        "e-mail": element.email,
-                        "rol": element.role_name
+                        "first_name": element.first_name,
+                        "infix": element.infix,
+                        "last_name": element.last_name,
+                        "email": element.email,
+                        "role": element.role_name
                     });
                 });
 
-                res.send({ "rechthebbenden": usersJSON});
+                res.send({ "grave-owners": usersJSON});
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van rechthebbenden:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during retrieval of grave owners:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });

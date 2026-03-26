@@ -12,7 +12,7 @@ const router = createRouter({
     { path: '/', redirect: '/home' },
     { path: '/home', name: 'Home', component: Home },
     { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries },
-    { path: '/graven', name: 'Graves', component: Graves },
+    { path: '/graven/:cemetery_id', name: 'Graves', component: Graves },
     { path: '/beheerders', name: 'CemeteryManagers', component: CemeteryManagers }, 
   ]
 })

@@ -15,9 +15,9 @@ module.exports = function (app, conn_db) {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // Als er geen begraafplaatsen zijn, geef een foutmelding
+                // If there are no cemeteries, return an error message
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen begraafplaatsen gevonden' });
+                    return res.status(404).json({ error: 'No cemeteries found' });
                 }
 
 

@@ -36,12 +36,13 @@
 
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useRoute } from 'vue-router'
 
-const params = new URLSearchParams(window.location.search)
-const cemetery_id = params.get('cemetery_id')
+const route = useRoute()
+const cemetery_id = route.params.cemetery_id
 
 const graves = ref([])
-const url = `http://localhost:3001/api/graves?cemetery_id=${cemetery_id}`
+const url = `http://localhost:3001/api/graves/${cemetery_id}`
 
 
 
