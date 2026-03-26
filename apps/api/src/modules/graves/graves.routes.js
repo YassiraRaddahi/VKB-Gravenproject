@@ -1,6 +1,6 @@
 module.exports = function (app, conn_db) {
 
-    app.get('/api/graven', (req, res) => {
+    app.get('/api/graves', (req, res) => {
         try {
             const { cemetery_id } = req.query
 
@@ -17,7 +17,7 @@ module.exports = function (app, conn_db) {
 
                 // Als er geen graven zijn, geef een foutmelding
                 if (!rows || rows.length === 0) {
-                    return res.status(404).json({ error: 'Geen graven gevonden' });
+                    return res.status(404).json({ error: 'No graves found' });
                 }
 
 
@@ -26,24 +26,24 @@ module.exports = function (app, conn_db) {
 
                 graven.forEach(element => {
                     gravenJSON.push({
-                        "graf_nummer": element.grave_number,
+                        "grave_number": element.grave_number,
                         "type": element.type,
-                        "soort": element.sort,
+                        "sort": element.sort,
                         "status": element.status,
-                        "locatie": {
+                        "location": {
                             "latitude": element.latitude,
                             "longitude": element.longitude
                         },
-                        "foto_url": element.image_url,
-                        "opmerkingen": element.remarks,
+                        "image_url": element.image_url,
+                        "remarks": element.remarks,
                     });
                 });
 
-                res.send({ "graven": gravenJSON });
+                res.send({ "graves": gravenJSON });
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van graven:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during graves retrieval:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });

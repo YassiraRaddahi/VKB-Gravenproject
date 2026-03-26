@@ -1,8 +1,8 @@
 module.exports = function (app, conn_db) {
 
-    app.get('/api/begraafplaatsen', (req, res) => {
+    app.get('/api/cemeteries', (req, res) => {
         try {
-            let sql = `SELECT c.id, c.name, ci.image_url, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', u.id, 'first_name', u.first_name, 'infix', u.infix, 'last_name', u.last_name)), ']') AS beheerders
+            let sql = `SELECT c.id, c.name, ci.image_url, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', u.id, 'first_name', u.first_name, 'infix', u.infix, 'last_name', u.last_name)), ']') AS cemetery_managers
                 FROM cemeteries AS c
                 JOIN cemetery_images AS ci ON c.id = ci.cemetery_id
                 JOIN cemetery_manager AS cm ON c.id = cm.cemetery_id
@@ -21,23 +21,23 @@ module.exports = function (app, conn_db) {
                 }
 
 
-                let begraafplaatsen = rows;
-                let begraafplaatsenJSON = [];
+                let cemeteries = rows;
+                let cemeteriesJSON = [];
 
-                begraafplaatsen.forEach(element => {
-                    begraafplaatsenJSON.push({
+                cemeteries.forEach(element => {
+                    cemeteriesJSON.push({
                         "id": element.id,
-                        "naam": element.name,
-                        "foto_url": element.image_url,
-                        "beheerders": JSON.parse(element.beheerders)
+                        "name": element.name,
+                        "image_url": element.image_url,
+                        "cemetery_managers": JSON.parse(element.cemetery_managers)
                     });
                 });
 
-                res.send({ "begraafplaatsen": begraafplaatsenJSON });
+                res.send({ "cemeteries": cemeteriesJSON });
             })
         } catch (error) {
-            console.error("Error tijdens ophalen van begraafplaatsen:", error);
-            res.status(500).json({ error: 'Interne server error' });
+            console.error("Error during cemeteries retrieval:", error);
+            res.status(500).json({ error: 'Internal server error' });
 
         }
     });
