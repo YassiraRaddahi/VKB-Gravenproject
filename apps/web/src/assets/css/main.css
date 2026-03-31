@@ -19,7 +19,9 @@
     right: 0;
     border-bottom: 0.307em solid #bee1e0;
 }
-
+.title.fancy-title2::after {
+    border-bottom: 0.307em solid #feca00;
+}
 body
 {
     font-family: "Hero New light", sans-serif;

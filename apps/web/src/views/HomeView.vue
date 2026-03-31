@@ -18,26 +18,26 @@
             </p>
         </div>
         <div class="flex justify-center mt-20 mb-20">
-            <h2 class="title fancy-title2 text-[#f08360]">
+            <!-- <h2 class="title fancy-title2 text-[#f08360]">
                 Aangesloten begraafplaatsen
-            </h2>
+            </h2> -->
         </div>
         <div id="indicators-carousel" class="relative w-full" data-carousel="slide" data-carousel-interval="3000">
 
             <div class="relative h-60 w-2/4 mx-auto overflow-hidden rounded-lg">
 
                 <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item="active">
-                    <img src="public/images/cemeteries/bergklooster.png"
+                    <img src="/images/cemeteries/bergklooster.png"
                         class="w-full h-full object-cover object-center">
                 </div>
 
                 <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item>
-                    <img src="/apps/web/public/images/cemeteries/bergklooster.png">
+                    <img src="/images/cemeteries/bergklooster.png">
                         class="w-full h-full object-cover object-center">
                 </div>
 
                 <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item>
-                    <img src="/apps/web/public/images/cemeteries/kranenburg.webp"
+                    <img src="/images/cemeteries/kranenburg.webp"
                         class="w-full h-full object-cover object-center">
                 </div>
 
