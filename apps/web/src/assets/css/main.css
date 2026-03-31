@@ -1,14 +1,14 @@
-@import "tailwindcss";
-
 .title {
     font-size: 28pt;
     color: #0d475a;
     display: block;
     position: relative;
-    width: fit-content;
+    width: min-content;
     text-align: center;
+    z-index: 1;
     font-family: "Hero New bold", sans-serif;
 }
+
 
 .title:after {
     content: "";
@@ -28,4 +28,11 @@ body
     line-height: 1.6;                   /* 13.33px */
     color: #0d475a;
 }
+
+@media (min-width: 350px) {
+    .title {
+        width: fit-content;
+    }
+}
+
 

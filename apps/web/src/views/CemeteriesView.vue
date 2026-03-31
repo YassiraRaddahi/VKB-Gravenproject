@@ -1,6 +1,6 @@
 <template>
-    <div class="flex justify-center mt-10 mb-20">
-      <h2 class="title w-min min-[600px]:w-fit">
+    <div class="d-flex justify-center mt-10 mb-20">
+      <h2 class="title">
         Lijst met begraafplaatsen
       </h2>
     </div>
