@@ -17,45 +17,71 @@
                 Sed tempus commodo accumsan. Ut condimentum nisl ut sagittis finibus.
             </p>
         </div>
-        <div class="flex justify-center mt-20 mb-20">
-            <!-- <h2 class="title fancy-title2 text-[#f08360]">
-                Aangesloten begraafplaatsen
-            </h2> -->
+       
+        <div id="carousel">
+            <v-container class="max-w-6xl mx-auto mt-20">
+                <v-carousel height="400px" cycle interval="2500" show-arrows="hover" hide-delimiter-background>
+                    <v-carousel-item
+                    v-for="(slide, i) in slides"
+                    :key="i"
+                    >
+                        <v-img :src="slide.src" cover class=" rounded-xl"></v-img>
+                    </v-carousel-item>
+                </v-carousel>
+            </v-container>
         </div>
-        <div id="indicators-carousel" class="relative w-full" data-carousel="slide" data-carousel-interval="3000">
-
-            <div class="relative h-60 w-2/4 mx-auto overflow-hidden rounded-lg">
-
-                <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item="active">
-                    <img src="/images/cemeteries/bergklooster.png"
-                        class="w-full h-full object-cover object-center">
-                </div>
-
-                <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item>
-                    <img src="/images/cemeteries/bergklooster.png">
-                        class="w-full h-full object-cover object-center">
-                </div>
-
-                <div class="hidden duration-700 ease-in-out absolute inset-0" data-carousel-item>
-                    <img src="/images/cemeteries/kranenburg.webp"
-                        class="w-full h-full object-cover object-center">
-                </div>
-
-            </div>
-        </div>
-
         <div class="flex justify-center mt-20 mb-20">
             <button class="bg-orange-500 text-white px-8 py-4 rounded-full text-lg hover:bg-orange-600 transition"
                 onclick="window.location.href='login.html'">
                 Inloggen
             </button>
+            
         </div>
+              
 </template>
 
 <script setup>
-// logica, imports, props, reactive state
+const slides = [
+  { src: '/images/cemeteries/bergklooster.png' },
+  { src: '/images/cemeteries/het_heilige_kruis.png' },
+  { src: '/images/cemeteries/kranenburg.webp' },
+  { src: '/images/cemeteries/meppelerstraatweg.png' },
+]
 </script>
 
 <style scoped>
-/* alleen voor deze component */
+.v-carousel :deep(.v-btn--icon) {
+  background-color: #bee1e0; 
+}
+.v-carousel :deep(img) {
+  width: 100%;
+  object-fit: cover;
+}
+.v-carousel :deep(.v-window__prev),
+.v-carousel :deep(.v-window__next) {
+  width: auto;
+    height: auto;
+  
+}
+
+.v-carousel :deep(.v-window__prev) {
+  left: 10px;   
+}
+
+.v-carousel :deep(.v-window__next) {
+  right: 10px;  
+}
+@media (max-width: 600px) {
+  .v-carousel {
+    max-width: 95%;
+  }
+
+  .v-carousel :deep(.v-window__prev) {
+    left: 12px;
+  }
+
+  .v-carousel :deep(.v-window__next) {
+    right: 12px;
+  }
+}
 </style>
