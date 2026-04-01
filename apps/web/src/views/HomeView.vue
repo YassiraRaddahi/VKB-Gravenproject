@@ -25,7 +25,7 @@
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" cover class=" rounded-xl"></v-img>
+                        <v-img :src="slide.src" cover height="100%"class=" rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>
@@ -50,20 +50,39 @@ const slides = [
 </script>
 
 <style scoped>
-.v-carousel :deep(.v-btn--icon) {
-  background-color: #bee1e0; 
+.v-carousel {
+  position: relative;
 }
+.v-carousel :deep(.v-btn--icon, .v-icon) {
+  background-color: #bee1e0; 
+  width:40px;
+  height:40px;
+  font-size: 20px;
+}
+.v-carousel :deep(.v-btn--icon:hover) {
+  background-color: #f08360; 
+}
+
 .v-carousel :deep(img) {
   width: 100%;
   object-fit: cover;
 }
+.v-carousel :deep(.v-carousel__controls__item) {
+  width: 20px;
+  height: 20px;
+}
+.v-carousel :deep(.v-carousel__controls__item .v-icon) {
+  display: none;
+}
 .v-carousel :deep(.v-window__prev),
 .v-carousel :deep(.v-window__next) {
-  width: auto;
-    height: auto;
-  
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
-
+.v-image {
+  height: max-content;
+}
 .v-carousel :deep(.v-window__prev) {
   left: 10px;   
 }
@@ -75,13 +94,27 @@ const slides = [
   .v-carousel {
     max-width: 95%;
   }
-
+  .v-image {
+    height: 250px;
+  }
   .v-carousel :deep(.v-window__prev) {
     left: 12px;
   }
 
   .v-carousel :deep(.v-window__next) {
     right: 12px;
+  }
+    .v-carousel :deep(.v-btn--icon) {
+    width: 32px;
+    height: 32px;
+  }
+
+  .v-carousel :deep(.v-btn--icon .v-icon) {
+    font-size: 16px;
+  }
+   .v-carousel :deep(.v-carousel__controls__item) {
+    width: 15px;
+    height: 15px;
   }
 }
 </style>
