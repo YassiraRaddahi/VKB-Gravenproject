@@ -1,13 +1,13 @@
-@import "tailwindcss";
 
 .title {
     font-size: 28pt;
     color: #0d475a;
     display: block;
     position: relative;
-    width: fit-content;
     text-align: center;
     font-family: "Hero New bold", sans-serif;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .title:after {
