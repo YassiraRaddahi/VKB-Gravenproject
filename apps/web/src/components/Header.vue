@@ -42,7 +42,7 @@ import axios from 'axios'
 
 const user = ref({})
 
-const loggedIn = ref(false)
+const loggedIn = ref(true)
 
 
 const url = 'http://localhost:3001/api/login'
