@@ -1,12 +1,12 @@
 <template>
-  <div class="flex justify-center mt-10 mb-20">
+  <div class="d-flex justify-center mt-10 mb-20">
             <h2 class="title">
-                Nederlands Kerkhof
+                Dutch Cemetery Manager
             </h2>
         </div>
 
-        <div class="content">
-            <p class="max-w-2xl mx-auto text-center">
+        <div>
+            <p class="home-text mx-auto text-center">
                 Donec augue justo, dapibus porttitor sem sit amet, elementum vestibulum leo. Phasellus eget justo in
                 magna pulvinar dictum. Sed tempus sit amet ante eget pulvinar. Ut dictum diam nec quam mattis aliquam.
                 Morbi et porttitor justo. Praesent nisi ante, faucibus eu dui et, sagittis posuere odio. Nulla euismod
@@ -19,25 +19,17 @@
         </div>
        
         <div id="carousel">
-            <v-container class="max-w-6xl mx-auto mt-20">
+            <v-container class="carousel-container mt-20">
                 <v-carousel height="400px" cycle interval="2500" show-arrows="hover" hide-delimiter-background>
                     <v-carousel-item
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" cover height="100%"class=" rounded-xl"></v-img>
+                        <v-img :src="slide.src" cover height="100%"class="rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>
         </div>
-        <div class="flex justify-center mt-20 mb-20">
-            <button class="bg-orange-500 text-white px-8 py-4 rounded-full text-lg hover:bg-orange-600 transition"
-                onclick="window.location.href='login.html'">
-                Inloggen
-            </button>
-            
-        </div>
-              
 </template>
 
 <script setup>
@@ -50,6 +42,14 @@ const slides = [
 </script>
 
 <style scoped>
+.home-text {
+  max-width: 672px;
+}
+
+.carousel-container {
+  max-width: 1152px;
+}
+
 .v-carousel {
   position: relative;
 }
