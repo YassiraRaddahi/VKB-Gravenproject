@@ -10,18 +10,18 @@
       <v-form v-model="valid">
         <v-container>
           <v-row>
-            <v-col cols="12" >
+            <v-col cols="12">
               <v-text-field v-model="user.first_name" :counter="10" :rules="nameRules" label="Voornaam"
                 required></v-text-field>
             </v-col>
-</v-row>
-<v-row>
-            <v-col cols="12" >
+          </v-row>
+          <v-row>
+            <v-col cols="12">
               <v-text-field v-model="user.last_name" :counter="10" :rules="nameRules" label="Achternaam"
                 required></v-text-field>
             </v-col>
-</v-row>
-            <v-row>
+          </v-row>
+          <v-row>
             <v-col cols="12">
               <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
             </v-col>

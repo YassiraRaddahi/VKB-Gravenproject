@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- <div class="min-h-screen flex flex-col container mx-auto px-10 md:px-20 pt-10"> -->
-    <div class="h-screen d-flex flex-column mx-auto px-10 px-md-20 pt-10">
+    <v-container class="h-screen d-flex flex-column mx-auto px-10 px-md-20 pt-10">
       <Header />
       
 
@@ -15,7 +15,7 @@
       </v-main>
 
       <Footer />
-    </div>
+    </v-container>
   </v-app>
 </template>
 
