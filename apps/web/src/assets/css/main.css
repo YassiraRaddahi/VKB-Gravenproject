@@ -22,6 +22,14 @@
 .title.fancy-title2::after {
     border-bottom: 0.307em solid #feca00;
 }
+
+html,
+body
+{
+    height: 100%;
+    margin: 0;
+}
+
 body
 {
     font-family: "Hero New light", sans-serif;
@@ -31,7 +39,7 @@ body
     color: #0d475a;
 }
 
-@media (min-width: 350px) {
+@media (min-width: 540px) {
     .title {
         width: fit-content;
     }
