@@ -1,8 +1,18 @@
 module.exports = function (app, conn_db) {
 
-    const argon2 = require('argon2');
+    const argon2 = require('argon2')
+    const jwt = require('jsonwebtoken')
+    const rateLimit = require('express-rate-limit')
 
-    app.post('/api/login', (req, res) => {
+    const loginLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minuten
+        max: 5,                    // max 5 pogingen
+        message: { error: 'Te veel pogingen, probeer het later opnieuw' },
+        standardHeaders: true,
+        legacyHeaders: false,
+    })
+   
+    app.post('/api/login', loginLimiter, (req, res) => {
         try {
 
             let email = req.body.email;
@@ -19,29 +29,31 @@ module.exports = function (app, conn_db) {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // If the email does not exist in the database return a generic error message
                 if (!rows || rows.length === 0) {
                     return res.status(401).json({ error: 'Invalid credentials' });
                 }
 
-
                 let user = rows[0];
 
-                // Check if the provided password matches the stored hash, otherwise return a generic error message
                 let password_correct = await argon2.verify(user.password_hash, password);
                 if (!password_correct) {
                     return res.status(401).send({ "error": "Invalid credentials" })
                 }
 
-                // If the credentials are correct, generate a token, store it in the database and send it in a response to the client
-                //.... 
+    
+                const token = jwt.sign(
+                    { email: user.email, role: user.role_name },
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1h' }
+                  )
 
-                // Examlple of a token
-                let token = "abc123";
-
+                  res.cookie('token', token, {
+                    httpOnly: true,      // JavaScript kan er niet bij
+                    secure: true,        // Alleen via HTTPS
+                    sameSite: 'strict',  // Bescherming tegen CSRF
+                    maxAge: 3600000      
+                })
                 res.send({
-                    "token": token,
-                    "expiresIn": 3600,
                     "user":
                     {
                         "first_name": user.first_name,

@@ -4,6 +4,7 @@ import Home from '../views/HomeView.vue'
 import Cemeteries from '../views/CemeteriesView.vue'
 import Graves from '../views/GravesView.vue'
 import CemeteryManagers from '../views/CemeteryManagersView.vue'
+import Login from '../views/LoginView.vue'
 
 
 const router = createRouter({
@@ -11,6 +12,7 @@ const router = createRouter({
   routes: [
     { path: '/', redirect: '/home' },
     { path: '/home', name: 'Home', component: Home },
+    { path: '/login', name: 'Home', component: Login },
     { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries },
     { path: '/graven/:cemetery_id', name: 'Graves', component: Graves },
     { path: '/beheerders', name: 'CemeteryManagers', component: CemeteryManagers }, 
