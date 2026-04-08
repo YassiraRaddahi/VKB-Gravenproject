@@ -4,7 +4,7 @@
     <!-- left side -->
 
     <v-btn :to="{ name: loggedIn ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
-      <img :src="logoUrl" height="70"/>
+      <img :src="logoUrl" alt="logo" height="70"/>
     </v-btn>
 
 
@@ -23,12 +23,20 @@
       <v-btn :to="{ name: 'Profile' }" color="#0d475a" class="text-decoration-none" v-ripple.center>
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
-          <v-avatar v-if="user.profile_picture_url" size="40">
-            <img :src="user.profile_picture_url" />
+          <v-avatar size="30">
+            <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" alt="profielfoto" cover>
+              <template #error>
+                <v-icon color="#0d475a" size="30">
+                  mdi-account
+                </v-icon>
+              </template>
+            </v-img>
+            
+            <v-icon v-else color="#0d475a" size="32">
+              mdi-account
+            </v-icon>
           </v-avatar>
-          <v-icon v-else color="#0d475a" size="32">
-            mdi-account
-          </v-icon>
+
           <span class="user-name">
             {{ user.first_name }} {{ user.last_name }}
           </span>
@@ -55,6 +63,9 @@ onMounted(() => {
   axios.post(url, {
     email: 'j.kempenaar@kerkrentmeester.nl',
     password: 'test123'
+
+    // email: 'liza2511liza@gmail.com',
+    // password: 'test123'
   })
     .then(response => {
       console.log(response)

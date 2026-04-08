@@ -1,7 +1,7 @@
 <template>
   <v-footer class="justify-center mt-10 mb-0 ">
     <span class="text-grey-darken-3">
-      &copy; 2026 Dutch cemetery manager. All rights reserved.
+      &copy; 2026 Dutch Cemetery Manager. All rights reserved.
     </span>
   </v-footer>
 
