@@ -4,15 +4,17 @@
       <Header />
 
       <v-main class="d-flex flex-column">
-        <!-- <v-container class="d-flex flex-1-1-0 flex-column mx-auto px-10 px-md-20 pt-10"> -->
-          <v-container class="h-screen d-flex flex-column">
-          <nav class="d-flex ga-6 mb-4">
+        <v-container class="d-flex flex-grow-1 flex-column pa-0 pt-10" fluid>
+
+          <nav class="d-flex ga-2 mb-4 justify-center flex-wrap">
             <router-link to="/" class="text-blue">Home</router-link>
             <router-link to="/begraafplaatsen" class="text-blue">Begraafplaatsen</router-link>
             <router-link to="/beheerders" class="text-blue">Beheerders</router-link>
           </nav>
 
-          <router-view />
+          <div class="flex-grow-1">
+            <router-view />
+          </div>
 
           <Footer />
         </v-container>

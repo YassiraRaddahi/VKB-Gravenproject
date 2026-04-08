@@ -1,8 +1,7 @@
 <template>
-  <v-footer class="justify-center mt-10 mb-0 ">
-    <span class="text-grey-darken-3">
-      &copy; 2026 Dutch Cemetery Manager. All rights reserved.
-    </span>
+  <v-footer class="justify-center flex-0-1-0 mt-10 mb-5 text-grey-darken-3 flex-column-445">
+      <span>&copy; 2026 Dutch Cemetery Manager.&nbsp;</span>
+      <span> All rights reserved.</span>
   </v-footer>
 
 </template>
@@ -12,9 +11,9 @@
 </script>
 
 <style scoped>
-.v-footer {
-  padding-top: 5rem;
-  margin-top: auto;
-  flex: 0 1 0;
+@media (max-width: 445px) {
+  .flex-column-445 {
+    flex-direction: column;
+  }
 }
 </style>

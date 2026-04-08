@@ -7,6 +7,8 @@
       <img :src="logoUrl" alt="logo" height="70"/>
     </v-btn>
 
+    <v-spacer/>
+
 
     <!-- right side -->
     <v-spacer />

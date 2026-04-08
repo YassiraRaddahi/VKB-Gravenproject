@@ -16,7 +16,7 @@ const router = createRouter({
   routes: [
     { path: '/', redirect: '/home' },
     { path: '/home', name: 'Home', component: Home },
-    { path: '/login', name: 'Login', component: LoginView }
+    { path: '/login', name: 'Login', component: LoginView },
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
     { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries },
     { path: '/graven/:cemetery_id', name: 'Graves', component: Graves },
