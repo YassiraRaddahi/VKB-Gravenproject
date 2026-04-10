@@ -1,9 +1,10 @@
 <template>
   <v-app>
-    <v-container class="h-screen d-flex flex-column mx-auto px-10 px-md-20 pt-10">
+    <v-container class="app-shell h-screen d-flex flex-column mx-auto px-4 px-md-10 pt-6">
       <Header />
 
       <v-main class="flex-1">
+        <Breadcrumbs />
         <router-view />
       </v-main>
 
@@ -15,4 +16,5 @@
 <script setup>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import Breadcrumbs from './components/Breadcrumbs.vue'
 </script>

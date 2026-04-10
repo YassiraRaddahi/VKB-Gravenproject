@@ -1,52 +1,85 @@
 <template>
+  <v-container fluid class="pa-0">
+    <v-row class="justify-center mt-10 mb-12">
+      <v-col cols="12" class="text-center">
+        <h2 class="title">Lijst met beheerders</h2>
+      </v-col>
+    </v-row>
+  </v-container>
+  <v-container fluid class="pa-2">
+    <v-row no-gutters class="d-flex align-center mb-6">
+      <v-col cols="12" md="6">
+        <v-text-field v-model="search" label="Zoek beheerder..." prepend-inner-icon="mdi-magnify" clearable outlined
+          dense color="primary" class="search-input"/>
+      </v-col>
+      <v-col cols="12" md="5" class="d-flex align-center justify-end">
+        <v-btn color="primary" dark class="ma-0" @click="addManager">
+          <v-icon left>mdi-plus</v-icon>
+          Toevoegen
+        </v-btn>
+      </v-col>
+    </v-row>
 
-    <div class="flex justify-center mt-10 mb-20 ">
-      <h2 class="title w-min min-[500px]:w-fit">
-        Lijst met beheerders
-      </h2>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-      <div v-for="cemeteryManager in cemeteryManagers" :key="cemeteryManager.id" class="flex flex-col items-center text-center gap-4">
-        <div class="h-40 w-40 mb-4">
-          <img :src="cemeteryManager.profile_picture_url" :alt="cemeteryManager.name">
-        </div>
-        <div class="flex gap-1">
-          <span v-for="header in headers">{{ cemeteryManager[header.field] }} </span>
-        </div>
-      </div>
-    </div>
+    <v-row dense>
+      <v-col v-for="cemeteryManager in filteredManagers" :key="cemeteryManager.id" cols="12" sm="6" md="4" lg="3" class="d-flex align-stretch">
+        <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
+          <v-card-text class="text-center d-flex flex-column justify-center align-center">
+            <v-avatar size="100" class="mb-8" color="grey lighten-3">
+              <v-img :src="cemeteryManager.profile_picture_url" />
+            </v-avatar>
+
+            <div class="text-subtitle-1 font-weight-medium">
+              {{ cemeteryManager.first_name }} {{ cemeteryManager.infix }} {{ cemeteryManager.last_name }}
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
-
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 
-let url = "http://localhost:3001/api/cemetery-managers"
-
+let url = 'http://localhost:3001/api/cemetery-managers'
 
 const cemeteryManagers = ref([])
-const headers = [
-  { field: "first_name" },
-  { field: "infix" },
-  { field: "last_name" },
-  // { field: "email" },
-  // { field: "phone_number" },
-]
+const search = ref('')
+//property voor gefilterde beheerders
+const filteredManagers = computed(() => {
+  const query = search.value.toLowerCase().trim()
+  if (!query) return cemeteryManagers.value
+  return cemeteryManagers.value.filter(m => {
+    const fullName = `${m.first_name} ${m.infix ?? ''} ${m.last_name}`.toLowerCase()
+    return fullName.includes(query)
+  })
+})
 
+function addManager() {
+  alert('Toevoegen beheerder knop geklikt (functie is nog niet gemaakt)')
+}
 
 onMounted(() => {
-
   axios.get(url)
     .then(response => {
       cemeteryManagers.value = response.data['cemetery-managers']
     })
     .catch(error => {
-      console.error("Fout bij ophalen beheerders:", error)
+      console.error('Fout bij ophalen beheerders:', error)
     })
 })
 </script>
 
 <style scoped>
-/* alleen voor deze component */
+.manager-card {
+  min-height: 250px;
+  width: 350px;
+}
+
+.manager-card .v-avatar {
+  margin: 10px;
+
+}
+
 </style>

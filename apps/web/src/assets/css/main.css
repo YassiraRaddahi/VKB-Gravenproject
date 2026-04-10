@@ -1,31 +1,63 @@
 
+* {
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Hero New light", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #0d475a;
+  background: #f8fafb;
+}
+
+.app-shell {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .title {
-    font-size: 28pt;
-    color: #0d475a;
-    display: block;
-    position: relative;
-    text-align: center;
-    font-family: "Hero New bold", sans-serif;
-    max-width: 400px;
-    margin: 0 auto;
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: bold;
+  color: #164653;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+  z-index: 1;
 }
 
 .title:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 0.2em;
-    left: -0.25em;
-    right: 0;
-    border-bottom: 0.307em solid #bee1e0;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  top: -0.25em;
+  bottom: 0;
+  right: -5px;
+  left: -5px;
+  border-bottom: calc(clamp(28px, 5vw, 80px) / 4) solid #bee1e0;
 }
 
-body
-{
-    font-family: "Hero New light", sans-serif;
-    font-weight: 300;                     /* Light */
-    font-size: 16px;                     /* 11.33px */
-    line-height: 1.6;                   /* 13.33px */
-    color: #0d475a;
+img,
+.v-img__image {
+  max-width: 100%;
+  height: auto;
 }
 
+@media (max-width: 600px) {
+  .app-shell {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+.search-input {
+  max-width: 450px;
+}
