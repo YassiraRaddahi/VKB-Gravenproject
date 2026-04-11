@@ -97,6 +97,24 @@
                         required></v-text-field>
                     </v-col>
                   </v-row>
+                  <v-row v-if="user.role === 'rechthebbende'">
+                    <v-col cols="12">
+                      <v-text-field v-model="user.address" :rules="adressRules" label="Adres"
+                        required></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="user.role === 'rechthebbende'">
+                    <v-col cols="12">
+                      <v-text-field v-model="user.zip_code" :rules="zipcodeRules" label="Postcode"
+                        required></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="user.role === 'rechthebbende'">
+                    <v-col cols="12">
+                      <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats"
+                        required></v-text-field>
+                    </v-col>
+                  </v-row>
                   <v-row>
                     <v-col cols="12">
                       <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
