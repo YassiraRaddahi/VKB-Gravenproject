@@ -1,15 +1,21 @@
 <template>
   <v-app>
-    <v-container class="app-shell h-screen d-flex flex-column mx-auto px-4 px-md-10 pt-6">
+    <v-layout>
       <Header />
 
-      <v-main class="flex-1">
-        <Breadcrumbs />
-        <router-view />
-      </v-main>
+      <v-main class="d-flex flex-column">
+        <v-container class="d-flex flex-grow-1 flex-column pa-0 pt-10" fluid>
 
-      <Footer />
-    </v-container>
+          <div class="flex-grow-1">
+            <Breadcrumbs />
+            <router-view />
+          </div>
+
+          <Footer />
+        </v-container>
+
+      </v-main>
+    </v-layout>
   </v-app>
 </template>
 

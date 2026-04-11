@@ -1,10 +1,10 @@
-
 * {
   box-sizing: border-box;
 }
 
 html, body, #app {
   min-height: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -24,13 +24,14 @@ body {
 }
 
 .title {
-  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-  font-weight: bold;
-  color: #164653;
-  position: relative;
-  display: inline-block;
-  padding-bottom: 6px;
-  z-index: 1;
+    font-size: 28pt;
+    color: #0d475a;
+    display: block;
+    position: relative;
+    width: min-content;
+    text-align: center;
+    z-index: 1;
+    font-family: "Hero New bold", sans-serif;
 }
 
 .title:after {
@@ -44,6 +45,10 @@ body {
   left: -5px;
   border-bottom: calc(clamp(28px, 5vw, 80px) / 4) solid #bee1e0;
 }
+.title.fancy-title2::after {
+    border-bottom: 0.307em solid #feca00;
+}
+
 
 img,
 .v-img__image {
@@ -65,3 +70,11 @@ img,
 .bg-blue{
   background-color: #164653;
 }
+
+@media (min-width: 540px) {
+    .title {
+        width: fit-content;
+    }
+}
+
+
