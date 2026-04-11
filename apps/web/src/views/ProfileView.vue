@@ -38,6 +38,15 @@
     <!-- Card -->
     <v-col cols="12" lg="10" class="py-6 pa-lg-6">
 
+      <v-row class="badge-container">
+        <v-col class="d-flex justify-end mb-2">
+          <v-chip color="#feca00" class="px-4 py-2 btn-text-color" size="large" variant="flat">
+            U bent een {{ user.role }}
+          </v-chip>
+        </v-col>
+      </v-row>
+
+
       <v-card color="#f08360" class="py-6 profile-card">
 
         <v-card-text class="px-0 px-md-4">
@@ -63,7 +72,7 @@
 
               <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center>
                 Foto Uploaden
-              </v-btn> 
+              </v-btn>
 
             </v-col>
 
@@ -79,8 +88,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"
-                        ></v-text-field>
+                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -94,14 +102,10 @@
                       <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
                     </v-col>
                   </v-row>
-                   <v-row>
+                  <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.phone_number" :rules="phoneRules" label="Telefoonnummer" ></v-text-field>
-                    </v-col>
-                  </v-row>
-                   <v-row>
-                    <v-col cols="12">
-                      <v-text-field v-model="user.role" label="Rol" readonly></v-text-field>
+                      <v-text-field v-model="user.phone_number" :rules="phoneRules"
+                        label="Telefoonnummer"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -162,6 +166,12 @@ onMounted(() => {
 
 <style scoped>
 /* ===== PROFILE CONTENT ===== */
+
+.badge-container {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
 
 .profile-card {
   max-width: 900px;
@@ -235,10 +245,13 @@ onMounted(() => {
 
   .profile-card {
     max-width: 100%;
-    width: 100%;
-    margin: 0;
     border-radius: 0px;
   }
+
+  .badge-container {
+    max-width: 100%;
+    padding: 0 16px;
+}
 
 }
 </style>
