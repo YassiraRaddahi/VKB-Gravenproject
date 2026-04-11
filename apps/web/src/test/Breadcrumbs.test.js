@@ -95,7 +95,7 @@ describe('Breadcrumbs Logic', () => {
     it('moet lege breadcrumbs retourneren voor onbekende route', () => {
       const breadcrumbs = generateBreadcrumbs('UnknownRoute')
       // Unknown routes get a default breadcrumb with the route name
-      expect(breadcrumbs).toHaveLength(2) // Dashboard + UnknownRoute
+      expect(breadcrumbs).toHaveLength(2) 
       expect(breadcrumbs[0].text).toBe('Dashboard')
       expect(breadcrumbs[1].text).toBe('UnknownRoute')
     })

@@ -49,7 +49,6 @@ body {
 img,
 .v-img__image {
   max-width: 100%;
-  height: auto;
 }
 
 @media (max-width: 600px) {
@@ -60,4 +59,10 @@ img,
 }
 .search-input {
   max-width: 450px;
+}
+.bg-primary{
+  background-color: #ea5a0b;
+}
+.bg-blue{
+  background-color: #164653;
 }

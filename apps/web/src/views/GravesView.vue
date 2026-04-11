@@ -18,7 +18,7 @@
           class="filter-select" />
       </v-col>
       <v-col cols="12" md="5" class="d-flex justify-end">
-        <v-btn color="primary" dark class="ma-0" @click="addCemetery">
+        <v-btn color="primary" dark class="ma-0" @click="addCemetery" >
           <v-icon left>mdi-plus</v-icon>
           Toevoegen
         </v-btn>
@@ -100,6 +100,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 .grave-image {
   width: 100%;
   height: 220px;

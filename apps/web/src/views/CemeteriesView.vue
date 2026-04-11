@@ -26,7 +26,7 @@
           class="filter-select" />
       </v-col>
 
-      <v-col cols="12" md="5" class="d-flex align-center justify-end">
+      <v-col cols="12" md="3" class="d-flex align-center justify-end">
         <v-btn color="primary" dark class="ma-0" @click="addCemetery">
           <v-icon left>mdi-plus</v-icon>
           Toevoegen
@@ -42,8 +42,13 @@
           class="text-decoration-none w-100 d-flex full-height">
           <v-card class="cemetery-card d-flex flex-column ">
 
-            <v-img :src="cemetery.image_url" height="200" class="white--text align-end">
-            </v-img>
+            <div class="image-wrapper">
+  <v-img
+    :src="cemetery.image_url"
+    cover
+    class="image-fill"
+  />
+</div>
 
             <v-card-text class="cemetery-card-text text-center">
               <div class="text-subtitle-1 font-weight-bold mb-2">
@@ -154,13 +159,6 @@ v-field {
   min-height: 450px;
 }
 
-.cemetery-image {
-  width: 100%;
-  height: 200px;
-  display: block;
-  object-fit: cover;
-}
-
 .cemetery-card-text {
   flex: 1 1 auto;
   display: flex;
@@ -195,5 +193,15 @@ v-field {
   display: block;
   font-size: 0.95rem;
   color: #2f4f6d;
+}
+.image-wrapper {
+  width: 100%;
+  height: 200px; /* harde vaste hoogte */
+  overflow: hidden;
+}
+
+.image-fill {
+  width: 100%;
+  height: 100%;
 }
 </style>
