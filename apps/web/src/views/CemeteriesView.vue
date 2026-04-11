@@ -43,12 +43,8 @@
           <v-card class="cemetery-card d-flex flex-column ">
 
             <div class="image-wrapper">
-  <v-img
-    :src="cemetery.image_url"
-    cover
-    class="image-fill"
-  />
-</div>
+              <v-img :src="cemetery.image_url" cover class="image-fill" />
+            </div>
 
             <v-card-text class="cemetery-card-text text-center">
               <div class="text-subtitle-1 font-weight-bold mb-2">
@@ -90,6 +86,7 @@ const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
 const url = 'http://localhost:3001/api/cemeteries'
+
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
   const managers = new Map()
@@ -104,6 +101,7 @@ const managerOptions = computed(() => {
   })
   return Array.from(managers.values())
 })
+
 // Dynamisch unieke steden verzamelen voor filteropties
 const cityOptions = computed(() => {
   const cities = new Set()
@@ -114,6 +112,7 @@ const cityOptions = computed(() => {
     .sort()
     .map(city => ({ title: city, value: city }))
 })
+
 // Filter logica
 const filteredCemeteries = computed(() => {
   let result = cemeteries.value
@@ -125,6 +124,7 @@ const filteredCemeteries = computed(() => {
       cemetery.cemetery_managers?.some(manager => manager.id === managerFilter.value)
     )
   }
+
   // Filteren op stad
   if (cityFilter.value) {
     result = result.filter(cemetery => cemetery.city === cityFilter.value)
@@ -132,9 +132,10 @@ const filteredCemeteries = computed(() => {
 
   return result
 })
+
 //knop tovoegen 
 function addCemetery() {
-  alert('Toevoegen begraafplaats knop geklikt (Helaas functie is nog niet gemaakt)')
+  alert('Toevoegen begraafplaats knop geklikt (Helaas is de functie nog niet gemaakt)')
 }
 
 onMounted(() => {
@@ -148,6 +149,7 @@ onMounted(() => {
 v-field {
   max-width: 500px;
 }
+
 .full-height {
   height: 100%;
 }
@@ -194,9 +196,11 @@ v-field {
   font-size: 0.95rem;
   color: #2f4f6d;
 }
+
 .image-wrapper {
   width: 100%;
-  height: 200px; /* harde vaste hoogte */
+  height: 200px;
+  /* harde vaste hoogte */
   overflow: hidden;
 }
 
