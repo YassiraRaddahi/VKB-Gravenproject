@@ -8,7 +8,7 @@ module.exports = function (app, conn_db) {
             let email = req.body.email;
             let password = req.body.password;
 
-            let sql = `SELECT users.first_name, users.last_name, users.email, users.profile_picture_url, users.password_hash, roles.name AS role_name
+            let sql = `SELECT users.first_name, users.last_name, users.email, users.phone_number, users.profile_picture_url, users.password_hash, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -48,6 +48,7 @@ module.exports = function (app, conn_db) {
                         "infix": user.infix,
                         "last_name": user.last_name,
                         "email": user.email,
+                        "phone_number": user.phone_number,
                         "profile_picture_url": user.profile_picture_url,
                         "role": user.role_name
 

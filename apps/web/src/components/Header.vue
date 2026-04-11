@@ -39,7 +39,7 @@
             </v-icon>
           </v-avatar>
 
-          <span class="user-name">
+          <span class="user-name d-none d-sm-block" >
             {{ user.first_name }} {{ user.last_name }}
           </span>
         </div>

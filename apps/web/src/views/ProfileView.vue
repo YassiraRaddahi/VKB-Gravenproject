@@ -5,101 +5,121 @@
     </h2>
   </div>
 
-    <v-row>
-      <!-- Sidebar -->
-      <v-col cols="12" lg="2" class="sidebar">
-        <div class="sidebar-inner d-flex flex-column justify-space-between">
 
-          <!-- Boven -->
-          <div>
-            <v-list bg-color="transparent" class="pa-0">
-              <v-list-item class="sidebar-link" :class="{ activeLink: $route.path === '/profiel' }" to="/profiel" link>
-                <v-list-item-title>Gegevens</v-list-item-title>
-              </v-list-item>
+  <v-row>
+    <!-- Sidebar -->
+    <v-col cols="12" lg="2" class="sidebar">
+      <div class="sidebar-inner d-flex flex-column justify-space-between">
 
-              <v-list-item class="sidebar-link" :class="{ activeLink: $route.path === '/profiel/beveiliging' }"
-                to="/profiel/beveiliging" link>
-                <v-list-item-title>Beveiliging</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </div>
-
-          <!-- Onder -->
-          <div class="logout-wrapper">
-            <v-list-item class="logout-link" @click="logout">
-              <v-list-item-title>Log uit</v-list-item-title>
+        <!-- Boven -->
+        <div>
+          <v-list bg-color="transparent" class="pa-0">
+            <v-list-item class="sidebar-link" :class="{ activeLink: $route.path === '/profiel' }" to="/profiel" link>
+              <v-list-item-title>Gegevens</v-list-item-title>
             </v-list-item>
-          </div>
 
+            <v-list-item class="sidebar-link" :class="{ activeLink: $route.path === '/profiel/beveiliging' }"
+              to="/profiel/beveiliging" link>
+              <v-list-item-title>Beveiliging</v-list-item-title>
+            </v-list-item>
+          </v-list>
         </div>
-      </v-col>
-      
-      <!-- Card -->
-      <v-col cols="12" lg="10" class="pa-6">
 
-        <v-card color="#f08360" class="pa-6 profile-card">
+        <!-- Onder -->
+        <div class="logout-wrapper">
+          <v-list-item class="logout-link" @click="logout">
+            <v-list-item-title>Log uit</v-list-item-title>
+          </v-list-item>
+        </div>
 
-          <v-card-text>
-            <v-row align="start" no-gutters>
+      </div>
+    </v-col>
 
-              <v-col cols="12" md="4" class="d-flex flex-column align-center justify-center ga-4">
-                <v-avatar size="175">
-                  <!-- Profile picture or fallback icon -->
-                  <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" alt="profielfoto" cover>
-                    <template #error>
-                      <v-icon color="#0d475a" size="200">
-                        mdi-account
-                      </v-icon>
-                    </template>
-                  </v-img>
+    <!-- Card -->
+    <v-col cols="12" lg="10" class="py-6 pa-lg-6">
 
-                  <v-icon v-else color="#0d475a" size="200">
-                    mdi-account
-                  </v-icon>
-                </v-avatar>
+      <v-card color="#f08360" class="py-6 profile-card">
 
-                <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center>
-                  Foto Uploaden
-                </v-btn>
-              </v-col>
+        <v-card-text class="px-0 px-md-4">
+          <v-row>
+
+            <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
+              <v-avatar :size="mdAndUp ? 200 : 150">
+                <!-- Profile picture or fallback icon -->
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" alt="profielfoto" cover>
+                  <template #error>
+                    <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
+                      mdi-account
+                    </v-icon>
+                  </template>
+                </v-img>
+
+                <v-icon v-else color="#0d475a" :size="mdAndUp ? 200 : 150">
+                  mdi-account
+                </v-icon>
+              </v-avatar>
+
+              <!-- <v-file-upload-item v-model='file' accept="image/*" @change="upload"></v-file-upload-item> -->
+
+              <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center>
+                Foto Uploaden
+              </v-btn> 
+
+            </v-col>
 
 
-              <v-col cols="12" md="8">
-                <v-form v-model="valid">
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field v-model="user.first_name" :rules="nameRules" label="Voornaam"
-                          required></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field v-model="user.last_name" :rules="nameRules" label="Achternaam"
-                          required></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12">
-                        <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-form>
-              </v-col>
-            </v-row>
-          </v-card-text>
+            <v-col cols="12" md="8">
+              <v-form v-model="valid">
+                <v-container class="px-0 px-md-4">
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.first_name" :rules="nameRules" label="Voornaam"
+                        required></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"
+                        ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.last_name" :rules="nameRules" label="Achternaam"
+                        required></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
+                    </v-col>
+                  </v-row>
+                   <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.phone_number" :rules="phoneRules" label="Telefoonnummer" ></v-text-field>
+                    </v-col>
+                  </v-row>
+                   <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="user.role" label="Rol" readonly></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
+            </v-col>
+          </v-row>
+        </v-card-text>
 
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="#0d475a" variant="elevated" v-ripple.center>
-              Opslaan
-            </v-btn>
-          </v-card-actions>
+        <v-card-actions class="pa-4 px-md-8">
+          <v-spacer />
+          <v-btn color="#0d475a" variant="elevated" v-ripple.center>
+            Opslaan
+          </v-btn>
+        </v-card-actions>
 
-        </v-card>
-      </v-col>
-    </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
 
 </template>
 
@@ -107,6 +127,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useDisplay } from 'vuetify'
+
+const { mdAndUp } = useDisplay()
 
 const activeTab = ref('gegevens')
 
@@ -141,7 +164,7 @@ onMounted(() => {
 /* ===== PROFILE CONTENT ===== */
 
 .profile-card {
-   max-width: 900px;
+  max-width: 900px;
   width: 100%;
   margin: 20px auto;
   border-radius: 10px;
@@ -195,8 +218,8 @@ onMounted(() => {
 }
 
 /* ===== MOBILE ===== */
- @media (max-width: 1144px) {
- .sidebar {
+@media (max-width: 1144px) {
+  .sidebar {
     /* width: 100%; */
     min-height: auto;
     border-right: none;
@@ -208,16 +231,14 @@ onMounted(() => {
   .logout-link .v-list-item-title {
     font-size: 18px;
   }
-    
- 
+
+
   .profile-card {
     max-width: 100%;
     width: 100%;
     margin: 0;
-    border-radius: 20px;
+    border-radius: 0px;
   }
 
-} 
-
-
+}
 </style>
