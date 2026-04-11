@@ -13,7 +13,18 @@ const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'light'
+    defaultTheme: 'light',
+    themes: {
+      light: {
+        colors: {
+          darkBlue: '#0d475a',    // donkerblauw
+          orange: '#f08360',  // oranje
+          lightBlue: '#bee1e0',     // lichtblauw
+          yellow: '#feca00',     // geel
+          darkOrange: '#ea5a0b',     // donker oranje
+        }
+      }
+    }
   }
 })
 

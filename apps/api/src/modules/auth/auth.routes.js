@@ -5,24 +5,41 @@ module.exports = function (app, conn_db) {
     const rateLimit = require('express-rate-limit')
 
     const loginLimiter = rateLimit({
-        windowMs: 15 * 60 * 1000, // 15 minuten
-        max: 5,                    // max 5 pogingen
+        windowMs: 15 * 60 * 1000,
+        max: 5,
         message: { error: 'Te veel pogingen, probeer het later opnieuw' },
         standardHeaders: true,
         legacyHeaders: false,
     })
-   
+
+    function verifyToken(req, res, next) {
+        const token = req.cookies?.token
+
+        if (!token) {
+            return res.status(401).json({ error: 'Niet ingelogd' })
+        }
+
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            req.user = decoded 
+            next()
+        } catch (err) {
+            return res.status(401).json({ error: 'Ongeldig of verlopen token' })
+        }
+    }
+
+    // ─── Login ───
     app.post('/api/login', loginLimiter, (req, res) => {
         try {
-
             let email = req.body.email;
             let password = req.body.password;
 
-            let sql = `SELECT users.first_name, users.last_name, users.email, users.password_hash, roles.name AS role_name
+            let sql = `SELECT users.id, users.first_name, users.last_name, users.email, users.password_hash, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE users.email = ?`;
+
             conn_db.query(sql, [email], async function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
@@ -37,30 +54,30 @@ module.exports = function (app, conn_db) {
 
                 let password_correct = await argon2.verify(user.password_hash, password);
                 if (!password_correct) {
-                    return res.status(401).send({ "error": "Invalid credentials" })
+                    return res.status(401).send({ error: "Invalid credentials" })
                 }
 
-    
                 const token = jwt.sign(
-                    { email: user.email, role: user.role_name },
+                    { id: user.id, email: user.email, role: user.role_name },
                     process.env.JWT_SECRET,
                     { expiresIn: '1h' }
-                  )
+                )
 
-                  res.cookie('token', token, {
-                    httpOnly: true,      // JavaScript kan er niet bij
-                    secure: true,        // Alleen via HTTPS
-                    sameSite: 'strict',  // Bescherming tegen CSRF
-                    maxAge: 3600000      
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 3600000 // 1 uur
                 })
+
                 res.send({
-                    "user":
-                    {
-                        "first_name": user.first_name,
-                        "infix": user.infix,
-                        "last_name": user.last_name,
-                        "email": user.email,
-                        "role": user.role_name
+                    user: {
+                        id: user.id,
+                        first_name: user.first_name,
+                        infix: user.infix,
+                        last_name: user.last_name,
+                        email: user.email,
+                        role: user.role_name
                     }
                 });
             })
@@ -68,8 +85,13 @@ module.exports = function (app, conn_db) {
             console.error("Error during login:", error);
             res.status(500).json({ error: 'Internal server error' });
         }
-
+        
     });
+
+    
+    app.get('/api/current-user', verifyToken, (req, res) => {
+        res.json({ user: req.user })
+    })
 
     app.post('/api/logout', (req, res) => {
 

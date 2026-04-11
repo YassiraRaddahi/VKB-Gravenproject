@@ -1,28 +1,58 @@
 <template>
+  <div class="d-flex justify-center mb-20">
+    <h2 class="titleLogin">
+      Login
+    </h2>
+  </div>
     <v-form @submit.prevent="submit">
 
       <v-alert v-if="loginError" type="error" class="mb-4" > {{ loginError }} </v-alert>
 
-      <v-text-field
-        v-model="state.email"
-        :error-messages="v$.email.$errors.map(e => e.$message)"
-        label="E-mail"
-        required
-        @blur="v$.email.$touch"
-      ></v-text-field>
-  
-      <v-text-field
-        v-model="state.password"
-        :error-messages="v$.password.$errors.map(e => e.$message)"
-        label="Wachtwoord"
-        type="password"
-        required
-        @blur="v$.password.$touch"
-      ></v-text-field>
-  
-      <v-btn class="me-4" type="submit" block>
-        Login
-      </v-btn>
+  <v-container class="fill-height">
+    <v-row justify="center" align="center">
+      <v-col cols="12" sm="8" md="5">
+
+        <v-card class="pa-8 rounded-xl bg-darkBlue">
+
+<v-text-field
+  v-model="state.email"
+  label="E-mailadres"
+  variant="solo"
+  bg-color="white"
+  color="darkBlue"
+  rounded="xl"
+  class="mb-4"
+></v-text-field>
+
+<v-text-field
+  v-model="state.password"
+  label="Wachtwoord"
+  type="password"
+  variant="solo"
+  bg-color="white"
+  color="darkBlue"
+  rounded="xl"
+  class="mb-4"
+></v-text-field>
+
+<v-row align="center">
+  <v-col>
+    <v-btn class="rounded-xl border-white text-darkBlue text-caption">
+      Wachtwoord vergeten
+    </v-btn>
+  </v-col>
+  <v-col cols="auto">
+    <v-btn type="submit" class="rounded-xl bg-white text-darkBlue">
+      Log in
+    </v-btn>
+  </v-col>
+</v-row>
+
+</v-card>
+
+      </v-col>
+    </v-row>
+  </v-container>
     </v-form>
   </template>
   
@@ -57,10 +87,10 @@ async function submit() {
   loginError.value = ''
 
   try {
-    const response = await axios.post('http://localhost:3001/api/login', {
-      email: state.email,
-      password: state.password,
-    })
+    const response = await axios.post('http://localhost:3001/api/login', 
+      {email: state.email, password: state.password,}, 
+    { withCredentials: true, }
+    )
 
     router.push('/dashboard')
 
