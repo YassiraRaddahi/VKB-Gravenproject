@@ -3,17 +3,17 @@
 
     <!-- left side -->
 
-    <v-btn :to="{ name: user?.value?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
-      <img :src="logoUrl" alt="logo" height="70"/>
+    <v-btn :to="{ name: user.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
+      <img :src="logoUrl" alt="logo" height="70" />
     </v-btn>
 
-    <v-spacer/>
+    <v-spacer />
 
 
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="user?.value?.id ? false : true">
+    <template v-if="user.id ? false : true">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
           Log In
@@ -33,13 +33,13 @@
                 </v-icon>
               </template>
             </v-img>
-            
+
             <v-icon v-else color="#0d475a" size="32">
               mdi-account
             </v-icon>
           </v-avatar>
 
-          <span class="user-name d-none d-sm-block" >
+          <span class="user-name d-none d-sm-block">
             {{ user.first_name }} {{ user.last_name }}
           </span>
         </div>
@@ -57,7 +57,7 @@ const logoUrl = '/images/logo/VKB_Logo.svg'
 
 const user = ref({})
 
-const url = 'http://localhost:3001/api/me'
+const url = 'http://localhost:3001/api/active-token'
 
 onMounted(() => {
   axios.get(url, {
@@ -85,6 +85,4 @@ onMounted(() => {
 .no-active {
   color: transparent !important;
 }
-
-
 </style>

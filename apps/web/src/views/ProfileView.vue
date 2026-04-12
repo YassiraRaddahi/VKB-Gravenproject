@@ -41,7 +41,7 @@
       <v-row class="badge-container">
         <v-col class="d-flex justify-end mb-2">
           <v-chip color="#feca00" class="px-4 py-2 btn-text-color" size="large" variant="flat">
-            U bent een {{ user.role }}
+            U bent een {{ user.role_name }}
           </v-chip>
         </v-col>
       </v-row>
@@ -99,8 +99,7 @@
                   </v-row>
                   <v-row v-if="user.role === 'rechthebbende'">
                     <v-col cols="12">
-                      <v-text-field v-model="user.address" :rules="adressRules" label="Adres"
-                        required></v-text-field>
+                      <v-text-field v-model="user.address" :rules="adressRules" label="Adres" required></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row v-if="user.role === 'rechthebbende'">
@@ -111,8 +110,7 @@
                   </v-row>
                   <v-row v-if="user.role === 'rechthebbende'">
                     <v-col cols="12">
-                      <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats"
-                        required></v-text-field>
+                      <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats" required></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -153,21 +151,13 @@ import { useDisplay } from 'vuetify'
 
 const { mdAndUp } = useDisplay()
 
-const activeTab = ref('gegevens')
+// const activeTab = ref('gegevens')
 
 const user = ref({})
 
-
-const url = 'http://localhost:3001/api/login'
-
 onMounted(() => {
-  axios.post(url, {
-    email: 'j.kempenaar@kerkrentmeester.nl',
-    password: 'test123'
-
-    // email: 'liza2511liza@gmail.com',
-    // password: 'test123'
-
+  axios.get('http://localhost:3001/api/active-token', {
+    withCredentials: true
   })
     .then(response => {
       console.log(response)
@@ -176,9 +166,8 @@ onMounted(() => {
     .catch(error => {
       console.error("Fout bij ophalen gebruikersgegevens:", error)
     })
-}
+})
 
-)
 
 </script>
 
@@ -269,7 +258,7 @@ onMounted(() => {
   .badge-container {
     max-width: 100%;
     padding: 0 16px;
-}
+  }
 
 }
 </style>
