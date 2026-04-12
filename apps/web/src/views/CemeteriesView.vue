@@ -176,6 +176,7 @@ v-field {
   min-height: 100px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 10px;
 }
 
