@@ -36,7 +36,7 @@
       </v-row>
 
       <!-- Cemetery cards -->
-      <v-row dense class="d-flex align-stretch">
+      <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
         <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
           <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
@@ -44,7 +44,7 @@
             <v-card class="cemetery-card d-flex flex-column ">
 
               <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :key="cemetery.image_url" cover class="image-fill" />
+                <v-img :src="cemetery.image_url" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
               </div>
 
               <v-card-text class="cemetery-card-text text-center">

@@ -34,11 +34,11 @@
         </v-col>
       </v-row>
 
-      <v-row dense>
+      <v-row dense :key="$route.fullPath">
         <v-col v-for="grave in filteredGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
           <v-card elevation="2" class="grave-card d-flex flex-column h-100">
-            <v-img :src="grave.image_url" :key="grave.image_url" :alt="grave.grave_number" height="220" cover class="grave-image" />
+            <v-img :src="grave.image_url" :key="grave.image_url + '-' + $route.fullPath" :alt="grave.grave_number" height="220" cover class="grave-image" />
             <v-card-text class="text-center d-flex flex-column justify-center">
               <div class="text-h6 font-weight-bold mb-1">{{ grave.grave_number }}</div>
               <div class="caption">Status: {{ grave.status }}</div>

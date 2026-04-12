@@ -18,14 +18,14 @@
             </p>
         </div>
        
-        <div id="carousel">
+        <div id="carousel" :key="$route.fullPath">
             <v-container class="carousel-container mt-20">
                 <v-carousel height="400px" cycle interval="2500" show-arrows="hover" hide-delimiter-background>
                     <v-carousel-item
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" :key="slide.src" cover height="100%"class="rounded-xl"></v-img>
+                        <v-img :src="slide.src" :key="slide.src + '-' + $route.fullPath" cover height="100%"class="rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>

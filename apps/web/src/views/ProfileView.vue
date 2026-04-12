@@ -24,12 +24,12 @@
       <v-card color="#f08360" class="py-6 profile-card">
 
         <v-card-text class="px-0 px-md-4">
-          <v-row>
+          <v-row :key="$route.fullPath">
 
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
