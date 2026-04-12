@@ -11,6 +11,8 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "axios": "^1.13.6",
     "vue": "^3.5.30",
     "vue-router": "^5.0.4",

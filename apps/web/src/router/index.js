@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import axios from "axios";
 
 import Home from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
+import Login from '../views/LoginView.vue'
 import Dashboard from '../views/DashboardView.vue'
 import Cemeteries from '../views/CemeteriesView.vue'
 import Graves from '../views/GravesView.vue'
@@ -9,22 +10,87 @@ import CemeteryManagers from '../views/CemeteryManagersView.vue'
 import Profile from '../views/ProfileView.vue'
 import Security from '../views/SecurityView.vue'
 
-
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', redirect: '/home' },
-    { path: '/home', name: 'Home', component: Home, meta: { showBreadcrumbs: false } },
-    { path: '/login', name: 'Login', component: LoginView, meta: { showBreadcrumbs: false } },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { showBreadcrumbs: false } },
-    { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries, meta: { showBreadcrumbs: true } },
-    { path: '/graven/:cemetery_id', name: 'Graves', component: Graves, meta: { showBreadcrumbs: true } },
-    { path: '/beheerders', name: 'CemeteryManagers', component: CemeteryManagers, meta: { showBreadcrumbs: true } }, 
-    { path: '/profiel', name: 'Profile', component: Profile, meta: { showBreadcrumbs: false } },
-    { path: '/profiel/beveiliging', name: 'Security', component: Security, meta: { showBreadcrumbs: false } }
-    
-  ]
-})
+    { path: "/", redirect: "/home" },
+    { path: "/home", 
+     name: "Home", 
+     component: Home,
+     meta: { showBreadcrumbs: false },
+    },
+    { path: "/login", 
+     name: "Login", 
+     component: Login,
+     meta: { showBreadcrumbs: false },
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: Dashboard,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: false },
+    },                        
+    {
+      path: "/begraafplaatsen",
+      name: "Cemeteries",
+      component: Cemeteries,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: true },
+    },
+    {
+      path: "/graven/:cemetery_id",
+      name: "Graves",
+      component: Graves,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: true },  
+    },
+    {
+      path: "/beheerders",
+      name: "CemeteryManagers",
+      component: CemeteryManagers,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: true },
+    },
+     {
+      path: "/profiel",
+      name: "Profile",
+      component: Profile,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: false },
+    },
+    {
+      path: "/profiel/beveiliging",
+      name: "Security",
+      component: Security,
+      meta: { requiresAuth: true },
+      meta: { showBreadcrumbs: false },
+    },                            
+  ],
+});
 
-export default router
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) {
+    try {
+      await axios.get("http://localhost:3001/api/me", {
+        withCredentials: true,
+      });
+      next();
+    } catch {
+      next("/login");
+    }
+  } else if (to.path === "/login") {
+    try {
+      await axios.get("http://localhost:3001/api/me", {
+        withCredentials: true,
+      });
+      next("/dashboard");
+    } catch {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

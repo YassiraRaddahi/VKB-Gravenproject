@@ -1,10 +1,36 @@
 module.exports = function (app, conn_db) {
 
-    const argon2 = require('argon2');
+    const argon2 = require('argon2')
+    const jwt = require('jsonwebtoken')
+    const rateLimit = require('express-rate-limit')
 
-    app.post('/api/login', (req, res) => {
+    const loginLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 5,
+        message: { error: 'Te veel pogingen, probeer het later opnieuw' },
+        standardHeaders: true,
+        legacyHeaders: false,
+    })
+
+    function verifyToken(req, res, next) {
+        const token = req.cookies?.token
+
+        if (!token) {
+            return res.status(401).json({ error: 'Niet ingelogd' })
+        }
+
         try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+            req.user = decoded 
+            next()
+        } catch (err) {
+            return res.status(401).json({ error: 'Ongeldig of verlopen token' })
+        }
+    }
 
+    // ─── Login ───
+    app.post('/api/login', loginLimiter, (req, res) => {
+        try {
             let email = req.body.email;
             let password = req.body.password;
 
@@ -13,47 +39,50 @@ module.exports = function (app, conn_db) {
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE users.email = ?`;
+
             conn_db.query(sql, [email], async function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // If the email does not exist in the database return a generic error message
                 if (!rows || rows.length === 0) {
                     return res.status(401).json({ error: 'Invalid credentials' });
                 }
 
-
                 let user = rows[0];
 
-                // Check if the provided password matches the stored hash, otherwise return a generic error message
                 let password_correct = await argon2.verify(user.password_hash, password);
                 if (!password_correct) {
-                    return res.status(401).send({ "error": "Invalid credentials" })
+                    return res.status(401).send({ error: "Invalid credentials" })
                 }
 
-                // If the credentials are correct, generate a token, store it in the database and send it in a response to the client
-                //.... 
+                const token = jwt.sign(
+                    { id: user.id, email: user.email, role: user.role_name },
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1h' }
+                )
 
-                // Examlple of a token
-                let token = "abc123";
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: 3600000 // 1 uur
+                })
 
                 res.send({
-                    "token": token,
-                    "expiresIn": 3600,
-                    "user":
-                    {
-                        "first_name": user.first_name,
-                        "infix": user.infix,
-                        "last_name": user.last_name,
-                        "address": user.address,
-                        "zip_code": user.zip_code,
-                        "city": user.city,
-                        "email": user.email,
-                        "phone_number": user.phone_number,
-                        "profile_picture_url": user.profile_picture_url,
-                        "role": user.role_name
+                    user: {
+                        id: user.id,
+                        first_name: user.first_name,
+                        infix: user.infix,
+                        last_name: user.last_name,
+                        address: user.address,
+                        zip_code: user.zip_code,
+                        city: user.city,
+                        email: user.email,
+                        phone_number: user.phone_number,
+                        profile_picture_url: user.profile_picture_url, 
+                        role: user.role_name
                     }
                 });
             })
@@ -61,8 +90,13 @@ module.exports = function (app, conn_db) {
             console.error("Error during login:", error);
             res.status(500).json({ error: 'Internal server error' });
         }
-
+        
     });
+
+    
+    app.get('/api/current-user', verifyToken, (req, res) => {
+        res.json({ user: req.user })
+    })
 
     app.post('/api/logout', (req, res) => {
 
