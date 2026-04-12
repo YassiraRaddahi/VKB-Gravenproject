@@ -3,7 +3,7 @@
 
     <!-- left side -->
 
-    <v-btn :to="{ name: user.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
+    <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
       <img :src="logoUrl" alt="logo" height="70" />
     </v-btn>
 
@@ -13,7 +13,7 @@
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="user.id ? false : true">
+    <template v-if="user?.id ? false : true">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
           Log In
@@ -50,29 +50,18 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
 
-const user = ref({})
-
-const url = 'http://localhost:3001/api/active-token'
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
 onMounted(() => {
-  axios.get(url, {
-    withCredentials: true
-  })
-    .then(response => {
-      console.log(response)
-      user.value = response.data.user
-    })
-    .catch(error => {
-      console.error("Fout bij ophalen gebruikersgegevens:", error)
-    })
-}
-
-)
+  userStore.fetchUser()
+})
 
 </script>
 

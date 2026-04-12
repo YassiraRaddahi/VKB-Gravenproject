@@ -145,27 +145,20 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { onMounted } from 'vue'
 import { useDisplay } from 'vuetify'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const { mdAndUp } = useDisplay()
 
 // const activeTab = ref('gegevens')
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
-const user = ref({})
 
 onMounted(() => {
-  axios.get('http://localhost:3001/api/active-token', {
-    withCredentials: true
-  })
-    .then(response => {
-      console.log(response)
-      user.value = response.data.user
-    })
-    .catch(error => {
-      console.error("Fout bij ophalen gebruikersgegevens:", error)
-    })
+  userStore.fetchUser()
 })
 
 

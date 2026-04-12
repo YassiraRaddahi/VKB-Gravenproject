@@ -36,19 +36,19 @@ const router = createRouter({
       path: "/begraafplaatsen",
       name: "Cemeteries",
       component: Cemeteries,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      meta: { requiresAuth: true, showBreadcrumbs: true },
     },
     {
       path: "/graven/:cemetery_id",
       name: "Graves",
       component: Graves,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      meta: { requiresAuth: true, showBreadcrumbs: true },
     },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
       component: CemeteryManagers,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      meta: { requiresAuth: true, showBreadcrumbs: true },
     },
     {
       path: "/profiel",

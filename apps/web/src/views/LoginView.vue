@@ -52,6 +52,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { email, minLength, required } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { useUserStore } from '@/stores/userStore'
 
 const router = useRouter()
 const loginError = ref('')
@@ -77,10 +78,15 @@ async function submit() {
   loginError.value = ''
 
   try {
+
+    const userStore = useUserStore()
+
     const response = await axios.post('http://localhost:3001/api/login',
       { email: state.email, password: state.password, },
       { withCredentials: true, }
     )
+
+    userStore.setUser(response.data.user)
 
     router.push('/dashboard')
 

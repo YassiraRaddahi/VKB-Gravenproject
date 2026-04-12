@@ -84,7 +84,7 @@ module.exports = function (app, conn_db) {
             email: user.email,
             phone_number: user.phone_number,
             profile_picture_url: user.profile_picture_url,
-            role: user.role_name,
+            role_name: user.role_name,
           },
         });
       });
