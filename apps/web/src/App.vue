@@ -1,17 +1,32 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col container mx-auto px-10 md:px-20 pt-10">
-    <Header />
+  <v-app>
+    <v-layout>
+      <Header />
 
-    <main class="flex-1">
-      <router-view />
-    </main>
+      <v-main class="d-flex flex-column">
+        <v-container class="d-flex flex-grow-1 flex-column pa-0 pt-10" fluid>
 
-    <Footer />
-  </div>
+          <div class="flex-grow-1">
+
+            <template v-if="$route.meta.showBreadcrumbs">
+              <div>
+                <Breadcrumbs />
+              </div>
+            </template>
+
+            <router-view />
+          </div>
+
+          <Footer />
+        </v-container>
+
+      </v-main>
+    </v-layout>
+  </v-app>
 </template>
-
 
 <script setup>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import Breadcrumbs from './components/Breadcrumbs.vue'
 </script>

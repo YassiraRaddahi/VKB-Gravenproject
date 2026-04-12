@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import './assets/css/main.css'
+import 'flowbite'
 import router from './router'
 import App from './App.vue'
 import '@mdi/font/css/materialdesignicons.css'
