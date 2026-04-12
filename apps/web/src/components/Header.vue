@@ -3,7 +3,7 @@
 
     <!-- left side -->
 
-    <v-btn :to="{ name: loggedIn ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
+    <v-btn :to="{ name: user?.value?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
       <img :src="logoUrl" alt="logo" height="70"/>
     </v-btn>
 
@@ -13,7 +13,7 @@
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="!loggedIn">
+    <template v-if="user?.value?.id ? false : true">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
           Log In
@@ -57,17 +57,11 @@ const logoUrl = '/images/logo/VKB_Logo.svg'
 
 const user = ref({})
 
-const loggedIn = ref(true)
-
-const url = 'http://localhost:3001/api/login'
+const url = 'http://localhost:3001/api/me'
 
 onMounted(() => {
-  axios.post(url, {
-    email: 'j.kempenaar@kerkrentmeester.nl',
-    password: 'test123'
-
-    // email: 'liza2511liza@gmail.com',
-    // password: 'test123'
+  axios.get(url, {
+    withCredentials: true
   })
     .then(response => {
       console.log(response)
