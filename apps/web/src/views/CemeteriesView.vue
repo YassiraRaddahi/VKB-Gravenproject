@@ -1,79 +1,82 @@
 <template>
-  <v-container fluid class="pa-0">
-    <v-row class="justify-center mt-10 mb-12">
-      <v-col cols="12" class="text-center">
-        <h2 class="title">Lijst met begraafplaatsen</h2>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-container fluid class="pa-0 list-page-container">
+    <v-container fluid class="pa-0">
+      <v-row>
+        <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
+          <h2 class="title">Lijst met begraafplaatsen</h2>
+        </v-col>
+      </v-row>
+    </v-container>
 
-  <v-container fluid class="pa-4">
+    <v-container fluid class="pa-4">
 
-    <!-- Filters -->
-    <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
-      <v-col cols="12" md="4">
-        <v-text-field v-model="search" label="Zoeken..." prepend-inner-icon="mdi-magnify" clearable outlined dense
-          color="primary" class="search-field" />
-      </v-col>
+      <!-- Filters -->
+      <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
+        <v-col cols="12" md="4">
+          <v-text-field v-model="search" label="Zoeken..." prepend-inner-icon="mdi-magnify" clearable outlined dense
+            color="primary" class="search-field" />
+        </v-col>
 
-      <v-col cols="12" md="2">
-        <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
-          color="primary" class="filter-select" />
-      </v-col>
+        <v-col cols="12" md="2">
+          <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
+            color="primary" class="filter-select" />
+        </v-col>
 
-      <v-col cols="12" md="2">
-        <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
-          class="filter-select" />
-      </v-col>
+        <v-col cols="12" md="2">
+          <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
+            class="filter-select" />
+        </v-col>
 
-      <v-col cols="12" md="3" class="d-flex align-center justify-end">
-        <v-btn color="primary" dark class="ma-0" @click="addCemetery">
-          <v-icon left>mdi-plus</v-icon>
-          Toevoegen
-        </v-btn>
-      </v-col>
-    </v-row>
+        <v-col cols="12" md="4" class="d-flex align-center justify-end">
+          <v-btn color="primary" dark class="ma-0" @click="addCemetery">
+            <v-icon left>mdi-plus</v-icon>
+            Toevoegen
+          </v-btn>
+        </v-col>
+      </v-row>
 
-    <!-- Cemetery cards -->
-    <v-row dense class="d-flex align-stretch">
-      <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
-        class="d-flex align-stretch">
-        <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
-          class="text-decoration-none w-100 d-flex full-height">
-          <v-card class="cemetery-card d-flex flex-column ">
+      <!-- Cemetery cards -->
+      <v-row dense class="d-flex align-stretch">
+        <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
+          class="d-flex align-stretch">
+          <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
+            class="text-decoration-none w-100 d-flex full-height">
+            <v-card class="cemetery-card d-flex flex-column ">
 
-            <div class="image-wrapper">
-              <v-img :src="cemetery.image_url" cover class="image-fill" />
-            </div>
-
-            <v-card-text class="cemetery-card-text text-center">
-              <div class="text-subtitle-1 font-weight-bold mb-2">
-                {{ cemetery.name }}
+              <div class="image-wrapper">
+                <v-img :src="cemetery.image_url" cover class="image-fill" />
               </div>
 
-              <div class="manager-list text-body-2 text-grey-darken-1">
-                <div v-if="cemetery.cemetery_managers?.length > 0" v-for="cemeteryManager in cemetery.cemetery_managers"
-                  :key="cemeteryManager.id" class="manager-item">
-                  <span class="manager-label">Beheerder</span>
-                  <span class="manager-name">
-                    {{ cemeteryManager.first_name }}
-                    {{ cemeteryManager.infix }}
-                    {{ cemeteryManager.last_name }}
-                  </span>
+              <v-card-text class="cemetery-card-text text-center">
+                <div class="text-subtitle-1 font-weight-bold mb-2">
+                  {{ cemetery.name }}
                 </div>
 
-                <div v-else class="manager-item">
-                  <span class="manager-label">Beheerder</span>
-                  <span class="manager-name text-grey-darken-2">
-                    Nog niet toegewezen
-                  </span>
+                <div class="manager-list text-body-2 text-grey-darken-1">
+                  <div v-if="cemetery.cemetery_managers?.length > 0"
+                    v-for="cemeteryManager in cemetery.cemetery_managers" :key="cemeteryManager.id"
+                    class="manager-item">
+                    <span class="manager-label">Beheerder</span>
+                    <span class="manager-name">
+                      {{ cemeteryManager.first_name }}
+                      {{ cemeteryManager.infix }}
+                      {{ cemeteryManager.last_name }}
+                    </span>
+                  </div>
+
+                  <div v-else class="manager-item">
+                    <span class="manager-label">Beheerder</span>
+                    <span class="manager-name text-grey-darken-2">
+                      Nog niet toegewezen
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </v-card-text>
-          </v-card>
-        </router-link>
-      </v-col>
-    </v-row>
+              </v-card-text>
+            </v-card>
+          </router-link>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 

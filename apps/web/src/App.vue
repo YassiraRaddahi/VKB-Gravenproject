@@ -7,7 +7,13 @@
         <v-container class="d-flex flex-grow-1 flex-column pa-0 pt-10" fluid>
 
           <div class="flex-grow-1">
-            <Breadcrumbs />
+
+            <template v-if="$route.meta.showBreadcrumbs">
+              <div>
+                <Breadcrumbs />
+              </div>
+            </template>
+
             <router-view />
           </div>
 

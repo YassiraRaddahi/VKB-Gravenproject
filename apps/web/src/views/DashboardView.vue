@@ -1,13 +1,14 @@
 <template>
   <v-container fluid class="pa-0">
-    <v-row class="justify-center mt-10 mb-12">
-      <v-col cols="12" class="text-center">
+    <v-row>
+      <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12" >
         <h2 class="title">Dashboard</h2>
       </v-col>
     </v-row>
   </v-container>
+
   <v-container fluid class="pa-4">
-    <v-row class="justify-center gap-6">
+    <v-row class="d-flex justify-center gap-6">
       <v-col cols="12" md="4" class="d-flex justify-center">
         <v-card class="dashboard-card" elevation="3" @click="goToCemeteries">
           <v-card-text class="dashboard-card-text text-center">
@@ -47,10 +48,6 @@ function goToManagers() {
 </script>
 
 <style scoped>
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-}
 
 .dashboard-card {
   width: 100%;

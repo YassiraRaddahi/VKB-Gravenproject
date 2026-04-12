@@ -71,10 +71,6 @@ const breadcrumbs = computed(() => {
 </script>
 
 <style scoped>
-.breadcrumbs {
-  margin: 0 0 16px;
-  padding: 0;
-}
 
 .breadcrumbs ul {
   display: flex;
@@ -83,8 +79,7 @@ const breadcrumbs = computed(() => {
   align-items: center;
   justify-content: flex-start;
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-right: 40px;
 }
 
 .breadcrumb-link {

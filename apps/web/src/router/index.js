@@ -15,14 +15,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', redirect: '/home' },
-    { path: '/home', name: 'Home', component: Home },
-    { path: '/login', name: 'Login', component: LoginView },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-    { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries },
-    { path: '/graven/:cemetery_id', name: 'Graves', component: Graves },
-    { path: '/beheerders', name: 'CemeteryManagers', component: CemeteryManagers }, 
-    { path: '/profiel', name: 'Profile', component: Profile },
-    { path: '/profiel/beveiliging', name: 'Security', component: Security }
+    { path: '/home', name: 'Home', component: Home, meta: { showBreadcrumbs: false } },
+    { path: '/login', name: 'Login', component: LoginView, meta: { showBreadcrumbs: false } },
+    { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { showBreadcrumbs: false } },
+    { path: '/begraafplaatsen', name: 'Cemeteries', component: Cemeteries, meta: { showBreadcrumbs: true } },
+    { path: '/graven/:cemetery_id', name: 'Graves', component: Graves, meta: { showBreadcrumbs: true } },
+    { path: '/beheerders', name: 'CemeteryManagers', component: CemeteryManagers, meta: { showBreadcrumbs: true } }, 
+    { path: '/profiel', name: 'Profile', component: Profile, meta: { showBreadcrumbs: false } },
+    { path: '/profiel/beveiliging', name: 'Security', component: Security, meta: { showBreadcrumbs: false } }
     
   ]
 })
