@@ -67,7 +67,7 @@ const router = createRouter({
 
 
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
 
   const userStore = useUserStore()
 
@@ -76,16 +76,16 @@ router.beforeEach(async (to, from, next) => {
       try {
         await userStore.fetchUser()
       } catch {
-        return next("/login");
+        return "/login";
       }
     }
-    return next();
+    return true;
   } 
   else if (to.path === "/login" && userStore.user) {
-    return next("/dashboard");
+    return "/dashboard";
   } 
   else {
-    return next();
+    return true;
   }
 
 });
