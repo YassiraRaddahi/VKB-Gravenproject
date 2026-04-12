@@ -27,9 +27,9 @@
           class="d-flex align-stretch">
           <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
             <v-card-text class="text-center d-flex flex-column justify-center align-center">
-              <v-avatar :size="smAndUp ? 150 : 200">
+              <v-avatar :size="smAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url" alt="profielfoto" cover>
+                <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url" :key="cemeteryManager.profile_picture_url" alt="profielfoto" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account

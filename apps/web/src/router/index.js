@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import axios from "axios";
+import { useUserStore } from "@/stores/userStore";
 
 import Home from "../views/HomeView.vue";
 import Login from "../views/LoginView.vue";
@@ -65,21 +65,22 @@ const router = createRouter({
   ],
 });
 
+
+
 router.beforeEach(async (to, from, next) => {
+
+  const userStore = useUserStore()
+
   if (to.meta.requiresAuth) {
     try {
-      await axios.get("http://localhost:3001/api/active-token", {
-        withCredentials: true,
-      });
+      await userStore.fetchUser()
       next();
     } catch {
       next("/login");
     }
   } else if (to.path === "/login") {
     try {
-      await axios.get("http://localhost:3001/api/active-token", {
-        withCredentials: true,
-      });
+      await userStore.fetchUser()
       next("/dashboard");
     } catch {
       next();

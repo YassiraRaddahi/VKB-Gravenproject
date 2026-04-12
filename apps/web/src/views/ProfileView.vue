@@ -55,7 +55,7 @@
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" alt="profielfoto" cover>
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -97,18 +97,18 @@
                         required></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row v-if="user.role === 'rechthebbende'">
+                  <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
                       <v-text-field v-model="user.address" :rules="adressRules" label="Adres" required></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row v-if="user.role === 'rechthebbende'">
+                  <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
                       <v-text-field v-model="user.zip_code" :rules="zipcodeRules" label="Postcode"
                         required></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row v-if="user.role === 'rechthebbende'">
+                  <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
                       <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats" required></v-text-field>
                     </v-col>

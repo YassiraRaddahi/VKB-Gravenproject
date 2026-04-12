@@ -26,7 +26,7 @@
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" alt="profielfoto" cover>
+            <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
                   mdi-account
