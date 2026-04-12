@@ -72,22 +72,22 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
 
   if (to.meta.requiresAuth) {
-    try {
-      await userStore.fetchUser()
-      next();
-    } catch {
-      next("/login");
+    if (!userStore.user) {
+      try {
+        await userStore.fetchUser()
+      } catch {
+        return next("/login");
+      }
     }
-  } else if (to.path === "/login") {
-    try {
-      await userStore.fetchUser()
-      next("/dashboard");
-    } catch {
-      next();
-    }
-  } else {
-    next();
+    return next();
+  } 
+  else if (to.path === "/login" && userStore.user) {
+    return next("/dashboard");
+  } 
+  else {
+    return next();
   }
+
 });
 
 export default router;

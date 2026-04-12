@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="title">Lijst met graven</h2>
+          <h2 class="titleLightBlue">Lijst met graven</h2>
         </v-col>
       </v-row>
     </v-container>
@@ -38,7 +38,7 @@
         <v-col v-for="grave in filteredGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
           <v-card elevation="2" class="grave-card d-flex flex-column h-100">
-            <v-img :src="grave.image_url" :alt="grave.grave_number" height="220" cover class="grave-image" />
+            <v-img :src="grave.image_url" :key="grave.image_url" :alt="grave.grave_number" height="220" cover class="grave-image" />
             <v-card-text class="text-center d-flex flex-column justify-center">
               <div class="text-h6 font-weight-bold mb-1">{{ grave.grave_number }}</div>
               <div class="caption">Status: {{ grave.status }}</div>

@@ -1,8 +1,8 @@
 <template>
   <v-container fluid class="pa-0">
     <v-row>
-      <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12" >
-        <h2 class="title">Dashboard</h2>
+      <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
+        <h2 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h2>
       </v-col>
     </v-row>
   </v-container>
@@ -35,6 +35,12 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
+
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 
 const router = useRouter()
 
@@ -45,10 +51,11 @@ function goToCemeteries() {
 function goToManagers() {
   router.push({ name: 'CemeteryManagers' })
 }
+
+
 </script>
 
 <style scoped>
-
 .dashboard-card {
   width: 100%;
   max-width: 360px;

@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center mb-20">
-    <h2 class="titleLogin">
+    <h2 class="titleDarkOrange">
       Login
     </h2>
   </div>

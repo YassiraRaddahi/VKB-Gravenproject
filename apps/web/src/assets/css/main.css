@@ -1,8 +1,17 @@
+/*
+darkBlue: '#0d475a',          // donkerblauw
+orange: '#f08360',            // oranje
+lightBlue: '#bee1e0',         // lichtblauw
+yellow: '#feca00',            // geel
+darkOrange: '#ea5a0b',        // donker oranje
+*/
+
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   min-height: 100%;
   height: 100%;
   margin: 0;
@@ -25,76 +34,90 @@ body {
   padding-right: 16px;
 }
 
-.title {
-    font-size: 28pt;
-    color: #0d475a;
-    display: block;
-    position: relative;
-    width: min-content;
-    text-align: center;
-    z-index: 1;
-    font-family: "Hero New bold", sans-serif;
+.title,
+.titleOrange,
+.titleDarkOrange,
+.titleDarkBlue,
+.titleLightBlue,
+.titleYellow {
+  font-size: 28pt;
+  color: #0d475a;
+  display: block;
+  position: relative;
+  width: min-content;
+  text-align: center;
+  z-index: 1;
+  font-family: "Hero New bold", sans-serif;
 }
 
 
-.title:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 0.3em;
-    left: -0.25em;
-    right: 0;
-    border-bottom: 0.307em solid #bee1e0;
-}
-.title.fancy-title2::after {
-    border-bottom: 0.307em solid #feca00;
-}
-
-.titleLogin {
-    font-size: 28pt;
-    color: #0d475a;
-    display: block;
-    position: relative;
-    width: fit-content;
-    text-align: center;
-    font-family: "Hero New bold", sans-serif;
+.titleOrange:after,
+.titleDarkOrange:after,
+.titleDarkBlue:after,
+.titleLightBlue:after,
+.titleYellow:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 0.3em;
+  left: -0.25em;
+  right: 0;
 }
 
-.titleLogin:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 0.2em;
-    left: -0.25em;
-    right: 0;
-    border-bottom: 0.307em solid #ea5a0b;
+
+.titleOrange:after {
+  border-bottom: 0.307em solid #f08360;
 }
 
-body
-{
-    font-family: "Hero New light", sans-serif;
-    font-weight: 300;                     /* Light */
-    font-size: 16px;                     /* 11.33px */
-    line-height: 1.6;                   /* 13.33px */
-    color: #0d475a;
+.titleDarkOrange:after {
+  border-bottom: 0.307em solid #ea5a0b;
 }
+
+.titleDarkBlue:after {
+  border-bottom: 0.307em solid #0d475a;
+}
+
+.titleLightBlue:after {
+  border-bottom: 0.307em solid #bee1e0;
+}
+
+.titleYellow:after {
+
+  border-bottom: 0.307em solid #feca00;
+}
+
+
+body {
+  font-family: "Hero New light", sans-serif;
+  font-weight: 300;
+  /* Light */
+  line-height: 1.6;
+  /* 13.33px */
+  color: #0d475a;
+}
+
 img,
 .v-img__image {
   max-width: 100%;
 }
 
 
-.bg-primary{
+.bg-primary {
   background-color: #ea5a0b;
 }
-.bg-blue{
+
+.bg-blue {
   background-color: #164653;
 }
 
 @media (min-width: 540px) {
-    .title {
-        width: fit-content;
-    }
+
+  .title,
+  .titleOrange,
+  .titleDarkOrange,
+  .titleDarkBlue,
+  .titleLightBlue,
+  .titleYellow {
+    width: fit-content;
+  }
 }
-
-

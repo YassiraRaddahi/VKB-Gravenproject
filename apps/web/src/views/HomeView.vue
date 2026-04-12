@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center mt-10 mb-20">
-            <h2 class="title">
+            <h2 class="titleLightBlue">
                 Dutch Cemetery Manager
             </h2>
         </div>
@@ -25,7 +25,7 @@
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" cover height="100%"class="rounded-xl"></v-img>
+                        <v-img :src="slide.src" :key="slide.src" cover height="100%"class="rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>

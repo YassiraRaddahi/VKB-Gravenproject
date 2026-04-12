@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="title">Lijst met beheerders</h2>
+          <h2 class="titleLightBlue">Lijst met beheerders</h2>
         </v-col>
       </v-row>
     </v-container>
