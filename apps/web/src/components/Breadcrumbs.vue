@@ -12,7 +12,7 @@
         <span v-else class="breadcrumb-current">
           {{ item.text }}
         </span>
-        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">&gt;</span>
+        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator"> &gt;</span>
       </li>
     </ul>
   </nav>
@@ -93,7 +93,7 @@ const breadcrumbs = computed(() => {
 }
 
 .breadcrumb-current {
-  color: #34495e;
+  color: #ea5a0b;
   font-weight: 700;
 }
 
