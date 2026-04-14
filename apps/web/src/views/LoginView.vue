@@ -9,7 +9,7 @@
 
 
     <v-container class="fill-height">
-      <v-row justify="center" align="center">
+      <v-row class="d-flex justify-center align-center">
         <v-col cols="12" sm="8" md="5">
 
           <v-card class="pa-8 rounded-xl bg-darkBlue">
@@ -25,7 +25,7 @@
               color="darkBlue" rounded="xl" class="mb-6" :error-messages="v$.password.$errors.map(e => e.$message)"
               @blur="v$.password.$touch"></v-text-field>
 
-            <v-row align="center">
+            <v-row class="align-center">
               <v-col>
                 <v-btn class="rounded-xl border-white text-darkBlue text-caption">
                   Wachtwoord vergeten
@@ -53,6 +53,7 @@ import { email, minLength, required } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
+const userStore = useUserStore()
 
 const router = useRouter()
 const loginError = ref('')
@@ -78,15 +79,12 @@ async function submit() {
   loginError.value = ''
 
   try {
-
-    const userStore = useUserStore()
-
-    const response = await axios.post('http://localhost:3001/api/login',
+    await axios.post('http://localhost:3001/api/login',
       { email: state.email, password: state.password, },
       { withCredentials: true, }
     )
 
-    userStore.setUser(response.data.user)
+    await userStore.fetchUser()
 
     router.push('/dashboard')
 

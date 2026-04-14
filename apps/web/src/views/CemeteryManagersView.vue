@@ -29,7 +29,8 @@
             <v-card-text class="text-center d-flex flex-column justify-center align-center">
               <v-avatar :size="smAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url" :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
+                <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
+                  :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -37,11 +38,11 @@
                   </template>
                 </v-img>
 
+
                 <v-icon v-else color="#0d475a" :size="mdAndUp ? 200 : 150">
                   mdi-account
                 </v-icon>
               </v-avatar>
-
               <div class="text-subtitle-1 font-weight-medium">
                 {{ cemeteryManager.first_name }} {{ cemeteryManager.infix }} {{ cemeteryManager.last_name }}
               </div>
