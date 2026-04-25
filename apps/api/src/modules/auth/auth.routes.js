@@ -33,7 +33,7 @@ module.exports = function (app, conn_db) {
             let email = req.body.email;
             let password = req.body.password;
 
-            let sql = `SELECT users.id, users.first_name, users.infix, users.last_name, users.address, users.zip_code, users.city, users.email, users.phone_number, users.profile_picture_url, users.password_hash, roles.name AS role_name
+            let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -68,25 +68,12 @@ module.exports = function (app, conn_db) {
                 res.cookie("token", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "strict",
+                    sameSite: "strict", 
                     maxAge: 3600000, // 1 uur
                 });
 
-                res.send({
-                    user: {
-                        id: user.id,
-                        first_name: user.first_name,
-                        infix: user.infix,
-                        last_name: user.last_name,
-                        address: user.address,
-                        zip_code: user.zip_code,
-                        city: user.city,
-                        email: user.email,
-                        phone_number: user.phone_number,
-                        profile_picture_url: user.profile_picture_url,
-                        role_name: user.role_name,
-                    },
-                });
+                res.send({ message: "Login successful" });
+
             });
         } catch (error) {
             console.error("Error during login:", error);
@@ -123,6 +110,6 @@ module.exports = function (app, conn_db) {
             path: "/",
         });
 
-        res.send({ logout: "success" });
+        res.send({ message: "Logout successful" });
     });
 };
