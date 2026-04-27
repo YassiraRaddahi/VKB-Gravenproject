@@ -41,17 +41,6 @@ const app = createApp(App)
 
 const pinia = createPinia()
 app.use(pinia)
-
-
-const userStore = useUserStore()
-
-try {
-  await userStore.fetchUser()
-} catch(error) {
-  console.error('User is not logged in')
-  // if this fails, the user is not logged in
-}
-
 app.use(router)
 app.use(vuetify)
 app.mount('#app')

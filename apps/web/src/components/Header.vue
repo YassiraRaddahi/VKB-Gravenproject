@@ -13,7 +13,7 @@
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="user?.id ? false : true">
+    <template v-if="!user?.id">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
           Log In
@@ -26,7 +26,7 @@
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
+            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
                   mdi-account
