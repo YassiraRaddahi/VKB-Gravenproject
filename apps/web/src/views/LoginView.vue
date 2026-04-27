@@ -18,11 +18,11 @@
             </v-alert>
 
             <v-text-field v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
-              rounded="xl" class="mb-6" :error-messages="v$.email.$errors.map(e => e.$message)"
+              rounded="xl" class="mb-6" :error-messages="emailErrors"
               @blur="v$.email.$touch"></v-text-field>
 
             <v-text-field v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
-              color="darkBlue" rounded="xl" class="mb-6" :error-messages="v$.password.$errors.map(e => e.$message)"
+              color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors"
               @blur="v$.password.$touch"></v-text-field>
 
             <v-row class="align-center">
@@ -47,14 +47,14 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { email, minLength, required } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
-const userStore = useUserStore()
 
+const userStore = useUserStore()
 const router = useRouter()
 const loginError = ref('')
 
@@ -71,6 +71,13 @@ const rules = {
 }
 
 const v$ = useVuelidate(rules, state)
+
+const emailErrors = computed(() => {
+  return v$.value.email.$errors.map(e => e.$message)
+})
+const passwordErrors = computed(() => {
+  return v$.value.password.$errors.map(e => e.$message)
+})
 
 async function submit() {
   const isValid = await v$.value.$validate()

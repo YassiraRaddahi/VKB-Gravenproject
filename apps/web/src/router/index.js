@@ -71,23 +71,25 @@ router.beforeEach(async (to, from) => {
 
   const userStore = useUserStore()
 
-  if (to.meta.requiresAuth) {
-    if (!userStore.user) {
-      try {
-        await userStore.fetchUser()
-      } catch {
-        return "/login";
-      }
+  // If the user is not loaded yet, try to fetch it
+  if (!userStore.user) {
+    try {
+      await userStore.fetchUser()
+    } catch {
     }
-    return true;
-  } 
-  else if (to.path === "/login" && userStore.user) {
-    return "/dashboard";
-  } 
-  else {
-    return true;
+  }
+  
+  // If the route requires authentication and the user is not logged in, redirect to login
+  if (to.meta.requiresAuth && !userStore.user) {
+    return "/login";
   }
 
+  // If the user is logged in and tries to access the login page, redirect to dashboard
+  if(to.path === "/login" && userStore.user) {
+    return "/dashboard"
+  }
+
+    return true;
 });
 
 export default router;
