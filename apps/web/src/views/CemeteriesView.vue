@@ -88,7 +88,7 @@ const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
-const url = 'http://localhost:3001/api/cemeteries'
+const url = `${import.meta.env.VITE_API_URL}/cemeteries`
 
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {

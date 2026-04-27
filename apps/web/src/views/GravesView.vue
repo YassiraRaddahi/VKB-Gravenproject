@@ -62,7 +62,7 @@ const cemetery_id = route.params.cemetery_id
 const graves = ref([])
 const search = ref('')
 const statusFilter = ref(null)
-const url = `http://localhost:3001/api/graves/${cemetery_id}`
+const url = `${import.meta.env.VITE_API_URL}/graves/${cemetery_id}`
 
 const statusOptions = [
   { title: 'Beschikbaar', value: 'beschikbaar' },

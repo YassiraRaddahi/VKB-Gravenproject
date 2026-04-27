@@ -61,7 +61,7 @@ import { useDisplay } from 'vuetify'
 
 const { smAndUp, mdAndUp } = useDisplay()
 
-let url = 'http://localhost:3001/api/cemetery-managers'
+let url = `${import.meta.env.VITE_API_URL}/cemetery-managers`
 
 const cemeteryManagers = ref([])
 const search = ref('')
