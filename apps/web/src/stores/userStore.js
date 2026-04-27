@@ -33,7 +33,7 @@ export const useUserStore = defineStore("user", {
 
     async logout() {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/logout`,
+        `${import.meta.env.VITE_API_URL}/logout`,
         {},
         { withCredentials: true }
       );
