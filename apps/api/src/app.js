@@ -4,8 +4,15 @@ const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const app = express();
 
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://yassira.kerkhovenbeheer.nl'
+];
+
+
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: allowedOrigins,
     credentials: true
 }))
 
