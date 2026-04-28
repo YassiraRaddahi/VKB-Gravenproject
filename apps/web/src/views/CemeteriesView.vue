@@ -13,7 +13,7 @@
       <!-- Filters -->
       <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
         <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoeken..." prepend-inner-icon="mdi-magnify" clearable outlined dense
+          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
             color="primary" class="search-field" />
         </v-col>
 

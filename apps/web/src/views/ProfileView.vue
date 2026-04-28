@@ -89,7 +89,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
+                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mailadres" required></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
