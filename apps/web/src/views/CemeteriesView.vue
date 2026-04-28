@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="titleLightBlue">Lijst met begraafplaatsen</h2>
+          <h2 class="titleLightBlue">Lijst met kerkhoven</h2>
         </v-col>
       </v-row>
     </v-container>
@@ -138,13 +138,13 @@ const filteredCemeteries = computed(() => {
 
 //knop tovoegen 
 function addCemetery() {
-  alert('Toevoegen begraafplaats knop geklikt (Helaas is de functie nog niet gemaakt)')
+  alert('Toevoegen kerkhof knop geklikt (Helaas is de functie nog niet gemaakt)')
 }
 
 onMounted(() => {
   axios.get(url)
     .then(res => cemeteries.value = res.data.cemeteries)
-    .catch(err => console.error('Fout bij ophalen begraafplaatsen:', err))
+    .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>
 

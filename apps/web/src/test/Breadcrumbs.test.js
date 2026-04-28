@@ -4,7 +4,7 @@ describe('Breadcrumbs Logic', () => {
   // Deze tests zijn gericht op de logica van het genereren van breadcrumbs, gebaseerd op de route naam en parameters.
   const labelMap = {
     Dashboard: 'Dashboard',
-    Cemeteries: 'Begraafplaatsen',
+    Cemeteries: 'Kerkhoven',
     Graves: 'Graven',
     CemeteryManagers: 'Beheerders',
   }
@@ -58,25 +58,25 @@ describe('Breadcrumbs Logic', () => {
   })
 // Test cases voor de Cemeteries route
   describe('Cemeteries route', () => {
-    it('moet Dashboard > Begraafplaatsen tonen', () => {
+    it('moet Dashboard Kerkhoven tonen', () => {
       const breadcrumbs = generateBreadcrumbs('Cemeteries')
       expect(breadcrumbs).toHaveLength(2)
 
       expect(breadcrumbs[0].text).toBe('Dashboard')
       expect(breadcrumbs[0].to).toEqual({ name: 'Dashboard' })
 
-      expect(breadcrumbs[1].text).toBe('Begraafplaatsen')
+      expect(breadcrumbs[1].text).toBe('Kerkhoven')
       expect(breadcrumbs[1].to).toBeUndefined()
     })
   })
 /// Test cases voor de Graves route
   describe('Graves route', () => {
-    it('moet Dashboard > Begraafplaatsen > Graven tonen', () => {
+    it('moet Dashboard > Kerkhoven > Graven tonen', () => {
       const breadcrumbs = generateBreadcrumbs('Graves')
       expect(breadcrumbs).toHaveLength(3)
 
       expect(breadcrumbs[0].text).toBe('Dashboard')
-      expect(breadcrumbs[1].text).toBe('Begraafplaatsen')
+      expect(breadcrumbs[1].text).toBe('Kerkhoven')
       expect(breadcrumbs[2].text).toBe('Graven')
     })
   })

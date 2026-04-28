@@ -12,7 +12,7 @@
       <v-col cols="12" md="4" class="d-flex justify-center">
         <v-card class="dashboard-card" elevation="3" @click="goToCemeteries">
           <v-card-text class="dashboard-card-text text-center">
-            <div>Beheer Begraafplaatsen</div>
+            <div>Beheer Kerkhoven</div>
             <div class="dashboard-card-subtitle">
               <v-icon size="48">mdi-cross</v-icon>
             </div>

@@ -29,4 +29,31 @@
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Breadcrumbs from './components/Breadcrumbs.vue'
+
+import { useRoute } from 'vue-router'
+import { useHead } from '@vueuse/head'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+const title = computed(() =>
+  route.meta?.title || 'Kerkhovenbeheer Nederland'
+)
+
+const description = computed(() =>
+  route.meta?.description ||
+  'Kerkhovenbeheer Nederland is een automatiseringsysteem voor beheer van kerkhoven en graven.'
+)
+
+useHead({
+  title,
+  meta: [
+    {
+      name: 'description',
+      content: description
+    }
+  ]
+})
+
+
 </script>

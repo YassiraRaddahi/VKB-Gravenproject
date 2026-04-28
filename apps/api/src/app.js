@@ -3,24 +3,13 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const app = express();
-
-
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://yassira.kerkhovenbeheer.nl'
-];
-
+app.set('trust proxy', 1);
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'http://localhost:5173',
+    'https://yassira.kerkhovenbeheer.nl'
+  ],
   credentials: true
 }));
 

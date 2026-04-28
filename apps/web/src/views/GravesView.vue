@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="titleLightBlue">Lijst met graven</h2>
+          <h2 class="titleLightBlue">Graven van {{ cemetery?.name }}</h2>
         </v-col>
       </v-row>
     </v-container>
@@ -11,11 +11,11 @@
     <v-container fluid class="pa-4">
       <v-row no-gutters class="d-flex align-center mb-6 gap-2">
         <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoek graf..." prepend-inner-icon="mdi-magnify" clearable outlined dense
+          <v-text-field v-model="search" label="Zoek graf..." prepend-inner-icon="mdi-magnify" clearable outlined density="comfortable"
             color="primary" class="search-field" />
         </v-col>
         <v-col cols="12" md="2">
-          <v-select v-model="statusFilter" :items="statusOptions" label="Status" clearable outlined dense
+          <v-select v-model="statusFilter" :items="statusOptions" label="Status" clearable outlined density="comfortable"
             color="primary" class="filter-select" />
         </v-col>
         <v-col cols="12" md="6" class="d-flex justify-end">
@@ -34,7 +34,7 @@
         </v-col>
       </v-row>
 
-      <v-row dense :key="$route.fullPath">
+      <v-row density="comfortable">
         <v-col v-for="grave in filteredGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
           <v-card elevation="2" class="grave-card d-flex flex-column h-100">
@@ -55,14 +55,16 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
+import { useHead } from '@vueuse/head'
 
 const route = useRoute()
 const cemetery_id = route.params.cemetery_id
 
 const graves = ref([])
+const cemetery = ref(null)
 const search = ref('')
 const statusFilter = ref(null)
-const url = `${import.meta.env.VITE_API_URL}/graves/${cemetery_id}`
+const url = `${import.meta.env.VITE_API_URL}/cemeteries/${cemetery_id}/graves`
 
 const statusOptions = [
   { title: 'Beschikbaar', value: 'beschikbaar' },
@@ -86,6 +88,28 @@ const filteredGraves = computed(() => {
   return result
 })
 
+let pageTitle = computed(() => {
+  return cemetery.value?.name 
+  ? `Graven van ${cemetery.value?.name} | Kerkhovenbeheer Nederland`
+  : "Graven van uw kerkhof | Kerkhovenbeheer Nederland"
+})
+
+let pageDescription = computed(() => 
+{
+  return cemetery.value?.name
+  ?  `Bekijk en beheer al uw graven van ${cemetery.value?.name} op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date.`
+  : "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
+})
+
+useHead({
+  title: pageTitle,
+  meta: [
+    {
+      name: 'description',
+      content: pageDescription
+    }
+  ]
+})
 
 
 
@@ -94,11 +118,14 @@ onMounted(() => {
     .then(response => {
       console.log(response)
       graves.value = response.data.graves
+      cemetery.value = response.data.cemetery
     })
     .catch(error => {
       console.error("Fout bij ophalen graven:", error)
     })
 })
+
+
 </script>
 
 <style scoped>
