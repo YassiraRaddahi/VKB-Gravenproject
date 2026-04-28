@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex justify-center mt-10 mb-20">
-            <h2 class="titleLightBlue">
+            <h1 class="titleLightBlue">
                 Kerkhovenbeheer Nederland
-            </h2>
+            </h1>
         </div>
 
         <div>
@@ -27,7 +27,7 @@
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" :key="slide.src + '-' + $route.fullPath" cover height="100%"class="rounded-xl"></v-img>
+                        <v-img :src="slide.src" :alt="`Impressiefoto van aangesloten kerkhof ${slide.name}`" :key="slide.src + '-' + $route.fullPath" cover height="100%"class="rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>
@@ -36,10 +36,10 @@
 
 <script setup>
 const slides = [
-  { src: '/images/cemeteries/bergklooster.png' },
-  { src: '/images/cemeteries/het_heilige_kruis.png' },
-  { src: '/images/cemeteries/kranenburg.webp' },
-  { src: '/images/cemeteries/meppelerstraatweg.png' },
+  { src: '/images/cemeteries/bergklooster.png', name: 'Bergklooster' },
+  { src: '/images/cemeteries/het_heilige_kruis.png', name: 'Het Heilige Kruis' },
+  { src: '/images/cemeteries/kranenburg.webp', name: 'Kranenburg' },
+  { src: '/images/cemeteries/meppelerstraatweg.png', name: 'Meppelerstraatweg' },
 ]
 </script>
 

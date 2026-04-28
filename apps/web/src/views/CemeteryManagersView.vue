@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="titleLightBlue">Lijst met beheerders</h2>
+          <h1 class="titleLightBlue">Lijst met beheerders</h1>
         </v-col>
       </v-row>
     </v-container>
@@ -30,7 +30,7 @@
               <v-avatar :size="smAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
                 <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
-                  :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
+                  :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -44,7 +44,7 @@
                 </v-icon>
               </v-avatar>
               <div class="text-subtitle-1 font-weight-medium">
-                {{ cemeteryManager.first_name }} {{ cemeteryManager.infix }} {{ cemeteryManager.last_name }}
+                {{ managerFullName(cemeteryManager) }}
               </div>
             </v-card-text>
           </v-card>
@@ -64,6 +64,18 @@ const { smAndUp, mdAndUp } = useDisplay()
 let url = `${import.meta.env.VITE_API_URL}/cemetery-managers`
 
 const cemeteryManagers = ref([])
+
+const managerFullName = (cemeteryManager) => {
+  return [
+    cemeteryManager.first_name,
+    cemeteryManager.infix,
+    cemeteryManager.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+
 const search = ref('')
 
 //property voor gefilterde beheerders
@@ -71,7 +83,7 @@ const filteredManagers = computed(() => {
   const query = search.value.toLowerCase().trim()
   if (!query) return cemeteryManagers.value
   return cemeteryManagers.value.filter(m => {
-    const fullName = `${m.first_name} ${m.infix ?? ''} ${m.last_name}`.toLowerCase()
+    const fullName = managerFullName(m).toLowerCase()
     return fullName.includes(query)
   })
 })

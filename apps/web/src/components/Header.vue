@@ -4,7 +4,7 @@
     <!-- left side -->
 
     <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
-      <img :src="logoUrl" :key="logoUrl" alt="logo" height="70" />
+      <img :src="logoUrl" :key="logoUrl" alt="Logo VKB met kerken in frisse kleuren die deels buiten een kader vallen" height="70" />
     </v-btn>
 
     <v-spacer />
@@ -26,7 +26,7 @@
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
+            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
                   mdi-account
@@ -58,6 +58,15 @@ const logoUrl = '/images/logo/VKB_Logo.svg'
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
+const userFullName = () => {
+  return [
+    user.value.first_name,
+    user.value.infix,
+    user.value.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
 
 </script>
 

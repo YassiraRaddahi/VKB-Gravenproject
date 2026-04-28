@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex justify-center mb-20">
-    <h2 class="titleLightBlue">
+    <h1 class="titleLightBlue">
       Profielgegevens
-    </h2>
+    </h1>
   </div>
 
 
@@ -29,7 +29,7 @@
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -128,6 +128,16 @@ const { mdAndUp } = useDisplay()
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+
+const userFullName = () => {
+  return [
+    user.value.first_name,
+    user.value.infix,
+    user.value.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
 
 
 </script>
