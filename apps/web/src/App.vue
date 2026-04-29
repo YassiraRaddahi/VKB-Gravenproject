@@ -16,7 +16,7 @@
 
             <template v-if="showNavigationDrawer">
               <div>
-                <NavigationDrawer v-model="drawer" :permanent="smAndUp" :temporary="!smAndUp" />
+                <NavigationDrawer v-model="drawer" :permanent="mdAndUp" :temporary="!mdAndUp" />
               </div>
             </template>
 
@@ -39,21 +39,31 @@ import NavigationDrawer from './components/NavigationDrawer.vue'
 
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 
 const route = useRoute()
 const userStore = useUserStore()
 
+
+const { mdAndUp } = useDisplay()
 const drawer = ref(false)
-const { smAndUp } = useDisplay()
+
+
+watch(mdAndUp, (value) => {
+  if (value) {
+    drawer.value = true
+  }
+}, { immediate: true }
+)
+
 
 
 const showNavigationDrawer = computed(() => route.meta?.showNavigationDrawer && userStore.user)
 
 const showDrawerToggle = computed(() =>
-  showNavigationDrawer.value && !smAndUp.value
+  showNavigationDrawer.value && !mdAndUp.value
 )
 
 

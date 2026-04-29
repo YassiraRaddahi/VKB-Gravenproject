@@ -106,9 +106,11 @@
 
         <v-card-actions class="pa-4 px-md-8">
           <v-spacer />
-          <v-btn color="#0d475a" variant="elevated" v-ripple.center>
+          <v-btn color="#0d475a" variant="elevated" v-ripple.center @click="saveProfile">
             Opslaan
           </v-btn>
+
+          <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar" message="Profiel succesvol bijgewerkt!" timeout="2000" />
         </v-card-actions>
 
       </v-card>
@@ -119,10 +121,13 @@
 
 
 <script setup>
+import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import SnackbarSuccess from '@/components/SnackBarSuccess.vue'
+
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import { ref} from 'vue'
 
 const { mdAndUp } = useDisplay()
 
@@ -139,6 +144,11 @@ const userFullName = () => {
     .join(' ')
 }
 
+const showSnackbar = ref(false)
+
+const saveProfile = () => {
+  showSnackbar.value = true
+}
 
 </script>
 

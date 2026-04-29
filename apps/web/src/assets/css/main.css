@@ -121,6 +121,13 @@ img,
   background-color: #164653;
 }
 
+.snackbar-success .v-snackbar__content, .snackbar-success .v-snackbar__wrapper {
+  font-weight: 500;
+  color: #0d6b3c;
+}
+
+
+
 @media (min-width: 540px) {
 
   .title,
