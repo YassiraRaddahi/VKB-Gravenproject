@@ -18,8 +18,7 @@
             </v-alert>
 
             <v-text-field v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
-              rounded="xl" class="mb-6" :error-messages="emailErrors"
-              @blur="v$.email.$touch"></v-text-field>
+              rounded="xl" class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch"></v-text-field>
 
             <v-text-field v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
               color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors"
@@ -49,7 +48,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { email, minLength, required } from '@vuelidate/validators'
+import { email, minLength, required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
@@ -66,8 +65,27 @@ const initialState = {
 const state = reactive({ ...initialState })
 
 const rules = {
-  email: { required, email },
-  password: { required, minLength: minLength(6) },
+  email: {
+    required: helpers.withMessage(
+      'E-mailadres is verplicht',
+      required
+    ),
+    email: helpers.withMessage(
+      'Ongeldig e-mailadres',
+      email
+    )
+  },
+  password: {
+    required: helpers.withMessage(
+      'Wachtwoord is verplicht',
+      required
+    ),
+    minLength: helpers.withMessage(
+      'Wachtwoord moet minimaal 6 tekens zijn',
+      minLength(6)
+    )
+  }
+
 }
 
 const v$ = useVuelidate(rules, state)
@@ -111,5 +129,11 @@ async function submit() {
 </script>
 
 <style scoped>
-/* alleen voor deze component */
+
+/* Foutmelding tekst */
+:deep(.v-messages__message) {
+  color: #f08360 !important;
+}
+
+
 </style>

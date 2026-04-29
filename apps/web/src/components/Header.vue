@@ -3,6 +3,8 @@
 
     <!-- left side -->
 
+    <v-app-bar-nav-icon v-if="showDrawerToggle" @click="$emit('toggle-drawer')" />
+
     <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
       <img :src="logoUrl" :key="logoUrl" alt="Logo VKB met kerken in frisse kleuren die deels buiten een kader vallen" height="70" />
     </v-btn>
@@ -52,6 +54,13 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+
+defineProps({
+  showDrawerToggle: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
 

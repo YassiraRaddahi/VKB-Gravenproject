@@ -26,10 +26,15 @@ body {
   color: #0d475a;
 }
 
-a
+.anchor-decoration
 {
   color: #ea5a0b;
   text-decoration: none;
+}
+
+.anchor-decoration:hover
+{
+  text-decoration: underline;
 }
 
 .list-page-container {

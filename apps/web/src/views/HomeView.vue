@@ -15,7 +15,7 @@
             </p>
 
             <p class="home-text mx-auto text-center mt-6">
-                Vragen omtrent ons systeem of onze diensten? Neem gerust contact met ons op via de <a href="https://www.kerkrentmeester.nl/contact/" target="_blank" rel="noopener noreferrer">contactpagina van de VKB</a>.
+                Vragen omtrent ons systeem of onze diensten? Neem gerust contact met ons op via de <a href="https://www.kerkrentmeester.nl/contact/" target="_blank" rel="noopener noreferrer" class="anchor-decoration">contactpagina van de VKB</a>.
                 We hopen dat u hier alles vindt wat u zoekt en dat we u kunnen helpen bij het beheren van uw kerkhoven.
             </p>
         </div>
