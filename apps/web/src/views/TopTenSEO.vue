@@ -1,12 +1,9 @@
 <template>
     <v-container fluid class="pa-0 list-page-container">
-        <v-container fluid class="pa-0">
-            <v-row>
-                <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-                    <h1 class="titleLightBlue">Mijn top 10 SEO-toepassingen</h1>
-                </v-col>
-            </v-row>
-        </v-container>
+       <TitleUnderline 
+    title="Mijn top 10 SEO-toepassingen" 
+    underline-class="underlineLightBlue"
+    />
 
         <v-container fluid :class="smAndDown ? 'pa-0' : 'pa-4'">
 
@@ -215,7 +212,10 @@
 
 
 <script setup>
+import TitleUnderline from '../components/TitleUnderline.vue';
+
 import { useDisplay } from 'vuetify'
+
 
 const { smAndDown } = useDisplay()
 </script>

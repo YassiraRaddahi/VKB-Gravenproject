@@ -1,12 +1,10 @@
 <template>
-  <v-container fluid class="pa-0 list-page-container">
-    <v-container fluid class="pa-0">
-      <v-row>
-        <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h1 class="titleLightBlue">Graven van {{ cemetery?.name }}</h1>
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-container fluid class="pa-0 list-page-container"> 
+   
+     <TitleUnderline 
+     :title="`Graven van ${cemetery?.name}`"
+     underline-class="underlineLightBlue"
+    />
 
     <v-container fluid class="pa-4">
       <v-row no-gutters class="d-flex align-center mb-6 gap-2">
@@ -56,6 +54,7 @@ import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
+import TitleUnderline from '@/components/TitleUnderline.vue'
 
 const route = useRoute()
 const cemetery_id = route.params.cemetery_id

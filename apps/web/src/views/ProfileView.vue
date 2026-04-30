@@ -1,9 +1,8 @@
 <template>
-  <div class="d-flex justify-center mb-20">
-    <h1 class="titleLightBlue">
-      Profielgegevens
-    </h1>
-  </div>
+   <TitleUnderline 
+    title="Profielgegevens" 
+    underline-class="underlineLightBlue"
+    />
 
 
   <v-row>
@@ -123,11 +122,13 @@
 <script setup>
 import ProfileSideBar from '@/components/ProfileSideBar.vue'
 import SnackbarSuccess from '@/components/SnackBarSuccess.vue'
+import TitleUnderline from '../components/TitleUnderline.vue'
 
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { ref} from 'vue'
+
 
 const { mdAndUp } = useDisplay()
 

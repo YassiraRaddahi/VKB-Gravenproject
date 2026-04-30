@@ -1,18 +1,21 @@
 <template>
-  <div class="d-flex justify-center mb-20">
-    <h1 class="titleDarkOrange">
-      Login
-    </h1>
-  </div>
-  <v-form @submit.prevent="submit">
+
+ <TitleUnderline 
+    title="Login" 
+    underline-class="underlineDarkOrange"
+    />
 
 
-
-    <v-container class="fill-height">
-      <v-row class="d-flex justify-center align-center">
-        <v-col cols="12" sm="8" md="5">
-
-          <v-card class="pa-8 rounded-xl bg-darkBlue">
+  <v-container :class="{
+          'px-0': !smAndUp
+        }">
+    <v-row justify="center">
+      <v-col cols="12" sm="8" lg="6" xl="5" xxl="4">
+        <v-card :class="{
+          'rounded-xl': smAndUp,
+          'rounded-0': !smAndUp
+        }" class="pa-8 bg-darkBlue">
+          <v-form @submit.prevent="submit">
             <v-alert v-if="loginError" type="error" class="mb-4">
               {{ loginError }}
             </v-alert>
@@ -36,13 +39,11 @@
                 </v-btn>
               </v-col>
             </v-row>
-
-          </v-card>
-
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
@@ -52,6 +53,10 @@ import { email, minLength, required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
+import { useDisplay} from 'vuetify'
+import TitleUnderline from '../components/TitleUnderline.vue'
+
+const { smAndUp } = useDisplay()
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -129,11 +134,8 @@ async function submit() {
 </script>
 
 <style scoped>
-
 /* Foutmelding tekst */
 :deep(.v-messages__message) {
   color: #f08360 !important;
 }
-
-
 </style>

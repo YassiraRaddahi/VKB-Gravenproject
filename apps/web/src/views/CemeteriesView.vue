@@ -1,12 +1,9 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <v-container fluid class="pa-0">
-      <v-row>
-        <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h1 class="titleLightBlue">Lijst met kerkhoven</h1>
-        </v-col>
-      </v-row>
-    </v-container>
+    <TitleUnderline 
+    title="Lijst met kerkhoven" 
+    underline-class="underlineLightBlue"
+    />
 
     <v-container fluid class="pa-4">
 
@@ -83,6 +80,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
+import TitleUnderline from '../components/TitleUnderline.vue'
 
 const cemeteries = ref([])
 const search = ref('')

@@ -1,12 +1,9 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <v-container fluid class="pa-0">
-      <v-row>
-        <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h1 class="titleLightBlue">Lijst met beheerders</h1>
-        </v-col>
-      </v-row>
-    </v-container>
+ <TitleUnderline 
+    title="Lijst met beheerders" 
+    underline-class="underlineLightBlue"
+    />
 
     <v-container fluid class="pa-4">
       <v-row no-gutters class="d-flex align-center mb-6">
@@ -58,6 +55,7 @@
 import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import { useDisplay } from 'vuetify'
+import TitleUnderline from '../components/TitleUnderline.vue'
 
 const { smAndUp, mdAndUp } = useDisplay()
 

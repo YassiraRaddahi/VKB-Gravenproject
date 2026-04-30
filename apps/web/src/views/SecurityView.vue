@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex justify-center mb-20">
-    <h1 class="titleLightBlue">
-      Wachtwoord aanpassen
-    </h1>
-  </div>
+    
+  <TitleUnderline 
+    title="Wachtwoord aanpassen" 
+    underline-class="underlineLightBlue"
+    />
   
     <v-row>
       <ProfileSideBar />
@@ -13,6 +13,7 @@
 
 <script setup>
 import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import TitleUnderline from '../components/TitleUnderline.vue';
 
 </script>
 
