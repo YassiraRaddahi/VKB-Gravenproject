@@ -79,7 +79,7 @@ async function submit() {
   loginError.value = ''
 
   try {
-    await axios.post('http://localhost:3001/api/login',
+    await axios.post(`${import.meta.env.VITE_API_URL}/login`,
       { email: state.email, password: state.password, },
       { withCredentials: true, }
     )
