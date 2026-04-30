@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-layout>
-    <Header @toggle-drawer="drawer = !drawer" />      <ListSideBar 
-        v-if="user?.id"
+    <Header @toggle-drawer="drawer = !drawer" /> 
+        <ListSideBar 
         v-model="drawer"
       />
 

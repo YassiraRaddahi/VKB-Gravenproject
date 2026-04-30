@@ -14,14 +14,14 @@
       <v-list-item
         prepend-icon="mdi-grave-stone"
         title="Begraafplaatsen"
-        to="/cemeteries"
+        to="/begraafplaatsen"
         link
       />
 
       <v-list-item
         prepend-icon="mdi-account-group"
         title="Beheerders"
-        to="/cemetery-managers"
+        to="/beheerders"
         link
       />
     </v-list>
