@@ -13,12 +13,35 @@
     <!-- right side -->
     <v-spacer />
 
+    <v-btn variant="text" color="darkBlue" class="mr-2" @click="seoDialog = true">
+      <v-icon start>mdi-magnify</v-icon>
+      SEO
+    </v-btn>
+
+    <v-dialog v-model="seoDialog" max-width="400" transition="scale-transition">
+      <v-card class="pa-2 rounded-xl">
+        <v-card-title class="font-weight-bold pt-4 px-6">SEO-optimalisaties</v-card-title>
+        <v-card-text class="px-6">
+          Wil je bekijken welke SEO-optimalisaties er op deze site zijn toegepast en waarom ze belangrijk zijn?
+        </v-card-text>
+        <v-card-actions class="px-6 pb-4">
+          <v-btn variant="text" @click="seoDialog = false">Annuleren</v-btn>
+          <v-spacer />
+          <v-btn color="darkBlue" variant="elevated" :to="{ name: 'Seo' }" @click="seoDialog = false">
+            Bekijken
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <template v-if="user?.id ? false : true">
-      <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
-        <span class="text-white">
-          Log In
-        </span>
-      </v-btn>
+      <v-tooltip text="Inloggen op uw account" location="bottom">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
+            <span class="text-white">Log In</span>
+          </v-btn>
+        </template>
+      </v-tooltip>
     </template>
 
     <template v-else>
@@ -52,9 +75,12 @@
 
 
 <script setup>
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ContactDialog from '@/components/ContactDialog.vue'
+
+const seoDialog = ref(false)
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
 

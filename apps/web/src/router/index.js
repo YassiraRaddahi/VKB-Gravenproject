@@ -6,6 +6,16 @@ const router = createRouter({
   routes: [
     { path: "/", redirect: "/home" },
     {
+      path: "/seo",
+      name: "Seo",
+      component: () => import("../views/SeoView.vue"),
+      meta: {
+        showBreadcrumbs: false,
+        title: "SEO – Kerkhovenbeheer Nederland",
+        description: "Overzicht van de toegepaste SEO-optimalisaties.",
+      },
+    },
+    {
       path: "/home",
       name: "Home",
       component: () => import("../views/HomeView.vue"),
