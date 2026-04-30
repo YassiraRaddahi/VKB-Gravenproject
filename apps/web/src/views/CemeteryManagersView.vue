@@ -1,5 +1,20 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
+    <ListSideBar />
+
+    <v-dialog v-model="dialog" max-width="400">
+      <v-card>
+        <v-card-title>Toevoegen</v-card-title>
+        <v-card-text>
+          Toevoegen beheerder knop geklikt.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="dialog = false">Sluiten</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
@@ -28,7 +43,6 @@
           <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
             <v-card-text class="text-center d-flex flex-column justify-center align-center">
               <v-avatar :size="smAndUp ? 200 : 150">
-                <!-- Profile picture or fallback icon -->
                 <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
                   :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
                   <template #error>
@@ -37,7 +51,6 @@
                     </v-icon>
                   </template>
                 </v-img>
-
 
                 <v-icon v-else color="#0d475a" :size="mdAndUp ? 200 : 150">
                   mdi-account
@@ -58,6 +71,7 @@
 import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import { useDisplay } from 'vuetify'
+import ListSideBar from '@/components/ListSideBar.vue'
 
 const { smAndUp, mdAndUp } = useDisplay()
 
@@ -65,8 +79,8 @@ let url = 'http://localhost:3001/api/cemetery-managers'
 
 const cemeteryManagers = ref([])
 const search = ref('')
+const dialog = ref(false)
 
-//property voor gefilterde beheerders
 const filteredManagers = computed(() => {
   const query = search.value.toLowerCase().trim()
   if (!query) return cemeteryManagers.value
@@ -77,7 +91,7 @@ const filteredManagers = computed(() => {
 })
 
 function addManager() {
-  alert('Toevoegen beheerder knop geklikt (functie is nog niet gemaakt)')
+  dialog.value = true
 }
 
 onMounted(() => {
@@ -99,6 +113,5 @@ onMounted(() => {
 
 .manager-card .v-avatar {
   margin: 10px;
-
 }
 </style>

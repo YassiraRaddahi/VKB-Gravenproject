@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-layout>
-      <Header />
+    <Header @toggle-drawer="drawer = !drawer" />      <ListSideBar 
+        v-if="user?.id"
+        v-model="drawer"
+      />
 
       <v-main class="d-flex flex-column">
         <v-container class="d-flex flex-grow-1 flex-column pa-0 pt-10" fluid>
@@ -26,7 +29,12 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Breadcrumbs from './components/Breadcrumbs.vue'
+import ListSideBar from './components/ListSideBar.vue'
+
+const drawer = defineModel()
 </script>

@@ -2,6 +2,9 @@
   <v-app-bar app class="px-6">
 
     <!-- left side -->
+    <v-app-bar-nav-icon
+        v-if="user?.id" 
+    @click="$emit('toggle-drawer')"/>
 
     <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
       <img :src="logoUrl" :key="logoUrl" alt="logo" height="70" />
@@ -52,6 +55,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import ListSideBar from '@/components/ListSideBar.vue'
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
 
