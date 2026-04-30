@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex justify-center mb-20">
-    <h2 class="titleLightBlue">
+    <h1 class="titleLightBlue">
       Profielgegevens
-    </h2>
+    </h1>
   </div>
 
 

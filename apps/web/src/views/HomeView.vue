@@ -1,20 +1,19 @@
 <template>
   <div class="d-flex justify-center mt-10 mb-20">
-            <h2 class="titleLightBlue">
-                Dutch Cemetery Manager
-            </h2>
+            <h1 class="titleLightBlue">
+                Kerkhovenbeheer Nederland
+            </h1>
         </div>
 
         <div>
             <p class="home-text mx-auto text-center">
-                Donec augue justo, dapibus porttitor sem sit amet, elementum vestibulum leo. Phasellus eget justo in
-                magna pulvinar dictum. Sed tempus sit amet ante eget pulvinar. Ut dictum diam nec quam mattis aliquam.
-                Morbi et porttitor justo. Praesent nisi ante, faucibus eu dui et, sagittis posuere odio. Nulla euismod
-                tellus finibus neque dictum volutpat. Cras vitae massa tincidunt, blandit nisi in, luctus ex. In hac
-                habitasse platea dictumst. Etiam tempor dolor risus, vel tempor nulla auctor vel. Nunc tempor lectus sed
-                fringilla lobortis.
-                Aliquam convallis erat sed venenatis rutrum. Etiam sed quam dapibus, gravida tellus non, fringilla leo.
-                Sed tempus commodo accumsan. Ut condimentum nisl ut sagittis finibus.
+                Ruim 400 protestantse kerkgemeenten beheren al eeuwenlang eigen begraafplaatsen en kerkhoven.
+                Het beheer hiervan is door toenemende regelgeving en krimpende vrijwilligersgroepen steeds complexer geworden.
+                Kerkhovenbeheer Nederland biedt kerkelijke gemeenten een overzichtelijke digitale omgeving om
+                begraafplaatsen, graven en beheerders centraal te registreren en beheren.
+                Zo wordt het administratieve werk vereenvoudigd, blijft informatie up-to-date en kunnen gemeenten
+                voldoen aan de geldende wet- en regelgeving.
+                Samen zorgen we ervoor dat deze waardevolle stukken cultuurhistorisch erfgoed goed beheerd en bewaard blijven.
             </p>
         </div>
        
@@ -25,7 +24,7 @@
                     v-for="(slide, i) in slides"
                     :key="i"
                     >
-                        <v-img :src="slide.src" :key="slide.src + '-' + $route.fullPath" cover height="100%"class="rounded-xl"></v-img>
+                        <v-img :src="slide.src" :alt="slide.alt" :key="slide.src + '-' + $route.fullPath" cover height="100%" class="rounded-xl"></v-img>
                     </v-carousel-item>
                 </v-carousel>
             </v-container>
@@ -34,10 +33,10 @@
 
 <script setup>
 const slides = [
-  { src: '/images/cemeteries/bergklooster.png' },
-  { src: '/images/cemeteries/het_heilige_kruis.png' },
-  { src: '/images/cemeteries/kranenburg.webp' },
-  { src: '/images/cemeteries/meppelerstraatweg.png' },
+  { src: '/images/cemeteries/bergklooster.png', alt: 'Begraafplaats Bergklooster' },
+  { src: '/images/cemeteries/het_heilige_kruis.png', alt: 'Begraafplaats Het Heilige Kruis' },
+  { src: '/images/cemeteries/kranenburg.webp', alt: 'Begraafplaats Kranenburg' },
+  { src: '/images/cemeteries/meppelerstraatweg.png', alt: 'Begraafplaats Meppelerstraatweg' },
 ]
 </script>
 

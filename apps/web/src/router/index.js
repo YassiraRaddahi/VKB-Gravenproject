@@ -1,15 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
-import Home from "../views/HomeView.vue";
-import Login from "../views/LoginView.vue";
-import Dashboard from "../views/DashboardView.vue";
-import Cemeteries from "../views/CemeteriesView.vue";
-import Graves from "../views/GravesView.vue";
-import CemeteryManagers from "../views/CemeteryManagersView.vue";
-import Profile from "../views/ProfileView.vue";
-import Security from "../views/SecurityView.vue";
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -17,77 +8,118 @@ const router = createRouter({
     {
       path: "/home",
       name: "Home",
-      component: Home,
-      meta: { showBreadcrumbs: false },
+      component: () => import("../views/HomeView.vue"),
+      meta: {
+        showBreadcrumbs: false,
+        title: "Kerkhovenbeheer Nederland",
+        description: "Kerkhovenbeheer Nederland – beheer begraafplaatsen en graven eenvoudig online.",
+      },
     },
     {
       path: "/login",
       name: "Login",
-      component: Login,
-      meta: { showBreadcrumbs: false },
+      component: () => import("../views/LoginView.vue"),
+      meta: {
+        showBreadcrumbs: false,
+        title: "Inloggen – Kerkhovenbeheer Nederland",
+        description: "Log in om begraafplaatsen en graven te beheren.",
+      },
     },
     {
       path: "/dashboard",
       name: "Dashboard",
-      component: Dashboard,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      component: () => import("../views/DashboardView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: false,
+        title: "Dashboard – Kerkhovenbeheer Nederland",
+        description: "Overzicht van je begraafplaatsen en recente activiteit.",
+      },
     },
     {
       path: "/begraafplaatsen",
       name: "Cemeteries",
-      component: Cemeteries,
-      meta: { requiresAuth: true, showBreadcrumbs: true },
+      component: () => import("../views/CemeteriesView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        title: "Begraafplaatsen – Kerkhovenbeheer Nederland",
+        description: "Bekijk en beheer alle begraafplaatsen.",
+      },
     },
     {
       path: "/graven/:cemetery_id",
       name: "Graves",
-      component: Graves,
-      meta: { requiresAuth: true, showBreadcrumbs: true },
+      component: () => import("../views/GravesView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        title: "Graven – Kerkhovenbeheer Nederland",
+        description: "Bekijk en beheer de graven van een begraafplaats.",
+      },
     },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
-      component: CemeteryManagers,
-      meta: { requiresAuth: true, showBreadcrumbs: true },
+      component: () => import("../views/CemeteryManagersView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        title: "Beheerders – Kerkhovenbeheer Nederland",
+        description: "Overzicht van alle begraafplaatsbeheerders.",
+      },
     },
     {
       path: "/profiel",
       name: "Profile",
-      component: Profile,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      component: () => import("../views/ProfileView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: false,
+        title: "Mijn profiel – Kerkhovenbeheer Nederland",
+        description: "Beheer je profielgegevens.",
+      },
     },
     {
       path: "/profiel/beveiliging",
       name: "Security",
-      component: Security,
-      meta: { requiresAuth: true, showBreadcrumbs: false },
+      component: () => import("../views/SecurityView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: false,
+        title: "Beveiliging – Kerkhovenbeheer Nederland",
+        description: "Beheer je wachtwoord en beveiligingsinstellingen.",
+      },
     },
   ],
 });
 
+router.afterEach((to) => {
+  document.title = to.meta.title || "Kerkhovenbeheer Nederland";
 
+  let metaDescription = document.querySelector('meta[name="description"]');
+  if (metaDescription && to.meta.description) {
+    metaDescription.setAttribute("content", to.meta.description);
+  }
+});
 
-router.beforeEach(async (to, from) => {
-
-  const userStore = useUserStore()
+router.beforeEach(async (to) => {
+  const userStore = useUserStore();
 
   if (to.meta.requiresAuth) {
     if (!userStore.user) {
       try {
-        await userStore.fetchUser()
+        await userStore.fetchUser();
       } catch {
         return "/login";
       }
     }
     return true;
-  } 
-  else if (to.path === "/login" && userStore.user) {
+  } else if (to.path === "/login" && userStore.user) {
     return "/dashboard";
-  } 
-  else {
+  } else {
     return true;
   }
-
 });
 
 export default router;

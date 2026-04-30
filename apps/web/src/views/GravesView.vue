@@ -3,7 +3,7 @@
     <v-container fluid class="pa-0">
       <v-row>
         <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="titleLightBlue">Lijst met graven</h2>
+          <h1 class="titleLightBlue">Lijst met graven</h1>
         </v-col>
       </v-row>
     </v-container>

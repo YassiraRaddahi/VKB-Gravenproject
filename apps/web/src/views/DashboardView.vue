@@ -2,7 +2,7 @@
   <v-container fluid class="pa-0">
     <v-row>
       <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-        <h2 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h2>
+        <h1 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h1>
       </v-col>
     </v-row>
   </v-container>

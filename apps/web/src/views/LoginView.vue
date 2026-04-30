@@ -1,12 +1,11 @@
 <template>
   <div class="d-flex justify-center mb-20">
-    <h2 class="titleDarkOrange">
+    <h1 class="titleDarkOrange">
       Login
-    </h2>
+    </h1>
   </div>
+
   <v-form @submit.prevent="submit">
-
-
 
     <v-container class="fill-height">
       <v-row class="d-flex justify-center align-center">
@@ -48,6 +47,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+
 import { useVuelidate } from '@vuelidate/core'
 import { email, minLength, required } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'

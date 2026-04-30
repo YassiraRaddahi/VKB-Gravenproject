@@ -22,6 +22,8 @@
     </template>
 
     <template v-else>
+      <ContactDialog />
+
       <v-btn :to="{ name: 'Profile' }" color="#0d475a" class="text-decoration-none" v-ripple.center>
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
@@ -52,6 +54,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import ContactDialog from '@/components/ContactDialog.vue'
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
 
