@@ -97,7 +97,6 @@ onMounted(() => {
 })
 
 // Voorbeeld van SnackBar [Delete upon later notice]
-// Voorbeeld van SnackBar [Delete upon later notice]
 import SnackBar from '@/components/SnackBar.vue'
 
 const showSnackbar = ref(false)
