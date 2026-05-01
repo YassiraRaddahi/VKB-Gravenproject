@@ -1,8 +1,10 @@
 <template>
-  <v-navigation-drawer
+   <v-navigation-drawer
     v-model="drawer"
     location="left"
-    width="280"
+    :temporary="mobile"
+    :scrim="mobile"
+    :width="mobile ? '100%' : 210"
   >
     <v-list>
       <v-list-item title="Menu" subtitle="Beheer"></v-list-item>
