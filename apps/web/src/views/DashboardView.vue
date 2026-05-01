@@ -31,11 +31,6 @@
       </v-col>
     </v-row>
   </v-container>
-  <!-- // Voorbeeld van SnackBar [Delete upon later notice] -->
-    <SnackBar
-    v-model="show"
-    message="Dit is een voorbeeld snackbar"
-  />
 </template>
 
 <script setup>
@@ -56,14 +51,6 @@ function goToCemeteries() {
 function goToManagers() {
   router.push({ name: 'CemeteryManagers' })
 }
-
-
-// Voorbeeld van SnackBar [Delete upon later notice]
-import { ref } from 'vue'
-import SnackBar from '@/components/SnackBar.vue'
-
-const show = ref(false)
-
 </script>
 
 <style scoped>

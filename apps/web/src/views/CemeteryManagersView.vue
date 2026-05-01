@@ -52,6 +52,12 @@
       </v-row>
     </v-container>
   </v-container>
+    <!-- // Voorbeeld van SnackBar [Delete upon later notice] -->
+    <SnackBar
+    v-model="showSnackbar"
+    :message="snackbarMessage"
+    :color="snackbarColor"
+  />
 </template>
 
 <script setup>
@@ -76,9 +82,9 @@ const filteredManagers = computed(() => {
   })
 })
 
-function addManager() {
-  alert('Toevoegen beheerder knop geklikt (functie is nog niet gemaakt)')
-}
+// function addManager() {
+//   // alert('Toevoegen beheerder knop geklikt (functie is nog niet gemaakt)')
+// }
 
 onMounted(() => {
   axios.get(url)
@@ -89,6 +95,21 @@ onMounted(() => {
       console.error('Fout bij ophalen beheerders:', error)
     })
 })
+
+// Voorbeeld van SnackBar [Delete upon later notice]
+// Voorbeeld van SnackBar [Delete upon later notice]
+import SnackBar from '@/components/SnackBar.vue'
+
+const showSnackbar = ref(false)
+const snackbarMessage = ref('')
+const snackbarColor = ref('success')
+
+function addManager() {
+  snackbarMessage.value = 'Toevoegen beheerder knop geklikt (voorbeeld)'
+  snackbarColor.value = 'success'
+  showSnackbar.value = true
+}
+
 </script>
 
 <style scoped>

@@ -1,17 +1,46 @@
-
 <template>
-  <v-btn @click="snackbar = true">
-    Klik mij
-  </v-btn>
+  <v-snackbar
+    v-model="internalValue"
+    :timeout="timeout"
+    :color="color"
+    location="bottom right"
+  >
+    {{ message }}
 
-  <SnackBar
-    v-model:show="snackbar"
-    text="Dit is een voorbeeld snackbar"
-  />
+    <template #actions>
+      <v-btn variant="text" @click="internalValue = false">
+        Sluiten
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
-<script setup>
-import { ref } from 'vue'
-import SnackBar from '@/components/SnackBar.vue'
 
-const snackbar = ref(false)
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true
+  },
+  message: {
+    type: String,
+    default: ''
+  },
+  timeout: {
+    type: Number,
+    default: 3000
+  },
+  color: {
+    type: String,
+    default: 'success'
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const internalValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 </script>
