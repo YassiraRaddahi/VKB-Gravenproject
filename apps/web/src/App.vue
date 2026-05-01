@@ -2,7 +2,7 @@
   <v-app>
     <v-layout>
     <Header @toggle-drawer="drawer = !drawer" /> 
-        <ListSideBar 
+        <ListSideBar
         v-model="drawer"
       />
 
@@ -29,12 +29,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Breadcrumbs from './components/Breadcrumbs.vue'
 import ListSideBar from './components/ListSideBar.vue'
 
-const drawer = defineModel()
+const drawer = ref(true)
+
+const isLoggedIn = computed(() => !!localStorage.getItem('token'))
+
+const showSidebar = computed(() => isLoggedIn.value)
 </script>
