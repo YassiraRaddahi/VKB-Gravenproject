@@ -18,6 +18,7 @@
         title="Begraafplaatsen"
         to="/begraafplaatsen"
         link
+        active-class="active-link"
       />
 
       <v-list-item
@@ -25,6 +26,7 @@
         title="Beheerders"
         to="/beheerders"
         link
+        active-class="active-link"
       />
     </v-list>
   </v-navigation-drawer>
@@ -33,3 +35,13 @@
 <script setup>
 const drawer = defineModel()
 </script>
+<style scoped>
+.active-link {
+  background-color: #ea5a0b !important;
+  color: white !important;
+}
+
+.active-link .v-icon {
+  color: white !important;
+}
+</style>
