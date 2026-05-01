@@ -13,7 +13,11 @@
 
 <script setup>
 import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  document.title = "Wachtwoord aanpassen - VKB Gravenbeheer"
+})
 </script>
 
 <style scoped>

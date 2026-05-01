@@ -123,6 +123,11 @@ import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  document.title = "Profiel - VKB Gravenbeheer"
+})
 
 const { mdAndUp } = useDisplay()
 

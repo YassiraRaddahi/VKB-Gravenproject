@@ -33,6 +33,11 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  document.title = "Home - VKB Gravenbeheer"
+})
 const slides = [
   { src: '/images/cemeteries/bergklooster.png' },
   { src: '/images/cemeteries/het_heilige_kruis.png' },

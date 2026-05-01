@@ -56,6 +56,9 @@ import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 
+onMounted(() => {
+  document.title = "Graven - VKB Gravenbeheer"
+})
 const route = useRoute()
 const cemetery_id = route.params.cemetery_id
 

@@ -53,6 +53,12 @@ import { email, minLength, required } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  document.title = "Login - VKB Gravenbeheer"
+})
+
 const userStore = useUserStore()
 
 const router = useRouter()

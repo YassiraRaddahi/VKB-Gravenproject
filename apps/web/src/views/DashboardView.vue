@@ -37,7 +37,11 @@
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  document.title = "Dashboard - VKB Gravenbeheer"
+})
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)

@@ -65,6 +65,10 @@ import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import { useDisplay } from 'vuetify'
 
+onMounted(() => {
+  document.title = "Beheerders - VKB Gravenbeheer"
+})
+
 const { smAndUp, mdAndUp } = useDisplay()
 
 let url = 'http://localhost:3001/api/cemetery-managers'

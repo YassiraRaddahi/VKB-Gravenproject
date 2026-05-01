@@ -84,6 +84,10 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 
+
+onMounted(() => {
+  document.title = "Begraafplaatsen - VKB Gravenbeheer"
+})
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
