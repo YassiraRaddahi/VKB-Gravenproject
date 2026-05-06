@@ -8,6 +8,7 @@ pnpm-debug.log*
 
 # Env/config
 .env
+.env*
 .env.*.local
 
 # Build output

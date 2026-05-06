@@ -28,6 +28,11 @@ const seoItems = [
     applied: true,
   },
   {
+    title: 'Google Search Console & sitemap',
+    description: 'Zonder registratie wacht je weken tot Googlebot jouw site toevallig vindt. Via Search Console meld je de site actief aan en stuur je een sitemap.xml in met alle URL\'s. Google indexeert de pagina\'s dan meteen.',
+    applied: false,
+  },
+  {
     title: 'Title tag per pagina',
     description: 'Het sterkste on-page signaal. Google gebruikt de titel om te bepalen waar een pagina over gaat, en hij wordt direct getoond in de zoekresultaten. Uniek per pagina via afterEach-hook in de router.',
     applied: true,
@@ -66,11 +71,6 @@ const seoItems = [
     title: 'Semantische HTML5-structuur',
     description: 'Helpt Google de structuur van de pagina te begrijpen. Indirecte maar consistente winst door gebruik van correcte HTML-elementen.',
     applied: false,
-  },
-  {
-    title: 'Taalinstelling (lang-attribuut)',
-    description: 'Zorgt dat de site verschijnt bij Nederlandstalige zoekopdrachten en niet verkeerd wordt geclassificeerd. lang="nl" ingesteld in index.html.',
-    applied: true,
   },
 ]
 </script>
