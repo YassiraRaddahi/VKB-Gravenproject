@@ -1,0 +1,10 @@
+exports.seed = async function (knex) {
+  await knex('graves').del();
+  await knex('graves').insert([
+    { id: 1, cemetery_id: 5, type: 'algemeen graf', sort: 'dubbel graf', grave_number: 'A.01.04.23', latitude: 52.1234567, longitude: 6.7890123, image_url: '\\images\\graves\\graf-nummer.png', status: 'beschikbaar', last_opened_at: '2026-03-21 22:34:43', last_cleared_at: '2026-03-21 22:34:43', created_at: '2026-03-18 20:01:35', updated_at: '2026-03-18 20:01:35' },
+    { id: 2, cemetery_id: 1, type: 'particulier graf', sort: 'dubbel graf', grave_number: 'A.01.04.23', latitude: 52.1235567, longitude: 6.7891123, image_url: '\\images\\graves\\graf-nummer.png', status: 'in gebruik', last_opened_at: '2026-03-14 22:34:43', last_cleared_at: '2026-03-21 22:34:43', created_at: '2026-03-18 20:01:35', updated_at: '2026-03-18 20:01:35' },
+    { id: 3, cemetery_id: 5, type: 'algemeen graf', sort: 'urnengraf', grave_number: 'D.04.02.49', latitude: 52.1236567, longitude: 6.7892123, image_url: '\\images\\graves\\graf-nummer.png', remarks: 'Steen is beschadigd', status: 'gereserveerd', last_opened_at: '2026-03-21 22:34:43', last_cleared_at: '2026-03-21 22:34:43', created_at: '2026-03-18 20:01:35', updated_at: '2026-03-18 20:01:35' },
+    { id: 4, cemetery_id: 4, type: 'algemeen graf', sort: 'kindergraf', grave_number: 'B.02.09.22', latitude: 52.1237567, longitude: 6.7893123, image_url: '\\images\\graves\\graf-nummer.png', status: 'beschikbaar', last_opened_at: '2026-03-21 22:34:43', last_cleared_at: '2026-03-21 22:34:43', created_at: '2026-03-18 20:01:35', updated_at: '2026-03-18 20:01:35' },
+    { id: 5, cemetery_id: 8, type: 'algemeen graf', sort: 'dubbel graf', grave_number: 'A.13.10.13', latitude: 52.1238567, longitude: 6.7894123, image_url: '\\images\\graves\\graf-nummer.png', remarks: 'Grafrecht verlopen', status: 'in gebruik', last_opened_at: '2026-03-21 22:34:43', last_cleared_at: '2026-03-21 22:34:43', created_at: '2026-03-18 20:01:35', updated_at: '2026-03-18 20:01:35' },
+  ]);
+};
