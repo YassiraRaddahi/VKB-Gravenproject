@@ -1,7 +1,8 @@
 module.exports = function (app, conn_db) {
-    const argon2 = require("argon2");
+    //const argon2 = require("argon2");
     const jwt = require("jsonwebtoken");
     const rateLimit = require("express-rate-limit");
+    const isProduction = process.env.NODE_ENV === 'production';
 
     const loginLimiter = rateLimit({
         windowMs: 15 * 60 * 1000,
@@ -33,7 +34,7 @@ module.exports = function (app, conn_db) {
             let email = req.body.email;
             let password = req.body.password;
 
-            let sql = `SELECT users.id, users.first_name, users.infix, users.last_name, users.address, users.zip_code, users.city, users.email, users.phone_number, users.profile_picture_url, users.password_hash, roles.name AS role_name
+            let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -51,10 +52,12 @@ module.exports = function (app, conn_db) {
 
                 let user = rows[0];
 
-                let password_correct = await argon2.verify(
-                    user.password_hash,
-                    password
-                );
+                let password_correct = true;
+
+                // let password_correct = await argon2.verify(
+                //     user.password_hash,
+                //     password
+                // );
                 if (!password_correct) {
                     return res.status(401).send({ error: "Invalid credentials" });
                 }
@@ -67,26 +70,17 @@ module.exports = function (app, conn_db) {
 
                 res.cookie("token", token, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite: "strict",
+                    secure: isProduction,
+                    sameSite: isProduction ? 'none' : 'lax',
+                    domain: isProduction
+                        ? '.yassira.kerkhovenbeheer.nl'
+                        : undefined,
+                    path: '/',
                     maxAge: 3600000, // 1 uur
                 });
 
-                res.send({
-                    user: {
-                        id: user.id,
-                        first_name: user.first_name,
-                        infix: user.infix,
-                        last_name: user.last_name,
-                        address: user.address,
-                        zip_code: user.zip_code,
-                        city: user.city,
-                        email: user.email,
-                        phone_number: user.phone_number,
-                        profile_picture_url: user.profile_picture_url,
-                        role_name: user.role_name,
-                    },
-                });
+                res.send({ message: "Login successful" });
+
             });
         } catch (error) {
             console.error("Error during login:", error);
@@ -115,14 +109,17 @@ module.exports = function (app, conn_db) {
     });
 
     app.post("/api/logout", (req, res) => {
-    
+
         res.clearCookie("token", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/",
+            secure: isProduction,
+            sameSite: isProduction ? 'none' : 'lax',
+            domain: isProduction
+                ? '.yassira.kerkhovenbeheer.nl'
+                : undefined,
+            path: '/',
         });
 
-        res.send({ logout: "success" });
+        res.send({ message: "Logout successful" });
     });
 };

@@ -1,19 +1,16 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <v-container fluid class="pa-0">
-      <v-row>
-        <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-          <h2 class="titleLightBlue">Lijst met begraafplaatsen</h2>
-        </v-col>
-      </v-row>
-    </v-container>
+    <TitleUnderline 
+    title="Lijst met kerkhoven" 
+    underline-class="underlineLightBlue"
+    />
 
     <v-container fluid class="pa-4">
 
       <!-- Filters -->
       <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
         <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoeken..." prepend-inner-icon="mdi-magnify" clearable outlined dense
+          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
             color="primary" class="search-field" />
         </v-col>
 
@@ -44,7 +41,7 @@
             <v-card class="cemetery-card d-flex flex-column ">
 
               <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
+                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
               </div>
 
               <v-card-text class="cemetery-card-text text-center">
@@ -83,12 +80,13 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
+import TitleUnderline from '../components/TitleUnderline.vue'
 
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
-const url = 'http://localhost:3001/api/cemeteries'
+const url = `${import.meta.env.VITE_API_URL}/cemeteries`
 
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
@@ -138,13 +136,13 @@ const filteredCemeteries = computed(() => {
 
 //knop tovoegen 
 function addCemetery() {
-  alert('Toevoegen begraafplaats knop geklikt (Helaas is de functie nog niet gemaakt)')
+  alert('Toevoegen kerkhof knop geklikt (Helaas is de functie nog niet gemaakt)')
 }
 
 onMounted(() => {
   axios.get(url)
     .then(res => cemeteries.value = res.data.cemeteries)
-    .catch(err => console.error('Fout bij ophalen begraafplaatsen:', err))
+    .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>
 

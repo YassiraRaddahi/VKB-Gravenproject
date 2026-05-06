@@ -1,28 +1,30 @@
 <template>
-  <div class="d-flex justify-center mb-20">
-    <h2 class="titleDarkOrange">
-      Login
-    </h2>
-  </div>
-  <v-form @submit.prevent="submit">
+
+ <TitleUnderline 
+    title="Login" 
+    underline-class="underlineDarkOrange"
+    />
 
 
-
-    <v-container class="fill-height">
-      <v-row class="d-flex justify-center align-center">
-        <v-col cols="12" sm="8" md="5">
-
-          <v-card class="pa-8 rounded-xl bg-darkBlue">
+  <v-container :class="{
+          'px-0': !smAndUp
+        }">
+    <v-row justify="center">
+      <v-col cols="12" sm="8" lg="6" xl="5" xxl="4">
+        <v-card :class="{
+          'rounded-xl': smAndUp,
+          'rounded-0': !smAndUp
+        }" class="pa-8 bg-darkBlue">
+          <v-form @submit.prevent="submit">
             <v-alert v-if="loginError" type="error" class="mb-4">
               {{ loginError }}
             </v-alert>
 
             <v-text-field v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
-              rounded="xl" class="mb-6" :error-messages="v$.email.$errors.map(e => e.$message)"
-              @blur="v$.email.$touch"></v-text-field>
+              rounded="xl" class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch"></v-text-field>
 
             <v-text-field v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
-              color="darkBlue" rounded="xl" class="mb-6" :error-messages="v$.password.$errors.map(e => e.$message)"
+              color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors"
               @blur="v$.password.$touch"></v-text-field>
 
             <v-row class="align-center">
@@ -37,24 +39,26 @@
                 </v-btn>
               </v-col>
             </v-row>
-
-          </v-card>
-
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { email, minLength, required } from '@vuelidate/validators'
+import { email, minLength, required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
-const userStore = useUserStore()
+import { useDisplay} from 'vuetify'
+import TitleUnderline from '../components/TitleUnderline.vue'
 
+const { smAndUp } = useDisplay()
+
+const userStore = useUserStore()
 const router = useRouter()
 const loginError = ref('')
 
@@ -66,11 +70,37 @@ const initialState = {
 const state = reactive({ ...initialState })
 
 const rules = {
-  email: { required, email },
-  password: { required, minLength: minLength(6) },
+  email: {
+    required: helpers.withMessage(
+      'E-mailadres is verplicht',
+      required
+    ),
+    email: helpers.withMessage(
+      'Ongeldig e-mailadres',
+      email
+    )
+  },
+  password: {
+    required: helpers.withMessage(
+      'Wachtwoord is verplicht',
+      required
+    ),
+    minLength: helpers.withMessage(
+      'Wachtwoord moet minimaal 6 tekens zijn',
+      minLength(6)
+    )
+  }
+
 }
 
 const v$ = useVuelidate(rules, state)
+
+const emailErrors = computed(() => {
+  return v$.value.email.$errors.map(e => e.$message)
+})
+const passwordErrors = computed(() => {
+  return v$.value.password.$errors.map(e => e.$message)
+})
 
 async function submit() {
   const isValid = await v$.value.$validate()
@@ -79,7 +109,7 @@ async function submit() {
   loginError.value = ''
 
   try {
-    await axios.post('http://localhost:3001/api/login',
+    await axios.post(`${import.meta.env.VITE_API_URL}/login`,
       { email: state.email, password: state.password, },
       { withCredentials: true, }
     )
@@ -104,5 +134,8 @@ async function submit() {
 </script>
 
 <style scoped>
-/* alleen voor deze component */
+/* Foutmelding tekst */
+:deep(.v-messages__message) {
+  color: #f08360 !important;
+}
 </style>

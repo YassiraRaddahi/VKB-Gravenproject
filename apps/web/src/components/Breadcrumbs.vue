@@ -12,7 +12,7 @@
         <span v-else class="breadcrumb-current">
           {{ item.text }}
         </span>
-        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator"> &gt;</span>
+        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">&nbsp; &gt;</span>
       </li>
     </ul>
   </nav>
@@ -26,7 +26,7 @@ const route = useRoute()
 
 const labelMap = {
   Dashboard: 'Dashboard',
-  Cemeteries: 'Begraafplaatsen',
+  Cemeteries: 'Kerkhoven',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
 }

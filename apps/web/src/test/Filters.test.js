@@ -13,7 +13,7 @@ describe('Filter logica', () => {
     mockCemeteries = [
       {
         id: 1,
-        name: 'Begraafplaats Kranenburg',
+        name: 'Kerkhof Kranenburg',
         city: 'Zwolle',
         cemetery_managers: [
           { id: 2, first_name: 'Bea', last_name: 'Bakker' },
@@ -22,7 +22,7 @@ describe('Filter logica', () => {
       },
       {
         id: 2,
-        name: 'Begraafplaats Meppelerstraatweg',
+        name: 'Kerkhof Meppelerstraatweg',
         city: 'Zwolle',
         cemetery_managers: [
           { id: 15, first_name: 'Tom', last_name: 'van der Meer' }
@@ -30,7 +30,7 @@ describe('Filter logica', () => {
       },
       {
         id: 12,
-        name: 'Begraafplaats Nieuwleusen',
+        name: 'Kerkhof Nieuwleusen',
         city: 'Nieuwleusen',
         cemetery_managers: [
           { id: 3, first_name: 'Liza', last_name: 'Petrushenko' }
@@ -38,7 +38,7 @@ describe('Filter logica', () => {
       },
       {
         id: 13,
-        name: 'Begraafplaats Test',
+        name: 'Kerkhof Test',
         city: 'Amsterdam',
         cemetery_managers: [] // Geen beheerder
       }
@@ -85,7 +85,7 @@ describe('Filter logica', () => {
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Begraafplaats Kranenburg')
+      expect(filtered.value[0].name).toBe('Kerkhof Kranenburg')
     })
 
     it('moet correct filteren op deel van naam', () => {
@@ -93,7 +93,7 @@ describe('Filter logica', () => {
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Begraafplaats Meppelerstraatweg')
+      expect(filtered.value[0].name).toBe('Kerkhof Meppelerstraatweg')
     })
 
     it('moet hoofdletter ongevoelig filteren', () => {
@@ -101,15 +101,15 @@ describe('Filter logica', () => {
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Begraafplaats Nieuwleusen')
+      expect(filtered.value[0].name).toBe('Kerkhof Nieuwleusen')
     })
 
     it('moet meerdere resultaten tonen bij meerdere matches', () => {
-      search.value = 'Begraafplaats'
+      search.value = 'Kerkhof'
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(4)
-      expect(filtered.value.every(c => c.name.includes('Begraafplaats'))).toBe(true)
+      expect(filtered.value.every(c => c.name.includes('Kerkhof'))).toBe(true)
     })
 
     it('moet lege resultaten tonen bij geen matches', () => {
@@ -131,14 +131,14 @@ describe('Filter logica', () => {
       )).toBe(true)
     })
 
-    it('moet lege resultaten tonen voor beheerder zonder begraafplaatsen', () => {
+    it('moet lege resultaten tonen voor beheerder zonder kerkhoven', () => {
       managerFilter.value = 999 // Niet-bestaande beheerder
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(0)
     })
 
-    it('moet begraafplaats zonder beheerder uitsluiten', () => {
+    it('moet kerkhof zonder beheerder uitsluiten', () => {
       managerFilter.value = 2 // Bea Bakker
       const filtered = createFilteredCemeteries()
 
@@ -174,13 +174,13 @@ describe('Filter logica', () => {
 
   describe('Gecombineerde filters', () => {
     it('moet zoeken EN beheerder filter combineren', () => {
-      search.value = 'Begraafplaats'
+      search.value = 'Kerkhof'
       managerFilter.value = 3 // Liza Petrushenko
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(2)
       expect(filtered.value.every(cemetery =>
-        cemetery.name.includes('Begraafplaats') &&
+        cemetery.name.includes('Kerkhof') &&
         cemetery.cemetery_managers.some(manager => manager.id === 3)
       )).toBe(true)
     })
@@ -191,7 +191,7 @@ describe('Filter logica', () => {
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Begraafplaats Nieuwleusen')
+      expect(filtered.value[0].name).toBe('Kerkhof Nieuwleusen')
       expect(filtered.value[0].city).toBe('Nieuwleusen')
     })
 
@@ -205,7 +205,7 @@ describe('Filter logica', () => {
     })
 
     it('moet alle drie filters combineren', () => {
-      search.value = 'Begraafplaats'
+      search.value = 'Kerkhof'
       managerFilter.value = 3 // Liza Petrushenko
       cityFilter.value = 'Nieuwleusen'
       const filtered = createFilteredCemeteries()
@@ -216,7 +216,7 @@ describe('Filter logica', () => {
 
     it('moet lege resultaten tonen bij conflicterende filters', () => {
       managerFilter.value = 3 // Liza Petrushenko
-      cityFilter.value = 'Amsterdam' // Liza heeft geen begraafplaats in Amsterdam
+      cityFilter.value = 'Amsterdam' // Liza heeft geen kerkhof in Amsterdam
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(0)
@@ -273,7 +273,7 @@ describe('Filter logica', () => {
       expect(options[2].title).toBe('Zwolle')
     })
 
-    it('moet beheerder opties uitsluiten voor begraafplaatsen zonder beheerder', () => {
+    it('moet beheerder opties uitsluiten voor kerkhoven zonder beheerder', () => {
       const managerOptions = computed(() => {
         const managers = new Map()
         mockCemeteries.forEach(cemetery => {
@@ -292,7 +292,7 @@ describe('Filter logica', () => {
 
       const options = managerOptions.value
 
-      // Begraafplaats Test (id: 13) heeft geen beheerder, dus geen nieuwe opties
+      // Kerkhof Test (id: 13) heeft geen beheerder, dus geen nieuwe opties
       expect(options.some(opt => opt.title === 'Test Manager')).toBe(false)
     })
   })

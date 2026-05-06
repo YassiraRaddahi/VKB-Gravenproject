@@ -1,9 +1,8 @@
 <template>
-  <div class="d-flex justify-center mb-20">
-    <h2 class="titleLightBlue">
-      Profielgegevens
-    </h2>
-  </div>
+   <TitleUnderline 
+    title="Profielgegevens" 
+    underline-class="underlineLightBlue"
+    />
 
 
   <v-row>
@@ -29,7 +28,7 @@
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" alt="profielfoto" cover>
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -89,7 +88,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
+                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mailadres" required></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -106,9 +105,11 @@
 
         <v-card-actions class="pa-4 px-md-8">
           <v-spacer />
-          <v-btn color="#0d475a" variant="elevated" v-ripple.center>
+          <v-btn color="#0d475a" variant="elevated" v-ripple.center @click="saveProfile">
             Opslaan
           </v-btn>
+
+          <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar" message="Profiel succesvol bijgewerkt!" timeout="2000" />
         </v-card-actions>
 
       </v-card>
@@ -119,16 +120,36 @@
 
 
 <script setup>
+import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import SnackbarSuccess from '@/components/SnackBarSuccess.vue'
+import TitleUnderline from '../components/TitleUnderline.vue'
+
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-import ProfileSideBar from '@/components/ProfileSideBar.vue'
+import { ref} from 'vue'
+
 
 const { mdAndUp } = useDisplay()
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
+const userFullName = () => {
+  return [
+    user.value.first_name,
+    user.value.infix,
+    user.value.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+const showSnackbar = ref(false)
+
+const saveProfile = () => {
+  showSnackbar.value = true
+}
 
 </script>
 

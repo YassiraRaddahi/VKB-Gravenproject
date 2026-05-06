@@ -88,7 +88,7 @@ const mockAxios = vi.mocked(axios)
 const mockCemeteries = [
   {
     id: 1,
-    name: 'Begraafplaats Kranenburg',
+    name: 'Kerkhof Kranenburg',
     city: 'Zwolle',
     image_url: '/images/cemeteries/kranenburg.webp',
     cemetery_managers: [
@@ -98,7 +98,7 @@ const mockCemeteries = [
   },
   {
     id: 2,
-    name: 'Begraafplaats Meppelerstraatweg',
+    name: 'Kerkhof Meppelerstraatweg',
     city: 'Zwolle',
     image_url: '/images/cemeteries/meppelerstraatweg.png',
     cemetery_managers: [
@@ -107,7 +107,7 @@ const mockCemeteries = [
   },
   {
     id: 12,
-    name: 'Begraafplaats Nieuwleusen',
+    name: 'Kerkhof Nieuwleusen',
     city: 'Nieuwleusen',
     image_url: '/images/cemeteries/nieuwleusen.png',
     cemetery_managers: [
@@ -197,7 +197,7 @@ describe('CemeteriesView', () => {
   })
 
   describe('Data initialisatie', () => {
-    it('moet alle begraafplaatsen tonen bij initialisatie', async () => {
+    it('moet alle kerkhoven tonen bij initialisatie', async () => {
       await component.mounted()
       expect(component.cemeteries).toHaveLength(3)
       expect(component.filteredCemeteries).toHaveLength(3)
@@ -261,22 +261,22 @@ describe('CemeteriesView', () => {
       component.search = 'kranenburg'
       component.selectedManager = '2' // Bea Bakker
       expect(component.filteredCemeteries).toHaveLength(1)
-      expect(component.filteredCemeteries[0].name).toBe('Begraafplaats Kranenburg')
+      expect(component.filteredCemeteries[0].name).toBe('Kerkhof Kranenburg')
     })
 
     it('moet beheerder EN plaats filter combineren', () => {
       component.selectedManager = '3' // Liza Petrushenko
       component.selectedCity = 'Zwolle'
       expect(component.filteredCemeteries).toHaveLength(1)
-      expect(component.filteredCemeteries[0].name).toBe('Begraafplaats Kranenburg')
+      expect(component.filteredCemeteries[0].name).toBe('Kerkhof Kranenburg')
     })
 
     it('moet alle filters combineren', () => {
-      component.search = 'begraafplaats'
+      component.search = 'Kerkhof'
       component.selectedManager = '15' // Tom van der Meer
       component.selectedCity = 'Zwolle'
       expect(component.filteredCemeteries).toHaveLength(1)
-      expect(component.filteredCemeteries[0].name).toBe('Begraafplaats Meppelerstraatweg')
+      expect(component.filteredCemeteries[0].name).toBe('Kerkhof Meppelerstraatweg')
     })
   })
 

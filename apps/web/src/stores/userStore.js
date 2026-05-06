@@ -11,7 +11,7 @@ export const useUserStore = defineStore("user", {
     async fetchUser() {
       try {
         const response = await axios.get(
-          "http://localhost:3001/api/active-token",
+          `${import.meta.env.VITE_API_URL}/active-token`,
           {
             withCredentials: true,
           }
@@ -33,7 +33,7 @@ export const useUserStore = defineStore("user", {
 
     async logout() {
       await axios.post(
-        "http://localhost:3001/api/logout",
+        `${import.meta.env.VITE_API_URL}/logout`,
         {},
         { withCredentials: true }
       );
