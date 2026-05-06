@@ -5,6 +5,8 @@ import 'flowbite'
 import App from './App.vue'
 import '@mdi/font/css/materialdesignicons.css'
 
+import { createHead } from '@vueuse/head'
+
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -13,7 +15,6 @@ import * as directives from 'vuetify/directives'
 
 // Pinia
 import { createPinia } from 'pinia'
-import { useUserStore } from '@/stores/userStore'
 
 // Router
 import router from './router'
@@ -38,20 +39,13 @@ const vuetify = createVuetify({
 })
 
 const app = createApp(App)
-
+const head = createHead()
 const pinia = createPinia()
+
+
+
 app.use(pinia)
-
-
-const userStore = useUserStore()
-
-try {
-  await userStore.fetchUser()
-} catch(error) {
-  console.error('User is not logged in')
-  // if this fails, the user is not logged in
-}
-
 app.use(router)
 app.use(vuetify)
+app.use(head)
 app.mount('#app')

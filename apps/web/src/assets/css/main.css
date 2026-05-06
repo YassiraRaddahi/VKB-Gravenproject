@@ -26,6 +26,17 @@ body {
   color: #0d475a;
 }
 
+.anchor-decoration
+{
+  color: #ea5a0b;
+  text-decoration: none;
+}
+
+.anchor-decoration:hover
+{
+  text-decoration: underline;
+}
+
 .list-page-container {
   max-width: 1280px;
   width: 100%;
@@ -34,56 +45,47 @@ body {
   padding-right: 16px;
 }
 
-.title,
-.titleOrange,
-.titleDarkOrange,
-.titleDarkBlue,
-.titleLightBlue,
-.titleYellow {
+.title {
   font-size: 28pt;
+  line-height: 1.2;
   color: #0d475a;
-  display: block;
-  position: relative;
-  width: min-content;
-  text-align: center;
-  z-index: 1;
   font-family: "Hero New bold", sans-serif;
-}
+  display: inline;
+  position: relative;
+  isolation: isolate;
+} 
 
-
-.titleOrange:after,
-.titleDarkOrange:after,
-.titleDarkBlue:after,
-.titleLightBlue:after,
-.titleYellow:after {
+.title::after {
   content: "";
   position: absolute;
+  left: 0;
+  transform: translateX(-0.25em);
+  bottom: 0; 
+  height: 8pt;
+  width: calc(100% + 0.25em);
   z-index: -1;
-  bottom: 0.3em;
-  left: -0.25em;
-  right: 0;
 }
 
 
-.titleOrange:after {
-  border-bottom: 0.307em solid #f08360;
+.underlineOrange::after {
+  background-color: #f08360;
 }
 
-.titleDarkOrange:after {
-  border-bottom: 0.307em solid #ea5a0b;
+.underlineDarkOrange::after {
+  background-color: #ea5a0b;
 }
 
-.titleDarkBlue:after {
-  border-bottom: 0.307em solid #0d475a;
+.underlineDarkBlue::after {
+  background-color: #0d475a;
 }
 
-.titleLightBlue:after {
-  border-bottom: 0.307em solid #bee1e0;
+.underlineLightBlue::after {
+  background-color: #bee1e0;
 }
 
-.titleYellow:after {
+.underlineYellow::after {
 
-  border-bottom: 0.307em solid #feca00;
+  background-color: #feca00;
 }
 
 
@@ -110,14 +112,20 @@ img,
   background-color: #164653;
 }
 
-@media (min-width: 540px) {
+.snackbar-success .v-snackbar__content, .snackbar-success .v-snackbar__wrapper {
+  font-weight: 500;
+  color: #0d6b3c;
+}
 
-  .title,
-  .titleOrange,
-  .titleDarkOrange,
-  .titleDarkBlue,
-  .titleLightBlue,
-  .titleYellow {
-    width: fit-content;
+
+
+@media (max-width: 750px) {
+
+  .title {
+    font-size: 20pt; 
+  }
+
+  .title__text::after {
+    height: 6.15pt;
   }
 }

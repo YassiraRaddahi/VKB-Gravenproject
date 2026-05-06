@@ -3,11 +3,15 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-}))
+  origin: [
+    'http://localhost:5173',
+    'https://yassira.kerkhovenbeheer.nl'
+  ],
+  credentials: true
+}));
 
 // Middleware om JSON-gegevens te kunnen verwerken
 app.use(express.json());

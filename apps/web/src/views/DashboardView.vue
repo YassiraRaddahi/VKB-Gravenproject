@@ -2,7 +2,7 @@
   <v-container fluid class="pa-0">
     <v-row>
       <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-        <h2 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h2>
+        <h1 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h1>
       </v-col>
     </v-row>
   </v-container>
@@ -12,7 +12,7 @@
       <v-col cols="12" md="4" class="d-flex justify-center">
         <v-card class="dashboard-card" elevation="3" @click="goToCemeteries">
           <v-card-text class="dashboard-card-text text-center">
-            <div>Beheer Begraafplaatsen</div>
+            <div>Beheer Kerkhoven</div>
             <div class="dashboard-card-subtitle">
               <v-icon size="48">mdi-cross</v-icon>
             </div>

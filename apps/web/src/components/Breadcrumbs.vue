@@ -26,7 +26,7 @@ const route = useRoute()
 
 const labelMap = {
   Dashboard: 'Dashboard',
-  Cemeteries: 'Begraafplaatsen',
+  Cemeteries: 'Kerkhoven',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
 }

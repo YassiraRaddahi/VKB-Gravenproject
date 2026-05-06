@@ -3,8 +3,10 @@
 
     <!-- left side -->
 
+    <v-app-bar-nav-icon v-if="showDrawerToggle" @click="$emit('toggle-drawer')" />
+
     <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
-      <img :src="logoUrl" :key="logoUrl" alt="logo" height="70" />
+      <img :src="logoUrl" :key="logoUrl" alt="Logo VKB met kerken in frisse kleuren die deels buiten een kader vallen" height="70" />
     </v-btn>
 
     <v-spacer />
@@ -13,7 +15,7 @@
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="user?.id ? false : true">
+    <template v-if="!user?.id">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
           Log In
@@ -26,7 +28,7 @@
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" alt="profielfoto" cover>
+            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
                   mdi-account
@@ -53,11 +55,27 @@
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 
+defineProps({
+  showDrawerToggle: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const logoUrl = '/images/logo/VKB_Logo.svg'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
+const userFullName = () => {
+  return [
+    user.value.first_name,
+    user.value.infix,
+    user.value.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
 
 </script>
 

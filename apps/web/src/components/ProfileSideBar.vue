@@ -1,7 +1,7 @@
 <template>
   <!-- Sidebar -->
     <v-col cols="12" lg="2" class="sidebar">
-      <div class="sidebar-inner d-flex flex-column justify-space-between">
+      <div class="h-100 d-flex flex-column justify-space-between">
 
         <!-- Boven -->
         <div>
@@ -20,7 +20,7 @@
         <!-- Onder -->
         <div class="logout-wrapper">
           <v-list-item class="logout-link" @click="userStore.logout()">
-            <v-list-item-title>Log uit</v-list-item-title>
+            <v-list-item-title>Log uit <v-icon>mdi-door-open</v-icon></v-list-item-title>
           </v-list-item>
         </div>
 
@@ -54,13 +54,28 @@ const userStore = useUserStore()
 }
 
 .sidebar-link .v-list-item-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #0d475a;
 }
 
 .activeLink .v-list-item-title {
   text-decoration: underline;
+}
+
+/* Hover state */
+:deep(.v-list-item:hover) {
+  background-color: rgba(190, 225, 224, 0.16); /* #bee1e0 */
+}
+
+/* Active (current route) */
+:deep(.v-list-item--active) {
+  background-color: rgba(190, 225, 224, 0.28);
+}
+
+/* Active + hover (slightly stronger) */
+:deep(.v-list-item--active:hover) {
+  background-color: rgba(190, 225, 224, 0.35);
 }
 
 .logout-wrapper {
@@ -74,7 +89,7 @@ const userStore = useUserStore()
 
 .logout-link .v-list-item-title {
   color: #ff4d4d;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 /* ===== MOBILE ===== */
@@ -89,7 +104,7 @@ const userStore = useUserStore()
 
   .sidebar-link .v-list-item-title,
   .logout-link .v-list-item-title {
-    font-size: 18px;
+    font-size: 16px;
   }
 
 }
