@@ -31,6 +31,25 @@
       </v-col>
     </v-row>
   </v-container>
+    <!-- //* POPUP / DIALOG START //* -->
+  <v-dialog v-model="infoDialog" max-width="500">
+    <v-card>
+      
+      <v-card-title>Meer informatie</v-card-title>
+
+      <v-card-text>
+        Via dit dashboard kunt u begraafplaatsen en beheerders beheren.
+      </v-card-text>
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn color="primary" @click="infoDialog = false">
+          Sluiten
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <!-- //* POPUP / DIALOG EINDE //* -->
 </template>
 
 <script setup>
