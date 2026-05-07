@@ -29,12 +29,14 @@ const labelMap = {
   Cemeteries: 'Begraafplaatsen',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
+  Seo: 'SEO & Optimalisatie'
 }
 
 const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
+  Seo: 'Dashboard'
 }
 
 const routeParams = {

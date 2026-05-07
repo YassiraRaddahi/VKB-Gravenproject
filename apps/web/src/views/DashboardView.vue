@@ -2,7 +2,9 @@
   <v-container fluid class="pa-0">
     <v-row>
       <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-        <h2 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h2>
+        <h2 class="title">
+          Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!
+        </h2>
       </v-col>
     </v-row>
   </v-container>
@@ -19,12 +21,26 @@
           </v-card-text>
         </v-card>
       </v-col>
+
       <v-col cols="12" md="4" class="d-flex justify-center">
         <v-card class="dashboard-card" elevation="3" @click="goToManagers">
           <v-card-text class="dashboard-card-text text-center">
             <div>Beheer Beheerders</div>
             <div class="dashboard-card-subtitle">
               <v-icon size="48">mdi-account-group</v-icon>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row class="d-flex justify-center gap-6 mt-8">
+      <v-col cols="12" md="4" class="d-flex justify-center">
+        <v-card class="dashboard-card" elevation="3" @click="goToSeo">
+          <v-card-text class="dashboard-card-text text-center">
+            <div>SEO & Optimalisatie</div>
+            <div class="dashboard-card-subtitle">
+              <v-icon size="48">mdi-magnify</v-icon>
             </div>
           </v-card-text>
         </v-card>
@@ -38,11 +54,9 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 
-
+const router = useRouter()
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
-
-const router = useRouter()
 
 function goToCemeteries() {
   router.push({ name: 'Cemeteries' })
@@ -52,7 +66,9 @@ function goToManagers() {
   router.push({ name: 'CemeteryManagers' })
 }
 
-
+function goToSeo() {
+  router.push({ name: 'Seo' })
+}
 </script>
 
 <style scoped>
@@ -72,13 +88,10 @@ function goToManagers() {
   color: white;
   font-size: 1.2rem;
   font-weight: 600;
-  text-transform: none;
 }
 
 .dashboard-card-subtitle {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 0.95rem;
   margin-top: 0.5rem;
-  font-weight: 400;
 }
 </style>
