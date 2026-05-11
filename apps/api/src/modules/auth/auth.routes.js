@@ -1,5 +1,5 @@
 module.exports = function (app, conn_db) {
-    //const argon2 = require("argon2");
+    const bcrypt = require("bcrypt");
     const jwt = require("jsonwebtoken");
     const rateLimit = require("express-rate-limit");
     const isProduction = process.env.NODE_ENV === 'production';
@@ -52,12 +52,7 @@ module.exports = function (app, conn_db) {
 
                 let user = rows[0];
 
-                let password_correct = true;
-
-                // let password_correct = await argon2.verify(
-                //     user.password_hash,
-                //     password
-                // );
+                const password_correct = await bcrypt.compare(password, user.password_hash);
                 if (!password_correct) {
                     return res.status(401).send({ error: "Invalid credentials" });
                 }
