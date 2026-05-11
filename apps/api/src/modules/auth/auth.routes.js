@@ -73,7 +73,7 @@ module.exports = function (app, conn_db) {
                     secure: isProduction,
                     sameSite: isProduction ? 'none' : 'lax',
                     domain: isProduction
-                        ? '.yassira.kerkhovenbeheer.nl'
+                        ? '.bram.kerkhovenbeheer.nl'
                         : undefined,
                     path: '/',
                     maxAge: 3600000, // 1 uur
@@ -115,7 +115,7 @@ module.exports = function (app, conn_db) {
             secure: isProduction,
             sameSite: isProduction ? 'none' : 'lax',
             domain: isProduction
-                ? '.yassira.kerkhovenbeheer.nl'
+                ? '.bram.kerkhovenbeheer.nl'
                 : undefined,
             path: '/',
         });
