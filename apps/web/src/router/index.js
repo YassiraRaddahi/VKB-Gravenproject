@@ -9,7 +9,6 @@ import Graves from "../views/GravesView.vue";
 import CemeteryManagers from "../views/CemeteryManagersView.vue";
 import Profile from "../views/ProfileView.vue";
 import Security from "../views/SecurityView.vue";
-import TopTenSEO from "../views/TopTenSEO.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -109,17 +108,6 @@ const router = createRouter({
         description: "Beheer hier uw beveiligingsinstellingen en wachtwoord. Houd uw account veilig voor een optimale ervaring met Kerkhovenbeheer Nederland."  
       },
     },
-    {
-      path: "/top-10-seo",
-      name: "TopTenSEO",
-      component: TopTenSEO,
-      meta: { 
-        showBreadcrumbs: false,
-        showNavigationDrawer: true,
-        title: "Top 10 SEO-toepassingen | Kerkhovenbeheer Nederland",
-        description: "Lees mijn top 10 belangrijkste SEO-toepassingen om websites beter zichtbaar te maken in zoekmachines en meer bezoekers te trekken."  
-      },
-    }
   ],
 });
 
