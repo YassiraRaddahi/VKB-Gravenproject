@@ -9,7 +9,13 @@
     "dev": "nodemon src/server.js",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "migrate:rollback:all": "knex migrate:rollback --all",
+    "migrate:down": "knex migrate:down",
+    "migrate:up": "knex migrate:up",
+    "migrate:status": "knex migrate:status",
+    "migrate:make": "knex migrate:make",
+    "seed": "knex seed:run",
+    "seed:make": "knex seed:make"
   },
   "repository": {
     "type": "git",
