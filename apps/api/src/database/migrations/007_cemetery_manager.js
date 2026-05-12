@@ -5,6 +5,7 @@ exports.up = function (knex) {
     table.integer('cemetery_id').unsigned().notNullable()
       .references('id').inTable('cemeteries').onDelete('CASCADE');
     table.primary(['user_id', 'cemetery_id']);
+    table.timestamps(true, true);
   });
 };
 

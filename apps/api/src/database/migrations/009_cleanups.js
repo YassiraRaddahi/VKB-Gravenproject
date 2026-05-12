@@ -5,9 +5,8 @@ exports.up = function (knex) {
       .references('id').inTable('graves');
     table.enu('status', ['volledig', 'gedeeltelijk', 'niet schoon']).notNullable();
     table.text('remarks').defaultTo(null);
-    table.timestamp('cleaned_at').defaultTo(null);
-    table.timestamp('created_at').defaultTo(null);
-    table.timestamp('updated_at').defaultTo(null);
+    table.timestamp('cleaned_at').nullable().defaultTo(null);
+    table.timestamps(true, true);
   });
 };
 

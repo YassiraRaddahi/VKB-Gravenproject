@@ -89,7 +89,7 @@ module.exports = function (app, conn_db) {
     });
 
     app.get("/api/active-token", verifyToken, (req, res) => {
-        const sql = `SELECT users.id, users.first_name, users.infix, users.last_name, users.address, users.zip_code, users.city, users.email, users.phone_number, users.profile_picture_url, roles.name AS role_name
+        const sql = `SELECT users.id, users.initials, users.first_name, users.infix, users.last_name, users.partner_infix, users.partner_last_name, users.name_usage, users.date_of_birth, users.place_of_birth, users.street_name, users.house_number, users.house_letter, users.house_number_addition, users.zip_code, users.city, users.email, users.phone_number, users.mobile_number, users.profile_picture_url, users.position, roles.name AS role_name
         FROM users
         JOIN role_user ON users.id = role_user.user_id
         JOIN roles ON role_user.role_id = roles.id

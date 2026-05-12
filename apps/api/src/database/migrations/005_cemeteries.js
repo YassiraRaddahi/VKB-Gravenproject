@@ -11,8 +11,7 @@ exports.up = function (knex) {
     table.text('remarks').defaultTo(null);
     table.integer('municipalityID').unsigned().notNullable()
       .references('id').inTable('municipalities').onUpdate('CASCADE');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.timestamps(true, true);
   });
 };
 

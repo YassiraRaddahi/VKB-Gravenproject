@@ -4,6 +4,7 @@ exports.up = function (knex) {
     table.integer('cemetery_id').unsigned().notNullable()
       .references('id').inTable('cemeteries');
     table.string('image_url', 255).notNullable();
+    table.timestamps(true, true);
   });
 };
 
