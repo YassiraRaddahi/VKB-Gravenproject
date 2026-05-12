@@ -5,7 +5,6 @@
             <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" value="dashboard" :to="{ name: 'Dashboard' }"></v-list-item>
             <v-list-item prepend-icon="mdi-cross" title="Kerkhoven" value="cemeteries" :to="{ name: 'Cemeteries' }"></v-list-item>
             <v-list-item prepend-icon="mdi-account-multiple" title="Beheerders" value="cemetery_managers" :to="{ name: 'CemeteryManagers' }"></v-list-item>
-            <v-list-item prepend-icon="mdi-format-list-numbered" title="Top 10 SEO" value="top_ten_seo" :to="{ name: 'TopTenSEO' }"></v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
