@@ -110,7 +110,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/beheerders/:cemetery_manager_id",
+      path: "/beheerders/:user_id",
       name: "ManagersDetails",
       component: ManagersDetails,
       meta: { 

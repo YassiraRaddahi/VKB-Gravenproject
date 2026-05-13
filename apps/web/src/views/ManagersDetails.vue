@@ -6,7 +6,7 @@
     />
 <v-container>
 <v-row class="manager-container">
-    <div class="">
+    <div class="manager-details">
         
     </div>
 </v-row>
@@ -14,14 +14,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
 import TitleUnderline from '@/components/TitleUnderline.vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const managerId = route.params.id
+const managerId = route.params.user_id
 
+const managerFullName = (cemeteryManager) => {
+  return [
+    cemeteryManager.first_name,
+    cemeteryManager.infix,
+    cemeteryManager.last_name
+  ]
+    .join(' ')
+}
 </script>
 
 <style scoped>

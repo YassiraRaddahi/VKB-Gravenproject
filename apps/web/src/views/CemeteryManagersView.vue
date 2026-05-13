@@ -1,9 +1,6 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
- <TitleUnderline 
-    title="Lijst met beheerders" 
-    underline-class="underlineLightBlue"
-    />
+    <TitleUnderline title="Lijst met beheerders" underline-class="underlineLightBlue" />
 
     <v-container fluid class="pa-4">
       <v-row no-gutters class="d-flex align-center mb-6">
@@ -22,29 +19,35 @@
       <v-row dense :key="$route.fullPath">
         <v-col v-for="cemeteryManager in filteredManagers" :key="cemeteryManager.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
-            <v-card-text class="text-center d-flex flex-column justify-center align-center">
-              <v-avatar :size="smAndUp ? 200 : 150">
-                <!-- Profile picture or fallback icon -->
-                <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
-                  :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath" :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
-                  <template #error>
-                    <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
-                      mdi-account
-                    </v-icon>
-                  </template>
-                </v-img>
+           <router-link
+    :to="`/beheerders/${cemeteryManager.id}`"
+    class="text-decoration-none w-100 d-flex full-height"
+  >
+            <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
+              <v-card-text class="text-center d-flex flex-column justify-center align-center">
+                <v-avatar :size="smAndUp ? 200 : 150">
+                  <!-- Profile picture or fallback icon -->
+                  <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
+                    :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath"
+                    :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
+                    <template #error>
+                      <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
+                        mdi-account
+                      </v-icon>
+                    </template>
+                  </v-img>
 
 
-                <v-icon v-else color="#0d475a" :size="mdAndUp ? 200 : 150">
-                  mdi-account
-                </v-icon>
-              </v-avatar>
-              <div class="text-subtitle-1 font-weight-medium">
-                {{ managerFullName(cemeteryManager) }}
-              </div>
-            </v-card-text>
-          </v-card>
+                  <v-icon v-else color="#0d475a" :size="mdAndUp ? 200 : 150">
+                    mdi-account
+                  </v-icon>
+                </v-avatar>
+                <div class="text-subtitle-1 font-weight-medium">
+                  {{ managerFullName(cemeteryManager) }}
+                </div>
+              </v-card-text>
+            </v-card>
+          </router-link>
         </v-col>
       </v-row>
     </v-container>
@@ -56,6 +59,7 @@ import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import { useDisplay } from 'vuetify'
 import TitleUnderline from '../components/TitleUnderline.vue'
+
 
 const { smAndUp, mdAndUp } = useDisplay()
 
@@ -93,7 +97,12 @@ function addManager() {
 onMounted(() => {
   axios.get(url)
     .then(response => {
-      cemeteryManagers.value = response.data['cemetery-managers']
+      console.log(response.data)
+
+      cemeteryManagers.value =
+        response.data['cemetery-managers'] ||
+        response.data.cemeteryManagers ||
+        response.data
     })
     .catch(error => {
       console.error('Fout bij ophalen beheerders:', error)
