@@ -17,10 +17,10 @@
       </v-row>
 
       <v-row dense :key="$route.fullPath">
-        <v-col v-for="cemeteryManager in filteredManagers" :key="cemeteryManager.id" cols="12" sm="6" md="4" lg="3"
+        <v-col v-for="cemeteryManager in filteredManagers" :key="cemeteryManager.user_id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
            <router-link
-    :to="`/beheerders/${cemeteryManager.id}`"
+    :to="`/beheerders/${managerFullName(cemeteryManager)}`"
     class="text-decoration-none w-100 d-flex full-height"
   >
             <v-card class="manager-card py-6 px-4 d-flex flex-column h-100" elevation="4">
