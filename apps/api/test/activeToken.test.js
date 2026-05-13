@@ -2,14 +2,53 @@ import { describe, it, expect } from 'vitest'
 import request from 'supertest'
 import app from '../src/app.js'
 
+const permissionFieldMap = {
+    'user.view.name': [
+      'initials',
+      'first_name',
+      'infix',
+      'last_name'
+    ],
 
-describe('GET /api/active-token', () => {
+    'user.view.partner_name': [
+      'partner_infix',
+      'partner_last_name'
+    ],
 
-  it('should return the active user when authenticated', async() => {
+    'user.view.name_usage': ['name_usage'],
 
-    const agent = request.agent(app);
+    'user.view.date_of_birth': ['date_of_birth'],
+    'user.view.place_of_birth': ['place_of_birth'],
 
-    //login to get a valid token
+    'user.view.address': [
+      'street_name',
+      'house_number',
+      'house_letter',
+      'house_number_addition',
+      'zip_code',
+      'city'
+    ],
+
+    'user.view.contact': [
+      'email',
+      'phone_number',
+      'mobile_number'
+    ],
+
+    'user.view.profile_picture': [
+      'profile_picture_url'
+    ],
+
+    'user.view.position': ['position'],
+    'user.view.role': ['role_name']
+  };
+
+describe('GET /api/active-token', ()  => {
+
+  it('should return correct fields for the admin', async () => {
+     const agent = request.agent(app);
+
+    //login as admin to get a valid token
     const loginResponse = await agent
       .post('/api/login')
       .send({ email: 'j.kempenaar@kerkrentmeester.nl', password: 'test123' })
@@ -21,33 +60,374 @@ describe('GET /api/active-token', () => {
     
     expect(response.status).toBe(200);
 
-    // check expected user fields
-    expect(response.body).toHaveProperty('user');
-    expect(response.body.user).toHaveProperty('id');
-    expect(response.body.user).toHaveProperty('initials');
-    expect(response.body.user).toHaveProperty('first_name');
-    expect(response.body.user).toHaveProperty('infix');
-    expect(response.body.user).toHaveProperty('last_name');
-    expect(response.body.user).toHaveProperty('partner_infix');
-    expect(response.body.user).toHaveProperty('partner_last_name');
-    expect(response.body.user).toHaveProperty('name_usage');
-    expect(response.body.user).toHaveProperty('date_of_birth');
-    expect(response.body.user).toHaveProperty('place_of_birth');
-    expect(response.body.user).toHaveProperty('street_name');
-    expect(response.body.user).toHaveProperty('house_number');
-    expect(response.body.user).toHaveProperty('house_letter');
-    expect(response.body.user).toHaveProperty('house_number_addition');
-    expect(response.body.user).toHaveProperty('zip_code');
-    expect(response.body.user).toHaveProperty('city');
-    expect(response.body.user).toHaveProperty('email');
-    expect(response.body.user.email).toBe('j.kempenaar@kerkrentmeester.nl');
-    expect(response.body.user).toHaveProperty('phone_number');
-    expect(response.body.user).toHaveProperty('mobile_number');
-    expect(response.body.user).toHaveProperty('profile_picture_url');
-    expect(response.body.user).toHaveProperty('position');
-    expect(response.body.user).toHaveProperty('role_name');
+    // the admin
+    const user = response.body.user;
+    const permissions = response.body.permissions;
+
+    expect(user).toBeDefined();
+    expect(permissions).toBeDefined();
+
+    // checks that the user object is not empty
+    expect(Object.keys(user).length).toBeGreaterThan(0);
+
+    // check expected permissions for admin
+
+    expect(Array.isArray(permissions)).toBe(true);
+
+
+    const expectedPermissions = [
+      'user.view.name',
+      'user.edit.name',
+      'user.view.contact',
+      'user.edit.contact',
+      'user.view.profile_picture',
+      'user.edit.profile_picture',
+      'user.view.role',
+      'user.view.position',
+      'user.edit.position'
+    ];
+
+    expectedPermissions.forEach(permission => {
+      expect(permissions).toContain(permission);
+    });
+
+
+    // check that admin does not have permissions that should be hidden
+    const hiddenPermissions = [
+      'user.view.partner_name',
+      'user.edit.partner_name',
+      'user.view.name_usage',
+      'user.edit.name_usage',
+      'user.view.date_of_birth',
+      'user.view.place_of_birth',
+      'user.view.address'
+    ];
+
+    hiddenPermissions.forEach(permission => {
+      expect(permissions).not.toContain(permission);
+    });
+
+    // check expected user fields for admin
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).toHaveProperty(field);
+        });
+      }
+    });
+
+     // checks absence of user fields that should be hidden for admin
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (!permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).not.toHaveProperty(field);
+        });
+      }
+    });
+
+    
+    // checks that all returned user fields are allowed by the permissions
+    Object.keys(user).forEach(field => {
+      
+      if(field === 'id') return;
+      
+      const isAllowed = Object.entries(permissionFieldMap).some(
+        ([permission, fields]) =>
+          permissions.includes(permission) && fields.includes(field)
+      );
+
+      expect(isAllowed).toBe(true);
+    });
+
+
   })
-  
+
+  it('should return correct fields for the cemetery manager', async () => {
+    const agent = request.agent(app);
+
+    //login as cemetery manager to get a valid token
+    const loginResponse = await agent
+      .post('/api/login')
+      .send({ email: 'liza2511liza@gmail.com', password: 'test123' })
+
+    expect(loginResponse.status).toBe(200);
+    
+    // test case for valid token
+    const response = await agent.get('/api/active-token')
+    
+    expect(response.status).toBe(200);
+
+    // the cemetery manager
+    const user = response.body.user;
+    const permissions = response.body.permissions;
+
+    expect(user).toBeDefined();
+    expect(permissions).toBeDefined();
+
+    // checks that the user object is not empty
+    expect(Object.keys(user).length).toBeGreaterThan(0);
+
+    // check expected permissions for cemetery manager
+
+    expect(Array.isArray(permissions)).toBe(true);
+
+
+    const expectedPermissions = [
+      'user.view.name',
+      'user.edit.name',
+      'user.view.contact',
+      'user.edit.contact',
+      'user.view.profile_picture',
+      'user.edit.profile_picture',
+      'user.view.role',
+      'user.view.position',
+      'user.edit.position'
+    ];
+
+    expectedPermissions.forEach(permission => {
+      expect(permissions).toContain(permission);
+    });
+
+
+    // check that cemetery manager does not have permissions that should be hidden
+    const hiddenPermissions = [
+      'user.view.partner_name',
+      'user.edit.partner_name',
+      'user.view.name_usage',
+      'user.edit.name_usage',
+      'user.view.date_of_birth',
+      'user.view.place_of_birth',
+      'user.view.address'
+    ];
+
+    hiddenPermissions.forEach(permission => {
+      expect(permissions).not.toContain(permission);
+    });
+
+    // check expected user fields for cemetery manager
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).toHaveProperty(field);
+        });
+      }
+    });
+
+     // checks absence of user fields that should be hidden for cemetery manager
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (!permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).not.toHaveProperty(field);
+        });
+      }
+    });
+
+    
+    // checks that all returned user fields are allowed by the permissions
+    Object.keys(user).forEach(field => {
+      
+      if(field === 'id') return;
+      
+      const isAllowed = Object.entries(permissionFieldMap).some(
+        ([permission, fields]) =>
+          permissions.includes(permission) && fields.includes(field)
+      );
+
+      expect(isAllowed).toBe(true);
+    });
+
+
+  })
+
+   it('should return correct fields for the grave owner', async () => {
+    const agent = request.agent(app);
+
+    //login as grave owner to get a valid token
+    const loginResponse = await agent
+      .post('/api/login')
+      .send({ email: 'yassiraraddahi@gmail.com', password: 'test123' })
+
+    expect(loginResponse.status).toBe(200);
+    
+    // test case for valid token
+    const response = await agent.get('/api/active-token')
+    
+    expect(response.status).toBe(200);
+
+    // the grave owner
+    const user = response.body.user;
+    const permissions = response.body.permissions;
+
+    expect(user).toBeDefined();
+    expect(permissions).toBeDefined();
+
+    // checks that the user object is not empty
+    expect(Object.keys(user).length).toBeGreaterThan(0);
+
+    // check expected permissions for grave owner
+    expect(Array.isArray(permissions)).toBe(true);
+
+    const expectedPermissions = [
+      'user.view.name',
+      'user.edit.name',
+      'user.view.contact',
+      'user.edit.contact',
+      'user.view.profile_picture',
+      'user.edit.profile_picture',
+      'user.view.role',
+      'user.view.partner_name',
+      'user.edit.partner_name',
+      'user.view.name_usage',
+      'user.edit.name_usage',
+      'user.view.date_of_birth',
+      'user.view.place_of_birth',
+      'user.view.address',
+      'user.edit.address'
+    ];
+
+    expectedPermissions.forEach(permission => {
+      expect(permissions).toContain(permission);
+    });
+
+
+    // check that grave owner does not have permissions that should be hidden
+    const hiddenPermissions = [
+      'user.view.position',
+      'user.edit.position'
+    ];
+
+    hiddenPermissions.forEach(permission => {
+      expect(permissions).not.toContain(permission);
+    });
+
+    // check expected user fields for grave owner
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).toHaveProperty(field);
+        });
+      }
+    });
+
+     // checks absence of user fields that should be hidden for grave owner
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (!permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).not.toHaveProperty(field);
+        });
+      }
+    });
+
+    
+    // checks that all returned user fields are allowed by the permissions
+    Object.keys(user).forEach(field => {
+      
+      if(field === 'id') return;
+      
+      const isAllowed = Object.entries(permissionFieldMap).some(
+        ([permission, fields]) =>
+          permissions.includes(permission) && fields.includes(field)
+      );
+
+      expect(isAllowed).toBe(true);
+    });
+
+  })
+
+   it('should return correct fields for the grave caretaker', async () => {
+    
+     const agent = request.agent(app);
+
+    //login as grave caretaker to get a valid token
+    const loginResponse = await agent
+      .post('/api/login')
+      .send({ email: 'lisa.devries@gmail.com', password: 'test123' })
+
+    expect(loginResponse.status).toBe(200);
+    
+    // test case for valid token
+    const response = await agent.get('/api/active-token')
+    
+    expect(response.status).toBe(200);
+
+    // the grave caretaker
+    const user = response.body.user;
+    const permissions = response.body.permissions;
+
+    expect(user).toBeDefined();
+    expect(permissions).toBeDefined();
+
+    // checks that the user object is not empty
+    expect(Object.keys(user).length).toBeGreaterThan(0);
+
+    // check expected permissions for grave caretaker
+    expect(Array.isArray(permissions)).toBe(true);
+
+    const expectedPermissions = [
+     'user.view.name',
+      'user.edit.name',
+      'user.view.contact',
+      'user.edit.contact',
+      'user.view.profile_picture',
+      'user.edit.profile_picture',
+      'user.view.role',
+      'user.view.position',
+      'user.edit.position'
+    ];
+
+    expectedPermissions.forEach(permission => {
+      expect(permissions).toContain(permission);
+    });
+
+
+    // check that grave caretaker does not have permissions that should be hidden
+    const hiddenPermissions = [
+      'user.view.partner_name',
+      'user.edit.partner_name',
+      'user.view.name_usage',
+      'user.edit.name_usage',
+      'user.view.date_of_birth',
+      'user.view.place_of_birth',
+      'user.view.address'
+    ];
+
+    hiddenPermissions.forEach(permission => {
+      expect(permissions).not.toContain(permission);
+    });
+
+    // check expected user fields for grave caretaker
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).toHaveProperty(field);
+        });
+      }
+    });
+
+     // checks absence of user fields that should be hidden for grave caretaker
+    Object.entries(permissionFieldMap).forEach(([permission, fields]) => {
+      if (!permissions.includes(permission)) {
+        fields.forEach(field => {
+          expect(user).not.toHaveProperty(field);
+        });
+      }
+    });
+
+    
+    // checks that all returned user fields are allowed by the permissions
+    Object.keys(user).forEach(field => {
+      
+      if(field === 'id') return;
+      
+      const isAllowed = Object.entries(permissionFieldMap).some(
+        ([permission, fields]) =>
+          permissions.includes(permission) && fields.includes(field)
+      );
+
+      expect(isAllowed).toBe(true);
+    });
+
+  })
 
   // test case for missing token
   it('should return 401 when no token is provided', async() => {
@@ -64,55 +444,6 @@ describe('GET /api/active-token', () => {
       .set('Cookie', 'token=invalidtoken');
 
     expect(response.status).toBe(401);
-  })
+  })  
 
 })
-
-
- // describe('admin', () => {
-  //   it('returns full profile', () => {
-  //     beforeEach(() => {
-  //       // start transaction
-  //     })
-
-  //     afterEach(() => {
-  //       // rollback transaction
-  //     })
-  //   })
-  // })
-
-  // describe('beheerder', () => {
-  //   it('returns limited profile', () => {
-  //     beforeEach(() => {
-  //       // start transaction
-  //     })
-
-  //     afterEach(() => {
-  //       // rollback transaction
-  //     })
-  //   })
-  // })
-
-  // describe('rechthebbende', () => {
-  //   it('returns relation data', () => {
-  //     beforeEach(() => {
-  //       // start transaction
-  //     })
-
-  //     afterEach(() => {
-  //       // rollback transaction
-  //     })
-  //   })
-  // })
-
-  // describe('grafonderhouder', () => {
-  //   it('returns 401 without token', () => {
-  //     beforeEach(() => {
-  //       // start transaction
-  //     })
-
-  //     afterEach(() => {
-  //       // rollback transaction
-  //     })
-  //   })
-  // })

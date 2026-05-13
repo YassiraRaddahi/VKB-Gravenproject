@@ -140,7 +140,7 @@ exports.seed = async function (knex) {
       last_name: 'Meijer',
       partner_infix: null,
       partner_last_name: 'Super Sus',
-      name_usage: 'parnternaam',
+      name_usage: 'partnernaam',
       date_of_birth: '2000-01-16',
       place_of_birth: 'Dwingeloo',
       date_of_death: null,

@@ -126,7 +126,7 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/grave-caretaker', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
+            let sql = `SELECT users.first_name, users.infix, users.last_name, users.email, users.phone_number, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -169,7 +169,7 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/grave-owner', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
+            let sql = `SELECT users.first_name, users.infix, users.last_name, users.email, users.phone_number, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
