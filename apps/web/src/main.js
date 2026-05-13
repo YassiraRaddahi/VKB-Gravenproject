@@ -1,24 +1,23 @@
 import { createApp } from 'vue'
 import './assets/css/main.css'
-import 'flowbite'
-
+ 
 import App from './App.vue'
 import '@mdi/font/css/materialdesignicons.css'
-
-import { createHead } from '@vueuse/head'
-
+ 
+import { createHead } from '@unhead/vue'
+ 
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-
+ 
 // Pinia
 import { createPinia } from 'pinia'
-
+ 
 // Router
 import router from './router'
-
+ 
 const vuetify = createVuetify({
   components,
   directives,
@@ -37,13 +36,13 @@ const vuetify = createVuetify({
     }
   }
 })
-
+ 
 const app = createApp(App)
 const head = createHead()
 const pinia = createPinia()
-
-
-
+ 
+ 
+ 
 app.use(pinia)
 app.use(router)
 app.use(vuetify)

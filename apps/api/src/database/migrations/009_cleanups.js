@@ -4,10 +4,10 @@ exports.up = function (knex) {
     table.integer('grave_id').unsigned().notNullable()
       .references('id').inTable('graves');
     table.enu('status', ['volledig', 'gedeeltelijk', 'niet schoon']).notNullable();
-    table.text('remarks').defaultTo(null);
-    table.timestamp('cleaned_at').defaultTo(null);
-    table.timestamp('created_at').defaultTo(null);
-    table.timestamp('updated_at').defaultTo(null);
+    table.text('remarks').nullable().defaultTo(null);
+    table.timestamp('cleaned_at').nullable().defaultTo(null);
+    table.timestamp('created_at').nullable().defaultTo(null);
+    table.timestamp('updated_at').nullable().defaultTo(null);
   });
 };
 

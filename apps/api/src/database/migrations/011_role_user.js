@@ -5,8 +5,8 @@ exports.up = function (knex) {
     table.integer('role_id').unsigned().notNullable()
       .references('id').inTable('roles').onDelete('CASCADE').onUpdate('CASCADE');
     table.primary(['user_id', 'role_id']);
-    table.timestamp('created_at').defaultTo(null);
-    table.timestamp('updated_at').defaultTo(null);
+    table.timestamp('created_at').nullable().defaultTo(null);
+    table.timestamp('updated_at').nullable().defaultTo(null);
   });
 };
 

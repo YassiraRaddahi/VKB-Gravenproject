@@ -1,35 +1,96 @@
 <template>
   <v-container fluid class="pa-0">
+
+    <!-- Titel -->
     <v-row>
-      <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-        <h1 class="title">Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!</h1>
+      <v-col
+        cols="12"
+        class="text-center d-flex justify-center mt-10 mb-12"
+      >
+        <h1
+          class="text-h3 font-weight-bold"
+          style="color: #16495d;"
+        >
+          Welkom {{ user.first_name }} {{ user.infix }} {{ user.last_name }}!
+        </h1>
       </v-col>
     </v-row>
+
   </v-container>
 
+  <!-- Dashboard cards -->
   <v-container fluid class="pa-4">
-    <v-row class="d-flex justify-center gap-6">
+
+    <v-row class="d-flex justify-center ga-6">
+
+      <!-- Kerkhoven -->
       <v-col cols="12" md="4" class="d-flex justify-center">
-        <v-card class="dashboard-card" elevation="3" @click="goToCemeteries">
-          <v-card-text class="dashboard-card-text text-center">
-            <div>Beheer Kerkhoven</div>
-            <div class="dashboard-card-subtitle">
-              <v-icon size="48">mdi-cross</v-icon>
+
+        <v-card
+          elevation="3"
+          rounded="xl"
+          color="#16495d"
+          class="w-100 d-flex align-center justify-center"
+          style="max-width: 360px; min-height: 180px; cursor: pointer;"
+          @click="goToCemeteries"
+        >
+
+          <v-card-text
+            class="text-center text-white text-h5 font-weight-bold text-none"
+          >
+            <div>
+              Beheer Kerkhoven
+            </div>
+
+            <div
+              class="mt-3"
+              style="color: rgba(255, 255, 255, 0.8);"
+            >
+              <v-icon size="56">
+                mdi-cross
+              </v-icon>
             </div>
           </v-card-text>
+
         </v-card>
+
       </v-col>
+
+      <!-- Beheerders -->
       <v-col cols="12" md="4" class="d-flex justify-center">
-        <v-card class="dashboard-card" elevation="3" @click="goToManagers">
-          <v-card-text class="dashboard-card-text text-center">
-            <div>Beheer Beheerders</div>
-            <div class="dashboard-card-subtitle">
-              <v-icon size="48">mdi-account-group</v-icon>
+
+        <v-card
+          elevation="3"
+          rounded="xl"
+          color="#16495d"
+          class="w-100 d-flex align-center justify-center"
+          style="max-width: 360px; min-height: 180px; cursor: pointer;"
+          @click="goToManagers"
+        >
+
+          <v-card-text
+            class="text-center text-white text-h5 font-weight-bold text-none"
+          >
+            <div>
+              Beheer Beheerders
+            </div>
+
+            <div
+              class="mt-3"
+              style="color: rgba(255, 255, 255, 0.8);"
+            >
+              <v-icon size="56">
+                mdi-account-group
+              </v-icon>
             </div>
           </v-card-text>
+
         </v-card>
+
       </v-col>
+
     </v-row>
+
   </v-container>
 </template>
 
@@ -37,7 +98,6 @@
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
@@ -51,34 +111,4 @@ function goToCemeteries() {
 function goToManagers() {
   router.push({ name: 'CemeteryManagers' })
 }
-
-
 </script>
-
-<style scoped>
-.dashboard-card {
-  width: 100%;
-  max-width: 360px;
-  min-height: 180px;
-  border-radius: 40px;
-  background-color: #16495d;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dashboard-card-text {
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-transform: none;
-}
-
-.dashboard-card-subtitle {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.95rem;
-  margin-top: 0.5rem;
-  font-weight: 400;
-}
-</style>

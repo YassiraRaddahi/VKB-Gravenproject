@@ -53,7 +53,7 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import { useHead } from '@vueuse/head'
+import { useHead } from '@unhead/vue'
 import TitleUnderline from '@/components/TitleUnderline.vue'
 
 const route = useRoute()

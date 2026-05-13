@@ -9,6 +9,7 @@ import Graves from "../views/GravesView.vue";
 import CemeteryManagers from "../views/CemeteryManagersView.vue";
 import Profile from "../views/ProfileView.vue";
 import Security from "../views/SecurityView.vue";
+import CemeteriesDetails from "../views/CemeteriesDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -58,6 +59,18 @@ const router = createRouter({
         showNavigationDrawer: true,
         title: "Kerkhoven in uw beheer| Kerkhovenbeheer Nederland",
         description: "Beheer al uw kerkhoven op één plek. Zoek, filter of klik op een kerkhof en bekijk de details, voeg nieuwe kerkhoven toe en houd uw gegevens up-to-date." 
+      },
+    },
+    {
+      path: "/kerkhoven/:cemetery_id",
+      name: "CemeteryDetails",
+      component: CemeteriesDetails,
+      meta: { 
+        requiresAuth: true, 
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Details van kerkhof | Kerkhovenbeheer Nederland",
+        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."   
       },
     },
     {

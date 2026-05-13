@@ -8,20 +8,19 @@
     <v-container fluid class="pa-4">
 
       <!-- Filters -->
-      <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
+      <v-row no-gutters class="mb-6 gap-3 d-flex align-center">
         <v-col cols="12" md="4">
           <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
-            color="primary" class="search-field" />
+            color="primary" />
         </v-col>
 
         <v-col cols="12" md="2">
           <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
-            color="primary" class="filter-select" />
+            color="primary" />
         </v-col>
 
         <v-col cols="12" md="2">
-          <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
-            class="filter-select" />
+          <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary" />
         </v-col>
 
         <v-col cols="12" md="4" class="d-flex align-center justify-end">
@@ -36,34 +35,34 @@
       <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
         <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
-            class="text-decoration-none w-100 d-flex full-height">
-            <v-card class="cemetery-card d-flex flex-column ">
+            <router-link :to="{ name: 'CemeteryDetails', params: { cemetery_id: cemetery.id } }"
+            class="text-decoration-none w-100 d-flex h-100">
+            <v-card class="d-flex flex-column w-100" style="min-height: 450px;">
 
-              <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
+              <div class="w-100" style="height: 200px; overflow: hidden;">
+                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="w-100 h-100" />
               </div>
 
-              <v-card-text class="cemetery-card-text text-center">
-                <div class="text-subtitle-1 font-weight-bold mb-2">
+              <v-card-text class="flex-grow-1 d-flex flex-column justify-space-between pa-4">
+                <div class="text-subtitle-1 font-weight-bold mb-2" align="center">
                   {{ cemetery.name }}
                 </div>
 
-                <div class="manager-list text-body-2 text-grey-darken-1">
+                <div class="d-flex flex-column justify-end" style="min-height: 100px; gap: 10px;">
                   <div v-if="cemetery.cemetery_managers?.length > 0"
                     v-for="cemeteryManager in cemetery.cemetery_managers" :key="cemeteryManager.id"
-                    class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name">
+                    class="w-100" style="padding: 8px 12px; border-radius: 10px; background: rgba(30, 76, 111, 0.05);">
+                    <span class="d-block text-body-2 font-weight-bold mb-1" align="center" style="color: #164653;">Beheerder</span>
+                    <span class="d-block text-body-1" style="color: #2f4f6d;" align="center">
                       {{ cemeteryManager.first_name }}
                       {{ cemeteryManager.infix }}
                       {{ cemeteryManager.last_name }}
                     </span>
                   </div>
 
-                  <div v-else class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name text-grey-darken-2">
+                  <div v-else class="w-100" style="padding: 8px 12px; border-radius: 10px; background: rgba(30, 76, 111, 0.05);">
+                    <span class="d-block text-body-2 font-weight-bold mb-1" align="center" style="color: #164653;">Beheerder</span>
+                    <span class="d-block text-body-1 text-grey-darken-2" align="center">
                       Nog niet toegewezen
                     </span>
                   </div>
@@ -147,67 +146,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-v-field {
-  max-width: 500px;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.cemetery-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 450px;
-}
-
-.cemetery-card-text {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-}
-
-.manager-list {
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.manager-item {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: rgba(30, 76, 111, 0.05);
-}
-
-.manager-label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #164653;
-  margin-bottom: 4px;
-}
-
-.manager-name {
-  display: block;
-  font-size: 0.95rem;
-  color: #2f4f6d;
-}
-
-.image-wrapper {
-  width: 100%;
-  height: 200px;
-  /* harde vaste hoogte */
-  overflow: hidden;
-}
-
-.image-fill {
-  width: 100%;
-  height: 100%;
-}
 </style>

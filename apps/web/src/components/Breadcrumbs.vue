@@ -27,17 +27,20 @@ const route = useRoute()
 const labelMap = {
   Dashboard: 'Dashboard',
   Cemeteries: 'Kerkhoven',
+  CemeteryDetails: 'Kerkhof details',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
 }
 
 const parentMap = {
   Cemeteries: 'Dashboard',
+  CemeteryDetails: 'Cemeteries',
   CemeteryManagers: 'Dashboard',
-  Graves: 'Cemeteries',
+  Graves: 'CemeteryDetails',
 }
 
 const routeParams = {
+  CemeteryDetails: () => ({ cemetery_id: route.params.cemetery_id }),
   Graves: () => ({ cemetery_id: route.params.cemetery_id }),
 }
 
