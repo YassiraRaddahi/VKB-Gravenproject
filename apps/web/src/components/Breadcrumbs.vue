@@ -29,6 +29,7 @@ const labelMap = {
   Cemeteries: 'Kerkhoven',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
+  ManagersDetails: 'Beheerder Details',
 }
 
 const parentMap = {

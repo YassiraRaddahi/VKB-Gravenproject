@@ -111,7 +111,7 @@ const router = createRouter({
     },
     {
       path: "/beheerders/:cemetery_manager_id",
-      name: "BeheerderDetails",
+      name: "ManagersDetails",
       component: ManagersDetails,
       meta: { 
         requiresAuth: true, 
