@@ -35,10 +35,12 @@ const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
+  ManagersDetails: 'CemeteryManagers',
 }
 
 const routeParams = {
   Graves: () => ({ cemetery_id: route.params.cemetery_id }),
+  ManagersDetails: () => ({ cemetery_manager_id: route.params.cemetery_manager_id }),
 }
 
 const breadcrumbs = computed(() => {

@@ -9,6 +9,7 @@ import Graves from "../views/GravesView.vue";
 import CemeteryManagers from "../views/CemeteryManagersView.vue";
 import Profile from "../views/ProfileView.vue";
 import Security from "../views/SecurityView.vue";
+import ManagersDetails from "../views/ManagersDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -108,6 +109,18 @@ const router = createRouter({
         description: "Beheer hier uw beveiligingsinstellingen en wachtwoord. Houd uw account veilig voor een optimale ervaring met Kerkhovenbeheer Nederland."  
       },
     },
+    {
+      path: "/beheerders/:cemetery_manager_id",
+      name: "BeheerderDetails",
+      component: ManagersDetails,
+      meta: { 
+        requiresAuth: true, 
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Beheerder Details | Kerkhovenbeheer Nederland",
+        description: "Bekijk hier de details van een specifieke beheerder. Pas eenvoudig de gegevens aan om deze up-to-date te houden."
+      },
+    }
   ],
 });
 

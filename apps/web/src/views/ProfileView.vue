@@ -9,7 +9,7 @@
    <ProfileSideBar />
 
     <!-- Card -->
-    <v-col cols="12" lg="10" class="py-6 pa-lg-6">
+    <v-col cols="12" lg="10" class= "py-6 pa-lg-6">
 
       <v-row class="badge-container">
         <v-col class="d-flex justify-end mb-2">
