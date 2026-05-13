@@ -8,7 +8,7 @@
     <!-- Card -->
     <v-col cols="12" lg="10" class="py-6 pa-lg-6">
 
-      <v-row class="badge-container">
+      <v-row class="badge-container" v-if="userStore.hasPermission('user.view.role')">
         <v-col class="d-flex justify-end mb-2">
           <v-chip color="#feca00" class="px-4 py-2 btn-text-color" size="large" variant="flat">
             U bent een {{ user.role_name }}
@@ -22,7 +22,8 @@
         <v-card-text class="px-0 px-md-4">
           <v-row :key="$route.fullPath">
 
-            <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
+            <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4"
+            v-if="userStore.hasPermission('user.view.profile_picture')">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
                 <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url"
@@ -42,7 +43,8 @@
 
               <!-- <v-file-upload-item v-model='file' accept="image/*" @change="upload"></v-file-upload-item> -->
 
-              <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center>
+              <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center
+              v-if="userStore.hasPermission('user.edit.profile_picture')">
                 Foto Uploaden
               </v-btn>
 
@@ -52,119 +54,121 @@
             <v-col cols="12" md="8">
               <v-form v-model="valid">
                 <v-container class="px-0 px-md-4">
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
                       <v-text-field v-model="user.initials" :rules="nameRules" label="Voorletters"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.name')" :required="userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
                       <v-text-field v-model="user.first_name" :rules="nameRules" label="Voornaam"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.name')" :required="userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
-                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"></v-text-field>
+                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"
+                        :readonly="!userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
                       <v-text-field v-model="user.last_name" :rules="nameRules" label="Achternaam"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.name')" :required="userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-template v-if="user.role_name === 'rechthebbende'">
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                     <v-col cols="12">
                       <v-text-field v-model="user.partner_infix" :rules="nameRules" label="Voorvoegsel partner"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.partner_name')" :required="userStore.hasPermission('user.edit.partner_name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                     <v-col cols="12">
                       <v-text-field v-model="user.partner_last_name" :rules="nameRules" label="Achternaam partner"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.partner_name')" :required="userStore.hasPermission('user.edit.partner_name')"></v-text-field>
                     </v-col>
                   </v-row>
-                  
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.name_usage')">
                       <v-col cols="12">
                         <v-select v-model="user.name_usage" :items="nameUsageOptions" item-title="label"
-                          item-value="value" label="Naamgebruik" required></v-select>
+                          item-value="value" label="Naamgebruik" :readonly="!userStore.hasPermission('user.edit.name_usage')" :required="userStore.hasPermission('user.edit.name_usage')"></v-select>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.date_of_birth')">
                       <v-col cols="12">
                         <v-text-field :model-value="formatDateNl(user.date_of_birth)" label="Geboortedatum"
-                          readonly></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.date_of_birth')" :required="userStore.hasPermission('user.edit.date_of_birth')"></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.place_of_birth')">
                       <v-col cols="12">
                         <v-text-field :model-value="user.place_of_birth" :rules="nameRules" label="Geboorteplaats"
-                          readonly></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.place_of_birth')" :required="userStore.hasPermission('user.edit.place_of_birth')"></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
                         <v-text-field v-model="user.street_name" :rules="adressRules" label="Straat"
-                          required></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="4">
                         <v-text-field v-model="user.house_number" :rules="adressRules" label="Huisnummer"
-                          required></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                       <v-col cols="4">
                         <v-text-field v-model="user.house_letter" :rules="adressRules" label="Letter"
-                          required></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                       <v-col cols="4">
                         <v-text-field v-model="user.house_number_addition" :rules="adressRules" label="Toevoeging"
-                          required></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row  v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
                         <v-text-field v-model="user.zip_code" :rules="zipcodeRules" label="Postcode"
-                          required></v-text-field>
+                          :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
-                        <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats" required></v-text-field>
+                        <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats" 
+                        :readonly="!userStore.hasPermission('user.edit.address')" :required="userStore.hasPermission('user.edit.address')"></v-text-field>
                       </v-col>
                     </v-row>
-                  </v-template>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.contact')">
                     <v-col cols="12">
                       <v-text-field v-model="user.email" :rules="emailRules" label="E-mailadres"
-                        required></v-text-field>
+                        :readonly="!userStore.hasPermission('user.edit.contact')" :required="userStore.hasPermission('user.edit.contact')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.contact')">
                     <v-col cols="12">
                       <v-text-field v-model="user.phone_number" :rules="phoneRules"
-                        label="Telefoonnummer"></v-text-field>
+                        label="Telefoonnummer"
+                        :readonly="!userStore.hasPermission('user.edit.contact')"
+                        :required="userStore.hasPermission('user.edit.contact')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.contact')">
                     <v-col cols="12">
                       <v-text-field v-model="user.mobile_number" :rules="phoneRules"
-                        label="Mobiel nummer"></v-text-field>
+                        label="Mobiel nummer"
+                        :readonly="!userStore.hasPermission('user.edit.contact')"
+                        :required="userStore.hasPermission('user.edit.contact')"></v-text-field>
                     </v-col>
                   </v-row>
-                  <template v-if="user.role_name !== 'rechthebbende'">
-                   <v-row>
+                   <v-row v-if="userStore.hasPermission('user.view.position')">
                     <v-col cols="12">
                       <v-text-field v-model="user.position" :rules="nameRules"
-                        label="Functie" :readonly="user.role_name !== 'admin'"></v-text-field>
+                        label="Functie" 
+                        :readonly="!userStore.hasPermission('user.edit.position')"></v-text-field>
                     </v-col>
                   </v-row>
-                  </template>
                 </v-container>
               </v-form>
             </v-col>
