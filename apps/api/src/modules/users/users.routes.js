@@ -79,7 +79,7 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/cemetery-managers', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
+            let sql = `SELECT users.id AS user_id, users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -102,6 +102,7 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
+                        "user_id": element.user_id,
                         "first_name": element.first_name,
                         "infix": element.infix,
                         "last_name": element.last_name,
@@ -210,6 +211,37 @@ app.get('/api/users', (req, res) => {
     });
 
  
+// This is updating the users_id
+app.put('/api/users/:id', (req, res) => {
+    const userId = req.params.id
+
+    const {
+        first_name,
+        infix,
+        last_name,
+        email,
+        phone_number
+    } = req.body
+
+    const sql = `
+        UPDATE users
+        SET first_name = ?, infix = ?, last_name = ?, email = ?, phone_number = ?
+        WHERE id = ?
+    `
+
+    conn_db.query(
+        sql,
+        [first_name, infix, last_name, email, phone_number, userId],
+        (err, result) => {
+            if (err) {
+                console.error('Database error:', err)
+                return res.status(500).json({ error: 'Database error' })
+            }
+
+            res.json({ message: 'User updated successfully' })
+        }
+    )
+})
     
    
 }
