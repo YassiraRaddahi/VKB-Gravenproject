@@ -1,8 +1,10 @@
 <template>
-    <TitleUnderline :title="`Beheerder details van ${managerName}`" underline-class="underlineLightBlue" />
-
-    <v-container class="mt-12">
-        <v-card v-if="cemeteryManager" class="pa-10 rounded-xl bg-detail-card" elevation="0">
+    <TitleUnderline
+        :title="cemeteryManager ? `Beheerder details van ${managerFullName(cemeteryManager)}` : 'Beheerder details'"
+        underline-class="underlineLightBlue" />
+    <v-container class="mt-12 d-flex justify-center">
+        <v-card v-if="cemeteryManager" class="pa-10 rounded-xl bg-detail-card" elevation="0" max-width="1100"
+            width="100%">
             <v-row align="center">
                 <!-- Linkerkant -->
                 <v-col cols="12" md="5" class="text-center">
@@ -68,16 +70,24 @@
 
                     <div class="d-flex justify-end">
                         <v-btn color="#0d475a" class="text-none text-white px-16" size="x-large" rounded="lg"
-                           @click="isEditing ? saveManager() : isEditing = true">
+                            @click="isEditing ? saveManager() : isEditing = true">
                             {{ isEditing ? 'Opslaan' : 'Wijzig' }}
                         </v-btn>
                     </div>
 
-                    <div v-if="!isEditing" class="text-right mt-8">
-                        <RouterLink to="#" class="text-h6">
-                            Naar gekoppelde begraafplaats(en)
-                        </RouterLink>
-                    </div>
+ <div v-if="!isEditing && linkedCemeteryId" class="mt-16 d-flex justify-end">
+    <router-link
+        :to="{ 
+            name: 'Cemeteries',
+            query: { manager: cemeteryManager.user_id }
+        }"
+        class="text-decoration-none"
+    >
+        <v-btn color="#0d475a" class="text-none text-white">
+            Bekijk gekoppelde kerkhoven
+        </v-btn>
+    </router-link>
+</div>
                 </v-col>
             </v-row>
         </v-card>
@@ -93,6 +103,7 @@ import TitleUnderline from '@/components/TitleUnderline.vue'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import router from '../router'
 
 const route = useRoute()
 
@@ -100,6 +111,8 @@ const managerName = decodeURIComponent(route.params.user_id)
 
 const cemeteryManager = ref(null)
 const isEditing = ref(false)
+
+const linkedCemeteryId = ref(null)
 
 const editManager = ref({
     name: '',
@@ -188,6 +201,21 @@ onMounted(() => {
                     email: cemeteryManager.value.email,
                     phone_number: cemeteryManager.value.phone_number
                 }
+
+                axios.get(`${import.meta.env.VITE_API_URL}/cemeteries`)
+                    .then(res => {
+                       
+const linkedCemetery = res.data.cemeteries.find(cemetery =>
+    cemetery.cemetery_managers?.some(manager =>
+        Number(manager.user_id) === Number(cemeteryManager.value.user_id)
+    )
+)
+
+
+                        linkedCemeteryId.value = linkedCemetery?.id || null
+
+                        console.log('Linked cemetery:', linkedCemetery)
+                    })
             }
         })
         .catch(error => {
