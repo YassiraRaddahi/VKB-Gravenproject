@@ -20,23 +20,23 @@
               {{ loginError }}
             </v-alert>
 
-            <v-text-field v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
-              rounded="xl" class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch"></v-text-field>
+            <AppInput v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
+              rounded="xl" class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch" />
 
-            <v-text-field v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
+            <AppInput v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
               color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors"
-              @blur="v$.password.$touch"></v-text-field>
+              @blur="v$.password.$touch" />
 
             <v-row class="align-center">
               <v-col>
-                <v-btn class="rounded-xl border-white text-darkBlue text-caption">
+                <AppButton kind="whiteOutline">
                   Wachtwoord vergeten
-                </v-btn>
+                </AppButton>
               </v-col>
               <v-col cols="auto">
-                <v-btn type="submit" class="rounded-xl bg-white text-darkBlue">
+                <AppButton kind="white" type="submit">
                   Log in
-                </v-btn>
+                </AppButton>
               </v-col>
             </v-row>
           </v-form>
@@ -54,7 +54,8 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
 import { useDisplay} from 'vuetify'
-import TitleUnderline from '../components/TitleUnderline.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 const { smAndUp } = useDisplay()
 

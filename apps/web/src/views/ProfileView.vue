@@ -1,12 +1,9 @@
 <template>
-   <TitleUnderline 
-    title="Profielgegevens" 
-    underline-class="underlineLightBlue"
-    />
+  <TitleUnderline title="Profielgegevens" underline-class="underlineLightBlue" />
 
 
   <v-row>
-   <ProfileSideBar />
+    <ProfileSideBar />
 
     <!-- Card -->
     <v-col cols="12" lg="10" class="py-6 pa-lg-6">
@@ -28,7 +25,9 @@
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
               <v-avatar :size="mdAndUp ? 200 : 150">
                 <!-- Profile picture or fallback icon -->
-                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
+                <v-img v-if="user.profile_picture_url" :src="user.profile_picture_url"
+                  :key="user.profile_picture_url + '-' + $route.fullPath"
+                  :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
                   <template #error>
                     <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
                       mdi-account
@@ -43,9 +42,9 @@
 
               <!-- <v-file-upload-item v-model='file' accept="image/*" @change="upload"></v-file-upload-item> -->
 
-              <v-btn color="#bee1e0" class="btn-text-color mb-4" v-ripple.center>
+              <AppButton kind="lightBlue" class="mb-4">
                 Foto Uploaden
-              </v-btn>
+              </AppButton>
 
             </v-col>
 
@@ -55,46 +54,42 @@
                 <v-container class="px-0 px-md-4">
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.first_name" :rules="nameRules" label="Voornaam"
-                        required></v-text-field>
+                      <AppInput v-model="user.first_name" :rules="nameRules" label="Voornaam" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"></v-text-field>
+                      <AppInput v-model="user.infix" :rules="nameRules" label="Tussenvoegsel" />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.last_name" :rules="nameRules" label="Achternaam"
-                        required></v-text-field>
+                      <AppInput v-model="user.last_name" :rules="nameRules" label="Achternaam" required />
                     </v-col>
                   </v-row>
                   <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
-                      <v-text-field v-model="user.address" :rules="adressRules" label="Adres" required></v-text-field>
+                      <AppInput v-model="user.address" :rules="adressRules" label="Adres" required />
                     </v-col>
                   </v-row>
                   <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
-                      <v-text-field v-model="user.zip_code" :rules="zipcodeRules" label="Postcode"
-                        required></v-text-field>
+                      <AppInput v-model="user.zip_code" :rules="zipcodeRules" label="Postcode" required />
                     </v-col>
                   </v-row>
                   <v-row v-if="user.role_name === 'rechthebbende'">
                     <v-col cols="12">
-                      <v-text-field v-model="user.city" :rules="cityRules" label="Woonplaats" required></v-text-field>
+                      <AppInput v-model="user.city" :rules="cityRules" label="Woonplaats" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.email" :rules="emailRules" label="E-mailadres" required></v-text-field>
+                      <AppInput v-model="user.email" :rules="emailRules" label="E-mailadres" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="user.phone_number" :rules="phoneRules"
-                        label="Telefoonnummer"></v-text-field>
+                      <AppInput v-model="user.phone_number" :rules="phoneRules" label="Telefoonnummer" />
                     </v-col>
                   </v-row>
                 </v-container>
@@ -105,11 +100,12 @@
 
         <v-card-actions class="pa-4 px-md-8">
           <v-spacer />
-          <v-btn color="#0d475a" variant="elevated" v-ripple.center @click="saveProfile">
+          <AppButton kind="darkBlue" @click="saveProfile">
             Opslaan
-          </v-btn>
+          </AppButton>
 
-          <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar" message="Profiel succesvol bijgewerkt!" timeout="2000" />
+          <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
+            message="Profiel succesvol bijgewerkt!" timeout="2000" />
         </v-card-actions>
 
       </v-card>
@@ -120,14 +116,16 @@
 
 
 <script setup>
-import ProfileSideBar from '@/components/ProfileSideBar.vue'
-import SnackbarSuccess from '@/components/SnackBarSuccess.vue'
-import TitleUnderline from '../components/TitleUnderline.vue'
+import ProfileSideBar from '@/components/profile/ProfileSideBar.vue'
+import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppInput from '@/components/ui/AppInput.vue'
 
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-import { ref} from 'vue'
+import { ref } from 'vue'
 
 
 const { mdAndUp } = useDisplay()
@@ -169,11 +167,6 @@ const saveProfile = () => {
   border-radius: 10px;
   box-sizing: border-box;
 }
-
-.btn-text-color {
-  color: #0d475a;
-}
-
 
 /* ===== MOBILE ===== */
 @media (max-width: 1144px) {

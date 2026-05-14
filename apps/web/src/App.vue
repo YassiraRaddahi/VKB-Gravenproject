@@ -32,10 +32,10 @@
 </template>
 
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-import Breadcrumbs from './components/Breadcrumbs.vue'
-import NavigationDrawer from './components/NavigationDrawer.vue'
+import Header from './components/layout/Header.vue'
+import Footer from './components/layout/Footer.vue'
+import Breadcrumbs from './components/layout/Breadcrumbs.vue'
+import NavigationDrawer from './components/layout/NavigationDrawer.vue'
 
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
