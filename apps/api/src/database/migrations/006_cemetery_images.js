@@ -2,7 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('cemetery_images', (table) => {
     table.increments('id');
     table.integer('cemetery_id').unsigned().notNullable()
-      .references('id').inTable('cemeteries');
+      .references('id').inTable('cemeteries').onUpdate('CASCADE').onDelete('CASCADE');
     table.string('image_url', 255).notNullable();
     table.timestamps(true, true);
   });

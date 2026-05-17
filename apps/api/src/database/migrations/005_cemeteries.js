@@ -10,7 +10,7 @@ exports.up = function (knex) {
     table.string('website_url', 1024).defaultTo(null);
     table.text('remarks').defaultTo(null);
     table.integer('municipalityID').unsigned().notNullable()
-      .references('id').inTable('municipalities').onUpdate('CASCADE');
+      .references('id').inTable('municipalities').onUpdate('CASCADE').onDelete('RESTRICT');
     table.timestamps(true, true);
   });
 };

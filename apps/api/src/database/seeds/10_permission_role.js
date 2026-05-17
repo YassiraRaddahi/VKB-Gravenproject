@@ -25,7 +25,7 @@ exports.seed = async function (knex) {
     
     // user profile permissions
     
-    //ADMIN (role_id: 1)
+    //Admin (role_id: 1)
     { role_id: 1, permission_id: 21 }, // view.name
     { role_id: 1, permission_id: 22 }, // edit.name
     { role_id: 1, permission_id: 33 }, // view.contact
@@ -37,7 +37,7 @@ exports.seed = async function (knex) {
     { role_id: 1, permission_id: 38 }, // edit.position
 
     
-    //BEHEERDER (role_id: 2)
+    //Beheerder (role_id: 2)
     { role_id: 2, permission_id: 21 }, // view.name
     { role_id: 2, permission_id: 22 }, // edit.name
     { role_id: 2, permission_id: 33 }, // view.contact
@@ -48,7 +48,7 @@ exports.seed = async function (knex) {
     { role_id: 2, permission_id: 37 }, // view.position
     { role_id: 2, permission_id: 38 }, // edit.position
 
-    //RECHTHEBBENDE (role_id: 3)
+    //Rechthebbende (role_id: 3)
     { role_id: 3, permission_id: 21 }, // view.name
     { role_id: 3, permission_id: 22 }, // edit.name
     { role_id: 3, permission_id: 33 }, // view.contact
@@ -66,7 +66,7 @@ exports.seed = async function (knex) {
     { role_id: 3, permission_id: 31 }, // view.address
     { role_id: 3, permission_id: 32 }, // edit.address
 
-    //GRAFONDERHOUDER (role_id: 4)
+    //Grafonderhouders (role_id: 4)
     { role_id: 4, permission_id: 21 }, // view.name
     { role_id: 4, permission_id: 22 }, // edit.name
     { role_id: 4, permission_id: 33 }, // view.contact
