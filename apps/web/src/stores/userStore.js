@@ -5,6 +5,7 @@ import router from "@/router";
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
+    permissions: [],
   }),
 
   actions: {
@@ -18,18 +19,20 @@ export const useUserStore = defineStore("user", {
         );
 
         this.user = response.data.user;
+        this.permissions = response.data.permissions;
+       
+        console.log("Fetched user and permissions:", response.data);
 
-        // this.user = this.user || {};
-        // Object.assign(this.user, response.data.user);
       } catch (error) {
         this.user = null;
+        this.permissions = [];
         throw error;
       }
     },
 
-    // setUser(userData) {
-    //   this.user = userData;
-    // },
+    hasPermission(permission) {
+      return this.permissions.includes(permission);
+    },
 
     async logout() {
       await axios.post(
@@ -38,7 +41,7 @@ export const useUserStore = defineStore("user", {
         { withCredentials: true }
       );
       this.user = null;
-
+      this.permissions = [];
       router.push({ name: "Home" });
     },
   },

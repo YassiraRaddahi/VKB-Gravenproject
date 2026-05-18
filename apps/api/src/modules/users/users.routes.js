@@ -1,6 +1,6 @@
 module.exports = function (app, conn_db) {
 
-app.get('/api/users', (req, res) => {
+    app.get('/api/users', (req, res) => {
         try {
             let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
                 FROM users
@@ -32,7 +32,7 @@ app.get('/api/users', (req, res) => {
                     });
                 });
 
-                res.send({ "users": usersJSON});
+                res.send({ "users": usersJSON });
             })
         } catch (error) {
             console.error("Error during login:", error);
@@ -62,13 +62,15 @@ app.get('/api/users', (req, res) => {
 
                 let user = rows[0];
 
-                res.send({"admin" : {
+                res.send({
+                    "admin": {
                         "first_name": user.first_name,
                         "infix": user.infix,
                         "last_name": user.last_name,
                         "email": user.email,
                         "role": user.role_name
-                    }});
+                    }
+                });
             })
         } catch (error) {
             console.error("Error during retrieval of admin:", error);
@@ -79,12 +81,14 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/cemetery-managers', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
-                FROM users
-                JOIN role_user ON users.id = role_user.user_id
-                JOIN roles ON role_user.role_id = roles.id
-                WHERE roles.name = 'beheerder'
-                `;
+            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            users.last_name,  users.email, users.phone_number, users.mobile_number, users.profile_picture_url,
+            users.position, roles.name AS role_name, roles.id AS role_id
+            FROM users
+            JOIN role_user ON users.id = role_user.user_id
+            JOIN roles ON role_user.role_id = roles.id
+            WHERE roles.name = 'beheerder'
+            `;
 
             conn_db.query(sql, function (err, rows) {
                 if (err) {
@@ -102,19 +106,22 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
+                        "id": element.id,
+                        "initials": element.initials,
                         "first_name": element.first_name,
                         "infix": element.infix,
                         "last_name": element.last_name,
-                        "zip_code": element.zip_code,
-                        "city": element.city,
                         "email": element.email,
                         "phone_number": element.phone_number,
+                        "mobile_number": element.mobile_number,
                         "profile_picture_url": element.profile_picture_url,
-                        "role": element.role_name
+                        "position": element.position,
+                        "role": element.role_name,
+                        "role_id": element.role_id
                     });
                 });
 
-                res.send({ "cemetery-managers": usersJSON});
+                res.send({ "cemetery-managers": usersJSON });
             })
         } catch (error) {
             console.error("Error during retrieval of managers:", error);
@@ -126,8 +133,10 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/grave-caretaker', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
-                FROM users
+            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            users.last_name,  users.email, users.phone_number, users.mobile_number, users.profile_picture_url,
+            users.position, roles.name AS role_name, roles.id AS role_id
+            FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE roles.name = 'grafonderhouder'
@@ -149,15 +158,22 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
+                        "id": element.id,
+                        "initials": element.initials,
                         "first_name": element.first_name,
                         "infix": element.infix,
                         "last_name": element.last_name,
                         "email": element.email,
-                        "role": element.role_name
+                        "phone_number": element.phone_number,
+                        "mobile_number": element.mobile_number,
+                        "profile_picture_url": element.profile_picture_url,
+                        "position": element.position,
+                        "role": element.role_name,
+                        "role_id": element.role_id
                     });
                 });
 
-                res.send({ "grave-caretakers": usersJSON});
+                res.send({ "grave-caretakers": usersJSON });
             })
         } catch (error) {
             console.error("Error during retrieval of grave caretakers:", error);
@@ -169,12 +185,18 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/grave-owner', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
-                FROM users
+            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            users.last_name, users.partner_infix, users.partner_last_name, 
+            users.name_usage, users.date_of_birth, users.place_of_birth, 
+            users.street_name, users.house_number, users.house_letter, 
+            users.house_number_addition, users.zip_code, users.city, users.email,
+            users.phone_number, users.mobile_number, users.profile_picture_url,
+            users.position, roles.name AS role_name, roles.id AS role_id
+            FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE roles.name = 'rechthebbende'
-                `;
+            `;
 
             conn_db.query(sql, function (err, rows) {
                 if (err) {
@@ -192,15 +214,33 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
+                        "id": element.id,
+                        "initials": element.initials,
                         "first_name": element.first_name,
                         "infix": element.infix,
                         "last_name": element.last_name,
+                        "partner_infix": element.partner_infix,
+                        "partner_last_name": element.partner_last_name,
+                        "name_usage": element.name_usage,
+                        "date_of_birth": element.date_of_birth,
+                        "place_of_birth": element.place_of_birth,
+                        "street_name": element.street_name,
+                        "house_number": element.house_number,
+                        "house_letter": element.house_letter,
+                        "house_number_addition": element.house_number_addition,
+                        "zip_code": element.zip_code,
+                        "city": element.city,
                         "email": element.email,
-                        "role": element.role_name
+                        "phone_number": element.phone_number,
+                        "mobile_number": element.mobile_number,
+                        "profile_picture_url": element.profile_picture_url,
+                        "position": element.position,
+                        "role": element.role_name,
+                        "role_id": element.role_id
                     });
                 });
 
-                res.send({ "grave-owners": usersJSON});
+                res.send({ "grave-owners": usersJSON });
             })
         } catch (error) {
             console.error("Error during retrieval of grave owners:", error);
@@ -209,7 +249,4 @@ app.get('/api/users', (req, res) => {
         }
     });
 
- 
-    
-   
 }

@@ -89,24 +89,111 @@ module.exports = function (app, conn_db) {
     });
 
     app.get("/api/active-token", verifyToken, (req, res) => {
-        const sql = `SELECT users.id, users.first_name, users.infix, users.last_name, users.address, users.zip_code, users.city, users.email, users.phone_number, users.profile_picture_url, roles.name AS role_name
-        FROM users
-        JOIN role_user ON users.id = role_user.user_id
-        JOIN roles ON role_user.role_id = roles.id
-        WHERE users.id = ?`;
+    
 
-        conn_db.query(sql, [req.user.id], (err, rows) => {
+        const userSql = `
+            SELECT users.id, users.initials, users.first_name, users.infix, 
+            users.last_name, users.partner_infix, users.partner_last_name, 
+            users.name_usage, users.date_of_birth, users.place_of_birth, 
+            users.street_name, users.house_number, users.house_letter, 
+            users.house_number_addition, users.zip_code, users.city, users.email,
+            users.phone_number, users.mobile_number, users.profile_picture_url,
+            users.position, roles.name AS role_name, roles.id AS role_id
+            FROM users
+            JOIN role_user ON users.id = role_user.user_id
+            JOIN roles ON role_user.role_id = roles.id
+            WHERE users.id = ?
+        `;
+
+        conn_db.query(userSql, [req.user.id], (err, userRows) => {
             if (err) {
                 return res.status(500).json({ error: "Database error" });
             }
 
-            if (!rows || rows.length === 0) {
-                return res.status(401).json({ error: "Gebruiker niet gevonden" });
+            if (!userRows || userRows.length === 0) {
+                return res.status(404).json({ error: "Gebruiker niet gevonden" });
             }
 
-            res.json({ user: rows[0] });
+            const user = userRows[0];
+        
+
+        const permissionSql = `
+            SELECT permissions.name
+            FROM permission_role
+            JOIN permissions ON permission_role.permission_id = permissions.id
+            WHERE permission_role.role_id = ?
+        `;
+
+        conn_db.query(permissionSql, [user.role_id], (err, permissionRows) => {
+            if (err) {
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            if (!permissionRows || permissionRows.length === 0) {
+                return res.status(403).json({ error: "Geen rechten" });
+            }
+
+            const permissions = permissionRows.map(r => r.name);
+
+            const filteredUser = { id: user.id };
+            
+
+            if(permissions.includes('user.view.name')) {
+                filteredUser.initials = user.initials;
+                filteredUser.first_name = user.first_name;
+                filteredUser.infix = user.infix;
+                filteredUser.last_name = user.last_name;
+            }
+
+            if(permissions.includes('user.view.partner_name')) {
+                filteredUser.partner_infix = user.partner_infix;
+                filteredUser.partner_last_name = user.partner_last_name;
+            }
+
+            if(permissions.includes('user.view.name_usage')) {
+                filteredUser.name_usage = user.name_usage;
+            }
+
+            if(permissions.includes('user.view.date_of_birth')) {
+                filteredUser.date_of_birth = user.date_of_birth;
+            }
+
+            if(permissions.includes('user.view.place_of_birth')) {
+                filteredUser.place_of_birth = user.place_of_birth;
+            }
+
+            if(permissions.includes('user.view.address')) {
+                filteredUser.street_name = user.street_name;
+                filteredUser.house_number = user.house_number;
+                filteredUser.house_letter = user.house_letter;
+                filteredUser.house_number_addition = user.house_number_addition;
+                filteredUser.zip_code = user.zip_code;
+                filteredUser.city = user.city;
+            }
+
+            if(permissions.includes('user.view.contact')) {
+                filteredUser.email = user.email;
+                filteredUser.phone_number = user.phone_number;
+                filteredUser.mobile_number = user.mobile_number;
+            }
+
+            if(permissions.includes('user.view.profile_picture')) {
+                filteredUser.profile_picture_url = user.profile_picture_url;
+            }
+
+            if(permissions.includes('user.view.position')) {
+                filteredUser.position = user.position;
+            }
+
+            if(permissions.includes('user.view.role')) {
+                filteredUser.role_name = user.role_name;
+            }
+
+            
+            res.json({ user: filteredUser, permissions });
         });
     });
+});
 
     app.post("/api/logout", (req, res) => {
 

@@ -24,9 +24,9 @@
   "devDependencies": {
     "@mdi/font": "^7.4.47",
     "@vitejs/plugin-vue": "^6.0.5",
-    "@vue/test-utils": "^2.4.6",
+    "@vue/test-utils": "^2.4.10",
     "autoprefixer": "^10.4.27",
-    "jsdom": "^29.0.2",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5.8",
     "vite": "^8.0.1",
     "vitest": "^4.1.4"

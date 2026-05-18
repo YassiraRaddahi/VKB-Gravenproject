@@ -10,9 +10,8 @@ exports.up = function (knex) {
     table.string('website_url', 1024).defaultTo(null);
     table.text('remarks').defaultTo(null);
     table.integer('municipalityID').unsigned().notNullable()
-      .references('id').inTable('municipalities').onUpdate('CASCADE');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+      .references('id').inTable('municipalities').onUpdate('CASCADE').onDelete('RESTRICT');
+    table.timestamps(true, true);
   });
 };
 

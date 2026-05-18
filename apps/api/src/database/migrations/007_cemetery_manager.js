@@ -1,10 +1,11 @@
 exports.up = function (knex) {
   return knex.schema.createTable('cemetery_manager', (table) => {
     table.integer('user_id').unsigned().notNullable()
-      .references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+      .references('id').inTable('users').onUpdate('CASCADE').onDelete('CASCADE');
     table.integer('cemetery_id').unsigned().notNullable()
-      .references('id').inTable('cemeteries').onDelete('CASCADE');
+      .references('id').inTable('cemeteries').onUpdate('CASCADE').onDelete('CASCADE');
     table.primary(['user_id', 'cemetery_id']);
+    table.timestamps(true, true);
   });
 };
 
