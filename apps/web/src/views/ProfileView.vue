@@ -17,7 +17,7 @@
       </v-row>
 
 
-      <v-card color="#f08360" class="py-6 profile-card">
+      <FormCard embedded bg-color="orange" padding="py-6" class="profile-card">
 
         <v-card-text class="px-0 px-md-4">
           <v-row :key="$route.fullPath">
@@ -50,49 +50,19 @@
 
 
             <v-col cols="12" md="8">
-              <v-form v-model="valid">
-                <v-container class="px-0 px-md-4">
-                  <v-row>
-                    <v-col cols="12">
-                      <AppInput v-model="user.first_name" :rules="nameRules" label="Voornaam" required />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <AppInput v-model="user.infix" :rules="nameRules" label="Tussenvoegsel" />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <AppInput v-model="user.last_name" :rules="nameRules" label="Achternaam" required />
-                    </v-col>
-                  </v-row>
-                  <v-row v-if="user.role_name === 'rechthebbende'">
-                    <v-col cols="12">
-                      <AppInput v-model="user.address" :rules="adressRules" label="Adres" required />
-                    </v-col>
-                  </v-row>
-                  <v-row v-if="user.role_name === 'rechthebbende'">
-                    <v-col cols="12">
-                      <AppInput v-model="user.zip_code" :rules="zipcodeRules" label="Postcode" required />
-                    </v-col>
-                  </v-row>
-                  <v-row v-if="user.role_name === 'rechthebbende'">
-                    <v-col cols="12">
-                      <AppInput v-model="user.city" :rules="cityRules" label="Woonplaats" required />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <AppInput v-model="user.email" :rules="emailRules" label="E-mailadres" required />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12">
-                      <AppInput v-model="user.phone_number" :rules="phoneRules" label="Telefoonnummer" />
-                    </v-col>
-                  </v-row>
-                </v-container>
+              <v-form v-model="valid" class="px-0 px-md-4">
+                <AppInput v-model="user.first_name" :rules="nameRules" label="Voornaam" required class="mb-4" />
+                <AppInput v-model="user.infix" :rules="nameRules" label="Tussenvoegsel" class="mb-4" />
+                <AppInput v-model="user.last_name" :rules="nameRules" label="Achternaam" required class="mb-4" />
+
+                <template v-if="user.role_name === 'rechthebbende'">
+                  <AppInput v-model="user.address" :rules="adressRules" label="Adres" required class="mb-4" />
+                  <AppInput v-model="user.zip_code" :rules="zipcodeRules" label="Postcode" required class="mb-4" />
+                  <AppInput v-model="user.city" :rules="cityRules" label="Woonplaats" required class="mb-4" />
+                </template>
+
+                <AppInput v-model="user.email" :rules="emailRules" label="E-mailadres" required class="mb-4" />
+                <AppInput v-model="user.phone_number" :rules="phoneRules" label="Telefoonnummer" />
               </v-form>
             </v-col>
           </v-row>
@@ -108,7 +78,7 @@
             message="Profiel succesvol bijgewerkt!" timeout="2000" />
         </v-card-actions>
 
-      </v-card>
+      </FormCard>
     </v-col>
   </v-row>
 
@@ -121,6 +91,7 @@ import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
+import FormCard from '@/components/ui/FormCard.vue'
 
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
