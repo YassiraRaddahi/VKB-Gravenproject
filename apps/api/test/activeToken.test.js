@@ -364,7 +364,7 @@ describe('GET /api/active-token', ()  => {
     expect(Array.isArray(permissions)).toBe(true);
 
     const expectedPermissions = [
-     'user.view.name',
+      'user.view.name',
       'user.edit.name',
       'user.view.contact',
       'user.edit.contact',

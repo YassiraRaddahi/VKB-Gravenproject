@@ -1,8 +1,56 @@
-import { beforeAll } from 'vitest'
+import { beforeAll, vi } from 'vitest'
+import { config } from '@vue/test-utils'
+
+config.global.mocks = {
+  $route: {
+    fullPath: '/',
+  }
+}
+
+
+config.global.stubs = {
+  'v-row': { template: '<div><slot /></div>' },
+  'v-col': { template: '<div><slot /></div>' },
+  'v-card': { template: '<div><slot /></div>' },
+  'v-card-text': { template: '<div><slot /></div>' },
+  'v-card-actions': { template: '<div><slot /></div>' },
+  'v-btn': true,
+  'v-text-field': true,
+  'v-select': true,
+  'v-container': { template: '<div><slot /></div>' },
+  'v-form': { template: '<form><slot /></form>' },
+  'v-avatar': { template: '<div><slot /></div>' },
+  'v-img': { template: '<img />' },
+  'v-icon': true,
+  'v-chip': true,
+  'v-spacer': true,
+  'ProfileSideBar': true,
+  'SnackbarSuccess': {
+    template: `
+    <div v-if="modelValue" data-testid="snackbar-success">
+      {{ message }}
+    </div>
+  `,
+    props: ['modelValue', 'message']
+  },
+  'TitleUnderline': true
+}
+
+config.global.directives = {
+  ripple: () => { }
+}
 
 // Mock CSS imports globally
 vi.mock('*.css', () => ({}))
 vi.mock('vuetify/styles', () => ({}))
+
+// Mock Vuetify composable
+vi.mock('vuetify', () => ({
+  useDisplay: () => ({
+    mdAndUp: true
+  })
+}))
+
 
 // Mock axios
 import axios from 'axios'
