@@ -1,15 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
-import Home from "../views/HomeView.vue";
-import Login from "../views/LoginView.vue";
-import Dashboard from "../views/DashboardView.vue";
-import Cemeteries from "../views/CemeteriesView.vue";
-import Graves from "../views/GravesView.vue";
-import CemeteryManagers from "../views/CemeteryManagersView.vue";
-import Profile from "../views/ProfileView.vue";
-import Security from "../views/SecurityView.vue";
-
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -17,7 +8,7 @@ const router = createRouter({
     {
       path: "/home",
       name: "Home",
-      component: Home,
+      component: () => import("../views/HomeView.vue"),
       meta: {  
         showBreadcrumbs: false, 
         showNavigationDrawer: true,
@@ -28,7 +19,7 @@ const router = createRouter({
     {
       path: "/login",
       name: "Login",
-      component: Login,
+      component: () => import("../views/LoginView.vue"),
       meta: { 
         showBreadcrumbs: false,
         showNavigationDrawer: false,
@@ -39,7 +30,7 @@ const router = createRouter({
     {
       path: "/dashboard",
       name: "Dashboard",
-      component: Dashboard,
+      component: () => import("../views/DashboardView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: false,
@@ -51,7 +42,7 @@ const router = createRouter({
     {
       path: "/kerkhoven",
       name: "Cemeteries",
-      component: Cemeteries,
+      component: () => import("../views/CemeteriesView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: true,
@@ -63,7 +54,7 @@ const router = createRouter({
     {
       path: "/kerkhoven/:cemetery_id/graven",
       name: "Graves",
-      component: Graves,
+      component: () => import("../views/GravesView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: true,
@@ -75,7 +66,7 @@ const router = createRouter({
     {
       path: "/beheerders",
       name: "CemeteryManagers",
-      component: CemeteryManagers,
+      component: () => import("../views/CemeteryManagersView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: true,
@@ -87,7 +78,7 @@ const router = createRouter({
     {
       path: "/profiel",
       name: "Profile",
-      component: Profile,
+      component: () => import("../views/ProfileView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: false,
@@ -99,7 +90,7 @@ const router = createRouter({
     {
       path: "/profiel/beveiliging",
       name: "Security",
-      component: Security,
+      component: () => import("../views/SecurityView.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: false,
