@@ -1,17 +1,14 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <TitleUnderline 
-    title="Lijst met kerkhoven" 
-    underline-class="underlineLightBlue"
-    />
+    <TitleUnderline title="Lijst met kerkhoven" underline-class="underlineLightBlue" />
 
     <v-container fluid class="pa-4">
 
       <!-- Filters -->
       <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
         <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
-            color="primary" class="search-field" />
+          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined
+            dense color="primary" class="search-field" />
         </v-col>
 
         <v-col cols="12" md="2">
@@ -41,7 +38,8 @@
             <v-card class="cemetery-card d-flex flex-column ">
 
               <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
+                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`"
+                  :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
               </div>
 
               <v-card-text class="cemetery-card-text text-center">
@@ -81,12 +79,18 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import TitleUnderline from '../components/TitleUnderline.vue'
+import { useRouter } from 'vue-router'
 
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
 const url = `${import.meta.env.VITE_API_URL}/cemeteries`
+const router = useRouter()
+
+// Router
+
+
 
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
@@ -141,7 +145,21 @@ function addCemetery() {
 
 onMounted(() => {
   axios.get(url)
-    .then(res => cemeteries.value = res.data.cemeteries)
+    .then(res => {
+      cemeteries.value = res.data.cemeteries
+
+      const managerName = route.query.manager
+
+      if (managerName) {
+        const foundManager = managerOptions.value.find(manager =>
+          manager.title === managerName
+        )
+
+        if (foundManager) {
+          managerFilter.value = foundManager.value
+        }
+      }
+    })
     .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>
