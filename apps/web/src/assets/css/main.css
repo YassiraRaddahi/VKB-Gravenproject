@@ -66,6 +66,17 @@ body {
   z-index: -1;
 }
 
+.last-word::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  transform: translateX(-0.25em);
+  bottom: 0; 
+  height: 8pt;
+  width: calc(100% + 0.25em);
+  z-index: -1;
+}
+
 
 .underlineOrange::after {
   background-color: #f08360;
@@ -128,4 +139,8 @@ img,
   .title__text::after {
     height: 6.15pt;
   }
+}
+
+.v-field__overlay {
+    opacity: 0.00;
 }

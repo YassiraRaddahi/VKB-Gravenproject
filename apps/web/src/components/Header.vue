@@ -15,15 +15,15 @@
     <!-- right side -->
     <v-spacer />
 
-    <template v-if="!user?.id">
+    <template v-if="!user?.id && route.name === 'Home'">
       <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
         <span class="text-white">
-          Log In
+          Log In 
         </span>
       </v-btn>
     </template>
 
-    <template v-else>
+    <template v-if="user?.id">
       <v-btn :to="{ name: 'Profile' }" color="#0d475a" class="text-decoration-none" v-ripple.center>
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
@@ -54,6 +54,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 
 defineProps({
   showDrawerToggle: {
@@ -66,6 +67,7 @@ const logoUrl = '/images/logo/VKB_Logo.svg'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const route = useRoute()
 
 const userFullName = () => {
   return [

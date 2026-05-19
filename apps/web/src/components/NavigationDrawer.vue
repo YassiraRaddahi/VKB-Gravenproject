@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer expand-on-hover permanent rail>
+    <v-navigation-drawer :expand-on-hover="mdAndUp" :permanent="mdAndUp" :temporary="!mdAndUp" :rail="mdAndUp" v-model="drawer">
         <v-list density="compact" nav>
             <v-list-item prepend-icon="mdi-home" title="Homepagina" value="homepage"  :to="{ name: 'Home' }"></v-list-item>
             <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" value="dashboard" :to="{ name: 'Dashboard' }"></v-list-item>
@@ -10,6 +10,21 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
+
+const { mdAndUp } = useDisplay()
+
+const props = defineProps({
+  modelValue: Boolean
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const drawer = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 </script>
 
 <style scoped>

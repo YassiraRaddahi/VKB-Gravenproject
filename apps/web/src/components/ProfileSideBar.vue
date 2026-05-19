@@ -20,7 +20,7 @@
         <!-- Onder -->
         <div class="logout-wrapper">
           <v-list-item class="logout-link" @click="userStore.logout()">
-            <v-list-item-title>Log uit <v-icon>mdi-door-open</v-icon></v-list-item-title>
+            <v-list-item-title>Log Uit <v-icon>mdi-door-open</v-icon></v-list-item-title>
           </v-list-item>
         </div>
 

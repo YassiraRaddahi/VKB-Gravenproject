@@ -79,7 +79,7 @@ app.get('/api/users', (req, res) => {
 
     app.get('/api/cemetery-managers', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
+            let sql = `SELECT users.id, users.first_name, users.infix, users.last_name, users.address, users.city, users.zip_code, users.email, users.phone_number, users.relation_to_deceased, profile_picture_url, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -92,7 +92,6 @@ app.get('/api/users', (req, res) => {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // If there are no users with this role, return an error message
                 if (!rows || rows.length === 0) {
                     return res.status(404).json({ error: 'No managers found' });
                 }
@@ -102,6 +101,7 @@ app.get('/api/users', (req, res) => {
 
                 users.forEach(element => {
                     usersJSON.push({
+                        "id": element.id,
                         "first_name": element.first_name,
                         "infix": element.infix,
                         "last_name": element.last_name,

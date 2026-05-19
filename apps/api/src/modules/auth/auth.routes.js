@@ -7,7 +7,10 @@ module.exports = function (app, conn_db) {
     const loginLimiter = rateLimit({
         windowMs: 15 * 60 * 1000,
         max: 5,
-        message: { error: "Te veel pogingen, probeer het later opnieuw" },
+        message: function (req, res) {
+            const resetTime = new Date(req.rateLimit.resetTime).toLocaleString('nl-NL');
+            return res.status(429).json({ error: `Te veel pogingen, probeer het na ${resetTime} opnieuw` });
+        },
         standardHeaders: true,
         legacyHeaders: false,
     });

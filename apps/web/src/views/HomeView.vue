@@ -5,7 +5,7 @@
     />
   
   <v-container class="mx-auto text-center px-7" style="max-width: 672px;">
-    <p>
+    <p style="color: #0d475a;">
       Welkom op de homepagina van Kerkhovenbeheer Nederland van de Vereniging Kerkrentmeesterlijk Beheer.
       Wij zijn een organisatie die zich onder andere inzet voor het vereenvoudigen en uniformeren van het
       kerkhovenbeheer in Nederland.
@@ -16,7 +16,7 @@
       kerkhoven efficiënt kunnen worden beheerd.
     </p>
 
-    <p class="mt-6">
+    <p class="mt-6" style="color: #0d475a;">
       Vragen omtrent ons systeem of onze diensten? Neem gerust contact met ons op via de <a
         href="https://www.kerkrentmeester.nl/contact/" target="_blank" rel="noopener noreferrer"
         style="color: #ea5a0b; text-decoration: none;">
