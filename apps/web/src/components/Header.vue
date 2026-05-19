@@ -6,7 +6,8 @@
     <v-app-bar-nav-icon v-if="showDrawerToggle" @click="$emit('toggle-drawer')" />
 
     <v-btn :to="{ name: user?.id ? 'Dashboard' : 'Home' }" class="pa-0 no-active" min-width="0" height="auto">
-      <img :src="logoUrl" :key="logoUrl" alt="Logo VKB met kerken in frisse kleuren die deels buiten een kader vallen" height="70" />
+      <img :src="logoUrl" :key="logoUrl" alt="Logo VKB met kerken in frisse kleuren die deels buiten een kader vallen"
+        height="70" />
     </v-btn>
 
     <v-spacer />
@@ -24,11 +25,14 @@
     </template>
 
     <template v-else>
+      <ContactDialog />
+
       <v-btn :to="{ name: 'Profile' }" color="#0d475a" class="text-decoration-none" v-ripple.center>
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url" :key="user.profile_picture_url" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
+            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url"
+              :key="user.profile_picture_url" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
                   mdi-account
@@ -54,6 +58,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
+import ContactDialog from '@/components/ContactDialog.vue'
 
 defineProps({
   showDrawerToggle: {
