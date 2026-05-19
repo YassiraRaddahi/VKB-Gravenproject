@@ -1,27 +1,109 @@
 <template>
-    
-  <TitleUnderline 
-    title="Wachtwoord aanpassen" 
-    underline-class="underlineLightBlue"
-    />
-  
-    <v-row>
-      <ProfileSideBar />
 
+  <v-container fluid>
+    <v-row>
+    
+       <ProfileSideBar />
+      <v-col cols="12" lg="10" class="py-6 pa-lg-6">
+
+        <TitleUnderline title="Wachtwoord aanpassen" underline-class="underlineLightBlue" />
+
+        <v-card color="#f08360" class="py-6 security-card">
+
+          <v-card-text class="px-4 px-md-8">
+            <v-alert v-if="formError" type="error" class="mb-4">{{ formError }}</v-alert>
+
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="currentPassword" :type="showCurrentPassword ? 'text' : 'password'"
+                  label="Huidig wachtwoord" :append-inner-icon="showCurrentPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showCurrentPassword = !showCurrentPassword" @input="formError = ''"
+                  @keyup.enter="save"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="newPassword" :type="showNewPassword ? 'text' : 'password'"
+                  label="Nieuw wachtwoord" :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showNewPassword = !showNewPassword" @input="formError = ''"
+                  @keyup.enter="save"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="confirmPassword" :type="showConfirmPassword ? 'text' : 'password'"
+                  label="Nieuw wachtwoord bevestigen"
+                  :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showConfirmPassword = !showConfirmPassword" @input="formError = ''"
+                  @keyup.enter="save"></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+
+          <v-card-actions class="pa-4 px-md-8">
+            <v-spacer />
+            <v-btn class="bg-darkBlue" variant="elevated" v-ripple.center
+              :disabled="!currentPassword || !newPassword || !confirmPassword || formError.length > 0" @click="save">
+              Opslaan
+            </v-btn>
+          </v-card-actions>
+
+        </v-card>
+      </v-col>
     </v-row>
+  </v-container>
+  <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
+    message="Profiel succesvol bijgewerkt!" timeout="4000" />
 </template>
 
 <script setup>
 import ProfileSideBar from '@/components/ProfileSideBar.vue'
 import TitleUnderline from '../components/TitleUnderline.vue';
+import SnackbarSuccess from '@/components/SnackbarSuccess.vue';
+
+import { ref } from 'vue'
+
+const formError = ref('')
+
+const currentPassword = ref('')
+const showCurrentPassword = ref(false)
+
+const newPassword = ref('')
+const showNewPassword = ref(false)
+
+const confirmPassword = ref('')
+const showConfirmPassword = ref(false)
+
+const showSnackbar = ref(false)
+
+
+function save() {
+  formError.value = ''
+
+  if (newPassword.value.length < 6) {
+    formError.value = 'Nieuw wachtwoord moet minimaal 6 tekens zijn'
+    return
+  }
+
+  if (newPassword.value !== confirmPassword.value) {
+    formError.value = 'Wachtwoorden komen niet overeen'
+    return
+  }
+
+  formError.value = ''
+  currentPassword.value = ''
+  newPassword.value = ''
+  confirmPassword.value = ''
+  showSnackbar.value = true
+}
 
 </script>
 
 <style scoped>
 /* ===== PROFILE CONTENT ===== */
 
-.profile-card {
-   max-width: 900px;
+.security-card {
+  max-width: 900px;
   width: 100%;
   margin: 20px auto;
   border-radius: 10px;
@@ -33,17 +115,15 @@ import TitleUnderline from '../components/TitleUnderline.vue';
 }
 
 
-
-
 /* ===== MOBILE ===== */
- @media (max-width: 1144px) {
- 
-  .profile-card {
+@media (max-width: 1144px) {
+
+  .security-card {
     max-width: 100%;
     width: 100%;
     margin: 0;
-    border-radius: 20px;
+    border-radius: 0px;
   }
 
-} 
+}
 </style>

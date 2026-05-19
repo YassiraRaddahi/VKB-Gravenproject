@@ -40,7 +40,7 @@ const userStore = useUserStore()
 .sidebar {
   width: 220px;
   max-width: 100%;
-  min-height: 50vh;
+  min-height: 100vh;
   border-right: 2px solid #000;
   padding-top: 120px;
   padding-left: 30px;
@@ -95,7 +95,7 @@ const userStore = useUserStore()
 /* ===== MOBILE ===== */
 @media (max-width: 1144px) {
   .sidebar {
-    /* width: 100%; */
+    width: 100%;
     min-height: auto;
     border-right: none;
     border-bottom: 2px solid #000;

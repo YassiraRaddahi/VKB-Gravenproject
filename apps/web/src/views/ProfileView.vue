@@ -1,12 +1,14 @@
 <template>
-  <TitleUnderline title="Profielgegevens" underline-class="underlineLightBlue" />
+  
 
-
+<v-container fluid>
   <v-row>
     <ProfileSideBar />
 
     <!-- Card -->
     <v-col cols="12" lg="10" class="py-6 pa-lg-6">
+
+      <TitleUnderline title="Profielgegevens" underline-class="underlineLightBlue" />
 
       <v-row class="badge-container" v-if="userStore.hasPermission('user.view.role')">
         <v-col class="d-flex justify-end mb-2">
@@ -19,7 +21,7 @@
 
       <v-card color="#f08360" class="py-6 profile-card">
 
-        <v-card-text class="px-0 px-md-4">
+        <v-card-text class="px-4 px-md-8">
           <v-row :key="$route.fullPath">
 
             <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4"
@@ -199,14 +201,15 @@
             Opslaan
           </v-btn>
 
-          <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
-            message="Profiel succesvol bijgewerkt!" timeout="2000" />
+         
         </v-card-actions>
 
       </v-card>
     </v-col>
   </v-row>
-
+</v-container> 
+ <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
+            message="Profiel succesvol bijgewerkt!" timeout="4000" />
 </template>
 
 
@@ -301,7 +304,6 @@ const saveProfile = () => {
   opacity: 0.9;
   transform: scale(1);
 }
-
 
 
 .badge-container {
