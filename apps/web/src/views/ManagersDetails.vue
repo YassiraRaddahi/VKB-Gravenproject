@@ -1,91 +1,109 @@
 <template>
-    <TitleUnderline
-        :title="cemeteryManager ? `Beheerder details van ${managerFullName(cemeteryManager)}` : 'Beheerder details'"
-        underline-class="underlineLightBlue" />
-    <v-container class="mt-12 d-flex justify-center">
-        <v-card v-if="cemeteryManager" class="pa-10 rounded-xl bg-detail-card" elevation="0" max-width="1100"
-            width="100%">
-            <v-row align="center">
-                <!-- Linkerkant -->
-                <v-col cols="12" md="5" class="text-center">
-                    <v-avatar size="220" color="#f47b59">
-                        <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
-                            cover />
-                        <v-icon v-else size="160" color="#bfe4e1">
-                            mdi-account
-                        </v-icon>
-                    </v-avatar>
-                    <div v-if="!isEditing" class="mt-16">
-                        <v-btn color="#ff2d35" class="text-none text-white">
+    <v-container fluid class="pa-0 list-page-container">
+        <TitleUnderline
+            :title="cemeteryManager ? `Beheerder details van ${managerFullName(cemeteryManager)}` : 'Beheerder details'"
+            underline-class="underlineLightBlue" />
+
+        <v-container class="d-flex justify-center py-8">
+            <v-card v-if="cemeteryManager" rounded="xl" elevation="5" color="#f1a07b" class="pa-6 w-100"
+                max-width="900">
+                <v-row class="ga-6" align="start">
+                    <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
+                        <v-avatar size="260" class="position-relative profile-avatar">
+                            <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
+                                :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
+                                <template #error>
+                                    <v-icon color="#0d475a" size="150">
+                                        mdi-account
+                                    </v-icon>
+                                </template>
+                            </v-img>
+
+                            <v-icon v-else color="#0d475a" size="150">
+                                mdi-account
+                            </v-icon>
+
+                            <v-btn v-if="isEditing" icon size="large" elevation="6" color="#16495d" class="avatar-btn"
+                                @click="selectFile">
+                                <v-icon color="white">
+                                    mdi-camera
+                                </v-icon>
+                            </v-btn>
+
+                            <input ref="fileInput" type="file" accept="image/*" class="d-none"
+                                @change="handleFileUpload" />
+                        </v-avatar>
+
+                        <v-btn v-if="!isEditing" color="#ff2d35" variant="elevated" rounded="lg" size="large"
+                            class="mt-6 px-6">
                             Verwijder
                         </v-btn>
-                    </div>
-                    <div class="mt-16">
-                        <v-btn v-if="isEditing" color="#0d475a" class="text-none text-white">
-                            Foto uploaden
-                        </v-btn>
-                    </div>
-                </v-col>
+                    </v-col>
 
-                <!-- Rechterkant -->
-                <v-col cols="12" md="7">
-                    <v-row align="center" class="mb-8">
-                        <v-col cols="3" class="text-h5">Naam:</v-col>
-                        <v-col cols="9">
-                            <v-text-field v-if="isEditing" v-model="editManager.name" variant="solo" density="compact"
-                                hide-details />
+                    <v-col cols="12" md="8">
+                        <v-form @submit.prevent="saveManager">
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="Voornaam" v-model="editManager.first_name"
+                                            :readonly="!isEditing" hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
 
-                            <v-sheet v-else class="pa-3 rounded-pill text-h6">
-                                {{ managerFullName(cemeteryManager) }}
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="Tussenvoegsel" v-model="editManager.infix"
+                                            :readonly="!isEditing" hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
 
-                    <v-row align="center" class="mb-12">
-                        <v-col cols="3" class="text-h5">E-mail:</v-col>
-                        <v-col cols="9">
-                            <v-text-field v-if="isEditing" v-model="editManager.email" variant="solo" density="compact"
-                                hide-details />
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="Achternaam" v-model="editManager.last_name"
+                                            :readonly="!isEditing" hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
 
-                            <v-sheet v-else class="pa-3 rounded-pill text-h6">
-                                {{ cemeteryManager.email }}
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="E-mail" v-model="editManager.email" :readonly="!isEditing"
+                                            hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
 
-                    <v-row align="center" class="mb-12">
-                        <v-col cols="3" class="text-h5">Telefoon:</v-col>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="Telefoonnummer" v-model="editManager.phone_number"
+                                            :readonly="!isEditing" hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
 
-                        <v-col cols="9">
-                            <v-text-field v-if="isEditing" v-model="editManager.phone_number" variant="solo"
-                                density="compact" hide-details />
+                                <v-col cols="12" class="d-flex justify-end ga-3 flex-wrap pt-6">
+                                    <v-btn color="#16495d" variant="elevated" rounded="lg" size="large" class="px-6"
+                                        @click="cancelOrEdit">
+                                        {{ isEditing ? 'Annuleren' : 'Wijzig' }}
+                                    </v-btn>
 
-                            <v-sheet v-else class="pa-3 rounded-pill text-h6">
-                                {{ cemeteryManager.phone_number }}
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
+                                    <v-btn v-if="!isEditing" color="#0d475a" variant="elevated" rounded="lg"
+                                        size="large" class="px-6" @click="goToLinkedCemeteries">
+                                        Naar gekoppelde kerkhoven
+                                    </v-btn>
 
+                                    <v-btn v-if="isEditing" type="submit" color="#023047" variant="elevated"
+                                        rounded="lg" size="large" class="px-6">
+                                        Opslaan
+                                    </v-btn>
+                                </v-col>
+                            </v-container>
+                        </v-form>
+                    </v-col>
+                </v-row>
+            </v-card>
 
-
-                    <div class="d-flex justify-end">
-                        <v-btn color="#0d475a" class="text-none text-white px-16" size="x-large" rounded="lg"
-                            @click="isEditing ? saveManager() : isEditing = true">
-                            {{ isEditing ? 'Opslaan' : 'Wijzig' }}
-                        </v-btn>
-                    </div>
-                    <div v-if="!isEditing" class="mt-16 d-flex justify-end">
-                        <v-btn color="#0d475a" class="text-none text-white" @click="goToLinkedCemeteries">
-                            Naar gekoppelde kerkhoven
-                        </v-btn>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-card>
-
-        <div v-else class="text-center">
-            Beheerder niet gevonden
-        </div>
+            <div v-else class="text-center">
+                Beheerder niet gevonden
+            </div>
+        </v-container>
     </v-container>
 </template>
 
@@ -102,25 +120,13 @@ const managerName = decodeURIComponent(route.params.user_id)
 
 const cemeteryManager = ref(null)
 const isEditing = ref(false)
-
 const linkedCemeteryId = ref(null)
+const fileInput = ref(null)
 
-
-// Link naar gekoppelde kerkhoven
-function goToLinkedCemeteries() {
-    if (!cemeteryManager.value) return
-
-    router.push({
-        name: 'Cemeteries',
-        query: {
-            manager: managerFullName(cemeteryManager.value)
-        }
-    })
-}
-
-// Edit manager details
 const editManager = ref({
-    name: '',
+    first_name: '',
+    infix: '',
+    last_name: '',
     email: '',
     phone_number: ''
 })
@@ -137,21 +143,45 @@ const managerFullName = (manager) => {
         .join(' ')
 }
 
+function fillEditManager() {
+    if (!cemeteryManager.value) return
+
+    editManager.value = {
+        first_name: cemeteryManager.value.first_name || '',
+        infix: cemeteryManager.value.infix || '',
+        last_name: cemeteryManager.value.last_name || '',
+        email: cemeteryManager.value.email || '',
+        phone_number: cemeteryManager.value.phone_number || ''
+    }
+}
+
+function cancelOrEdit() {
+    if (isEditing.value) {
+        fillEditManager()
+        isEditing.value = false
+        return
+    }
+
+    isEditing.value = true
+}
+
+function goToLinkedCemeteries() {
+    if (!cemeteryManager.value) return
+
+    router.push({
+        name: 'Cemeteries',
+        query: {
+            manager: managerFullName(cemeteryManager.value)
+        }
+    })
+}
+
 async function saveManager() {
     try {
-        const nameParts = editManager.value.name.trim().split(' ')
-
-        const first_name = nameParts.shift() || ''
-        const last_name = nameParts.pop() || ''
-        const infix = nameParts.join(' ') || null
-
         const userId = Number(
             cemeteryManager.value?.user_id ||
             cemeteryManager.value?.id
         )
-
-        console.log('Manager object:', cemeteryManager.value)
-        console.log('Gebruikte ID:', userId)
 
         if (!userId) {
             console.error('Geen geldige ID gevonden')
@@ -159,28 +189,42 @@ async function saveManager() {
         }
 
         await axios.put(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
-            first_name,
-            infix,
-            last_name,
+            first_name: editManager.value.first_name,
+            infix: editManager.value.infix || null,
+            last_name: editManager.value.last_name,
             email: editManager.value.email,
             phone_number: editManager.value.phone_number
         })
 
         cemeteryManager.value = {
             ...cemeteryManager.value,
-            first_name,
-            infix,
-            last_name,
+            first_name: editManager.value.first_name,
+            infix: editManager.value.infix || null,
+            last_name: editManager.value.last_name,
             email: editManager.value.email,
             phone_number: editManager.value.phone_number
         }
 
         isEditing.value = false
-
-        console.log('Opslaan gelukt')
     } catch (error) {
         console.error('Fout bij opslaan beheerder:', error)
     }
+}
+
+const selectFile = () => {
+    fileInput.value?.click()
+}
+
+const handleFileUpload = (event) => {
+    const file = event.target.files[0]
+
+    if (!file || !cemeteryManager.value) return
+
+    const imageUrl = URL.createObjectURL(file)
+
+    cemeteryManager.value.profile_picture_url = imageUrl
+
+    console.log('Geselecteerd bestand:', file)
 }
 
 onMounted(() => {
@@ -192,20 +236,12 @@ onMounted(() => {
                 response.data.cemeteryManagers ||
                 response.data
 
-            console.log('Alle beheerders:', managers)
-
             cemeteryManager.value = managers.find(manager =>
                 managerFullName(manager).trim() === managerName.trim()
             )
 
-            console.log('Gevonden beheerder:', cemeteryManager.value)
-
             if (cemeteryManager.value) {
-                editManager.value = {
-                    name: managerFullName(cemeteryManager.value),
-                    email: cemeteryManager.value.email,
-                    phone_number: cemeteryManager.value.phone_number
-                }
+                fillEditManager()
 
                 axios.get(`${import.meta.env.VITE_API_URL}/cemeteries`)
                     .then(res => {
@@ -216,8 +252,6 @@ onMounted(() => {
                         )
 
                         linkedCemeteryId.value = linkedCemetery?.id || null
-
-                        console.log('Linked cemetery:', linkedCemetery)
                     })
             }
         })
@@ -227,9 +261,27 @@ onMounted(() => {
 })
 </script>
 
-
 <style scoped>
-.bg-detail-card {
-    background-color: #f8b18b;
+.profile-avatar {
+    overflow: hidden;
+}
+
+.avatar-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%) scale(0.8);
+
+    opacity: 0;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.profile-avatar:hover .avatar-btn {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 </style>
