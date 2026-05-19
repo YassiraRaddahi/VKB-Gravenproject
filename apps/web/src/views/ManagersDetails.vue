@@ -5,11 +5,11 @@
             underline-class="underlineLightBlue" />
 
         <v-container class="d-flex justify-center py-8">
-            <v-card v-if="cemeteryManager" rounded="xl" elevation="5" color="#f1a07b" class="pa-6 w-100"
+            <v-card v-if="cemeteryManager" rounded="xl" elevation="5" color="#f1a07b" class="pa-4 pa-md-6 w-100"
                 max-width="900">
-                <v-row class="ga-6" align="start">
-                    <v-col cols="12" md="4" class="d-flex flex-column align-center ga-4">
-                        <v-avatar size="260" class="position-relative profile-avatar">
+                <v-row align="center">
+                    <v-col cols="12" md="4" class="d-flex flex-column align-center justify-center">
+                        <v-avatar size="220" class="position-relative profile-avatar mb-6">
                             <v-img v-if="cemeteryManager.profile_picture_url" :src="cemeteryManager.profile_picture_url"
                                 :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
                                 <template #error>
@@ -78,7 +78,7 @@
                                     </v-col>
                                 </v-row>
 
-                                <v-col cols="12" class="d-flex justify-end ga-3 flex-wrap pt-6">
+                                <v-col cols="12" class="d-flex flex-column flex-sm-row justify-end ga-3 pt-6">
                                     <v-btn color="#16495d" variant="elevated" rounded="lg" size="large" class="px-6"
                                         @click="cancelOrEdit">
                                         {{ isEditing ? 'Annuleren' : 'Wijzig' }}
@@ -168,29 +168,25 @@ function cancelOrEdit() {
 }
 
 function goToLinkedCemeteries() {
-  if (!cemeteryManager.value) return
+    if (!cemeteryManager.value) return
 
-  router.push({
-    name: 'Cemeteries',
-    query: {
-      manager: cemeteryManager.value.id
-    }
-  })
+    router.push({
+        name: 'Cemeteries',
+        query: {
+            manager: cemeteryManager.value.id
+        }
+    })
 }
 
 async function saveManager() {
     try {
-        const userId = Number(
-            cemeteryManager.value?.user_id ||
-            cemeteryManager.value?.id
-        )
+        const userId = Number(cemeteryManager.value?.id)
 
         if (!userId) {
             console.error('Geen geldige ID gevonden')
             return
         }
-
-        await axios.put(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
+        await axios.put(`${import.meta.env.VITE_API_URL}/cemetery-managers/${userId}`, {
             first_name: editManager.value.first_name,
             infix: editManager.value.infix || null,
             last_name: editManager.value.last_name,
@@ -200,16 +196,13 @@ async function saveManager() {
 
         cemeteryManager.value = {
             ...cemeteryManager.value,
-            first_name: editManager.value.first_name,
-            infix: editManager.value.infix || null,
-            last_name: editManager.value.last_name,
-            email: editManager.value.email,
-            phone_number: editManager.value.phone_number
+            ...editManager.value,
+            infix: editManager.value.infix || null
         }
 
         isEditing.value = false
     } catch (error) {
-        console.error('Fout bij opslaan beheerder:', error)
+        console.error('Fout bij opslaan beheerder:', error.response?.data || error)
     }
 }
 
@@ -286,4 +279,8 @@ onMounted(() => {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 }
+
+/* .profile-avatar {
+    overflow: hidden;
+} */
 </style>
