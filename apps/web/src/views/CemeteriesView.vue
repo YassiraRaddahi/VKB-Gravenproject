@@ -79,7 +79,7 @@
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import TitleUnderline from '../components/TitleUnderline.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const cemeteries = ref([])
 const search = ref('')
@@ -87,9 +87,11 @@ const managerFilter = ref(null)
 const cityFilter = ref(null)
 const url = `${import.meta.env.VITE_API_URL}/cemeteries`
 const router = useRouter()
-
+const route = useRoute()
 // Router
-
+if (route.query.manager) {
+  managerFilter.value = Number(route.query.manager)
+}
 
 
 // Dynamisch unieke beheerders verzamelen voor filteropties

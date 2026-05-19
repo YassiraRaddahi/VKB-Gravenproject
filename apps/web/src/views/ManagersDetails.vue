@@ -123,6 +123,8 @@ const isEditing = ref(false)
 const linkedCemeteryId = ref(null)
 const fileInput = ref(null)
 
+
+
 const editManager = ref({
     first_name: '',
     infix: '',
@@ -166,14 +168,14 @@ function cancelOrEdit() {
 }
 
 function goToLinkedCemeteries() {
-    if (!cemeteryManager.value) return
+  if (!cemeteryManager.value) return
 
-    router.push({
-        name: 'Cemeteries',
-        query: {
-            manager: managerFullName(cemeteryManager.value)
-        }
-    })
+  router.push({
+    name: 'Cemeteries',
+    query: {
+      manager: cemeteryManager.value.id
+    }
+  })
 }
 
 async function saveManager() {
