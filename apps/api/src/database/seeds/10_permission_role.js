@@ -36,9 +36,6 @@ exports.seed = async function (knex) {
     { role_id: 1, permission_id: 40 }, // edit.position
     { role_id: 1, permission_id: 41 }, // view.role
     
-      
- 
-   
     //Beheerder (role_id: 2)
     { role_id: 2, permission_id: 21 }, // view.name
     { role_id: 2, permission_id: 22 }, // edit.name
