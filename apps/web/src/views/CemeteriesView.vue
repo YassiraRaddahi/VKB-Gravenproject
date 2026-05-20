@@ -1,76 +1,45 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <TitleUnderline 
-    title="Lijst met kerkhoven" 
-    underline-class="underlineLightBlue"
-    />
+    <TitleUnderline title="Lijst met kerkhoven" underline-class="underlineLightBlue" />
 
     <v-container fluid class="pa-4">
 
       <!-- Filters -->
-      <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
-        <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
-            color="primary" class="search-field" />
-        </v-col>
-
+      <SearchAddBar :search="search" @update:search="search = $event" search-label="Zoek kerkhof..." :search-md="4"
+        @add="addCemetery">
         <v-col cols="12" md="2">
           <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
             color="primary" class="filter-select" />
         </v-col>
-
         <v-col cols="12" md="2">
           <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
             class="filter-select" />
         </v-col>
+      </SearchAddBar>
 
-        <v-col cols="12" md="4" class="d-flex align-center justify-end">
-          <v-btn color="primary" dark class="ma-0" @click="addCemetery">
-            <v-icon left>mdi-plus</v-icon>
-            Toevoegen
-          </v-btn>
-        </v-col>
-      </v-row>
+      <EmptyState v-if="visibleCemeteries.length === 0" message="Geen kerkhoven gevonden." />
 
       <!-- Cemetery cards -->
       <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
-        <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
+        <v-col v-for="cemetery in visibleCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
-            class="text-decoration-none w-100 d-flex full-height">
-            <v-card class="cemetery-card d-flex flex-column ">
-
-              <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
+          <ItemCard :image="cemetery.image_url" :image-alt="`Impressiefoto van ${cemetery.name}`" :title="cemetery.name"
+            :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }">
+            <div class="manager-list text-body-2 text-grey-darken-1 w-100">
+              <template v-if="cemetery.cemetery_managers?.length > 0">
+                <div v-for="manager in cemetery.cemetery_managers" :key="manager.id" class="manager-item">
+                  <span class="manager-label">Beheerder</span>
+                  <span class="manager-name">
+                    {{ manager.first_name }} {{ manager.infix }} {{ manager.last_name }}
+                  </span>
+                </div>
+              </template>
+              <div v-else class="manager-item">
+                <span class="manager-label">Beheerder</span>
+                <span class="manager-name text-grey-darken-2">Nog niet toegewezen</span>
               </div>
-
-              <v-card-text class="cemetery-card-text text-center">
-                <div class="text-subtitle-1 font-weight-bold mb-2">
-                  {{ cemetery.name }}
-                </div>
-
-                <div class="manager-list text-body-2 text-grey-darken-1">
-                  <div v-if="cemetery.cemetery_managers?.length > 0"
-                    v-for="cemeteryManager in cemetery.cemetery_managers" :key="cemeteryManager.id"
-                    class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name">
-                      {{ cemeteryManager.first_names }}
-                      {{ cemeteryManager.infix }}
-                      {{ cemeteryManager.last_name }}
-                    </span>
-                  </div>
-
-                  <div v-else class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name text-grey-darken-2">
-                      Nog niet toegewezen
-                    </span>
-                  </div>
-                </div>
-              </v-card-text>
-            </v-card>
-          </router-link>
+            </div>
+          </ItemCard>
         </v-col>
       </v-row>
     </v-container>
@@ -80,7 +49,10 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-import TitleUnderline from '../components/TitleUnderline.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import SearchAddBar from '@/components/ui/SearchAddBar.vue'
+import ItemCard from '@/components/ui/ItemCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const cemeteries = ref([])
 const search = ref('')
@@ -115,7 +87,7 @@ const cityOptions = computed(() => {
 })
 
 // Filter logica
-const filteredCemeteries = computed(() => {
+const visibleCemeteries = computed(() => {
   let result = cemeteries.value
   const query = search.value.toLowerCase().trim()
   if (query) result = result.filter(c => c.name.toLowerCase().includes(query))
@@ -147,29 +119,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-v-field {
-  max-width: 500px;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.cemetery-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 450px;
-}
-
-.cemetery-card-text {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-}
-
 .manager-list {
   min-height: 100px;
   display: flex;
@@ -197,17 +146,5 @@ v-field {
   display: block;
   font-size: 0.95rem;
   color: #2f4f6d;
-}
-
-.image-wrapper {
-  width: 100%;
-  height: 200px;
-  /* harde vaste hoogte */
-  overflow: hidden;
-}
-
-.image-fill {
-  width: 100%;
-  height: 100%;
 }
 </style>

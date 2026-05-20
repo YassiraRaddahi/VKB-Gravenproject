@@ -1,49 +1,34 @@
 <template>
 
- <TitleUnderline 
-    title="Login" 
-    underline-class="underlineDarkOrange"
-    />
+  <TitleUnderline title="Login" underline-class="underlineDarkOrange" />
 
 
-  <v-container :class="{
-          'px-0': !smAndUp
-        }">
-    <v-row justify="center">
-      <v-col cols="12" sm="8" lg="6" xl="5" xxl="4">
-        <v-card :class="{
-          'rounded-xl': smAndUp,
-          'rounded-0': !smAndUp
-        }" class="pa-8 bg-darkBlue">
-          <v-form @submit.prevent="submit">
-            <v-alert v-if="loginError" type="error" class="mb-4">
-              {{ loginError }}
-            </v-alert>
+  <FormCard bg-color="darkBlue">
+    <v-form @submit.prevent="submit">
+      <v-alert v-if="loginError" type="error" class="mb-4">
+        {{ loginError }}
+      </v-alert>
 
-            <v-text-field v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue"
-              rounded="xl" class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch"></v-text-field>
+      <AppInput v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue" rounded="xl"
+        class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch" />
 
-            <v-text-field v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
-              color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors"
-              @blur="v$.password.$touch"></v-text-field>
+      <AppInput v-model="state.password" label="Wachtwoord" type="password" variant="solo" bg-color="white"
+        color="darkBlue" rounded="xl" class="mb-6" :error-messages="passwordErrors" @blur="v$.password.$touch" />
 
-            <v-row class="align-center">
-              <v-col>
-                <v-btn class="rounded-xl border-white text-darkBlue text-caption">
-                  Wachtwoord vergeten
-                </v-btn>
-              </v-col>
-              <v-col cols="auto">
-                <v-btn type="submit" class="rounded-xl bg-white text-darkBlue">
-                  Log in
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+      <v-row class="align-center">
+        <v-col>
+          <AppButton kind="whiteOutline">
+            Wachtwoord vergeten
+          </AppButton>
+        </v-col>
+        <v-col cols="auto">
+          <AppButton kind="white" type="submit">
+            Log in
+          </AppButton>
+        </v-col>
+      </v-row>
+    </v-form>
+  </FormCard>
 </template>
 
 <script setup>
@@ -53,10 +38,10 @@ import { email, minLength, required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
-import { useDisplay} from 'vuetify'
-import TitleUnderline from '../components/TitleUnderline.vue'
-
-const { smAndUp } = useDisplay()
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppInput from '@/components/ui/AppInput.vue'
+import FormCard from '@/components/ui/FormCard.vue'
 
 const userStore = useUserStore()
 const router = useRouter()

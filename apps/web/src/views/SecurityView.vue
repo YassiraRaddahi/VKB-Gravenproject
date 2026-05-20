@@ -57,9 +57,10 @@
 </template>
 
 <script setup>
-import ProfileSideBar from '@/components/ProfileSideBar.vue'
-import TitleUnderline from '../components/TitleUnderline.vue';
-import SnackbarSuccess from '@/components/SnackbarSuccess.vue';
+
+import ProfileSideBar from '@/components/profile/ProfileSideBar.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue';
+import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue';
 
 import { ref } from 'vue'
 

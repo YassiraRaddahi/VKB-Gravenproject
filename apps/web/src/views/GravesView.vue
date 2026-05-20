@@ -1,47 +1,27 @@
 <template>
-  <v-container fluid class="pa-0 list-page-container"> 
-   
-     <TitleUnderline 
-     :title="`Graven van ${cemetery?.name}`"
-     underline-class="underlineLightBlue"
-    />
+  <v-container fluid class="pa-0 list-page-container">
+
+    <TitleUnderline :title="`Graven van ${cemetery?.name}`" underline-class="underlineLightBlue" />
 
     <v-container fluid class="pa-4">
-      <v-row no-gutters class="d-flex align-center mb-6 gap-2">
-        <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoek graf..." prepend-inner-icon="mdi-magnify" clearable outlined density="comfortable"
-            color="primary" class="search-field" />
-        </v-col>
+      <SearchAddBar :search="search" @update:search="search = $event" search-label="Zoek graf..." :search-md="4"
+        density="comfortable" @add="addCemetery">
         <v-col cols="12" md="2">
-          <v-select v-model="statusFilter" :items="statusOptions" label="Status" clearable outlined density="comfortable"
-            color="primary" class="filter-select" />
+          <v-select v-model="statusFilter" :items="statusOptions" label="Status" clearable outlined
+            density="comfortable" color="primary" class="filter-select" />
         </v-col>
-        <v-col cols="12" md="6" class="d-flex justify-end">
-          <v-btn color="primary" dark class="ma-0" @click="addCemetery">
-            <v-icon left>mdi-plus</v-icon>
-            Toevoegen
-          </v-btn>
-        </v-col>
-      </v-row>
+      </SearchAddBar>
 
-      <v-row>
-        <v-col cols="12" class="text-center" v-if="filteredGraves.length === 0">
-          <v-alert type="info" border="left" color="blue" elevation="0">
-            Geen graven gevonden.
-          </v-alert>
-        </v-col>
-      </v-row>
+      <EmptyState v-if="visibleGraves.length === 0" message="Geen graven gevonden." />
 
       <v-row density="comfortable">
-        <v-col v-for="grave in filteredGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
+        <v-col v-for="grave in visibleGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <v-card elevation="2" class="grave-card d-flex flex-column h-100">
-            <v-img :src="grave.image_url" :key="grave.image_url + '-' + $route.fullPath" :alt="`Vooraanzicht van graf ${grave.grave_number} op ${cemetery?.name}`" height="220" cover class="grave-image" />
-            <v-card-text class="text-center d-flex flex-column justify-center">
-              <div class="text-h6 font-weight-bold mb-1">{{ grave.grave_number }}</div>
-              <div class="caption">Status: {{ grave.status }}</div>
-            </v-card-text>
-          </v-card>
+          <ItemCard :image="grave.image_url"
+            :image-alt="`Vooraanzicht van graf ${grave.grave_number} op ${cemetery?.name}`" :title="grave.grave_number"
+            title-class="text-h6">
+            <div class="text-caption">Status: {{ grave.status }}</div>
+          </ItemCard>
         </v-col>
       </v-row>
     </v-container>
@@ -54,7 +34,10 @@ import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import TitleUnderline from '@/components/TitleUnderline.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import SearchAddBar from '@/components/ui/SearchAddBar.vue'
+import ItemCard from '@/components/ui/ItemCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
 const route = useRoute()
 const cemetery_id = route.params.cemetery_id
@@ -71,7 +54,7 @@ const statusOptions = [
   { title: 'Gereserveerd', value: 'gereserveerd' }
 ]
 
-const filteredGraves = computed(() => {
+const visibleGraves = computed(() => {
   let result = graves.value
 
 
@@ -88,16 +71,15 @@ const filteredGraves = computed(() => {
 })
 
 let pageTitle = computed(() => {
-  return cemetery.value?.name 
-  ? `Graven van ${cemetery.value?.name} | Kerkhovenbeheer Nederland`
-  : "Graven van uw kerkhof | Kerkhovenbeheer Nederland"
+  return cemetery.value?.name
+    ? `Graven van ${cemetery.value?.name} | Kerkhovenbeheer Nederland`
+    : "Graven van uw kerkhof | Kerkhovenbeheer Nederland"
 })
 
-let pageDescription = computed(() => 
-{
+let pageDescription = computed(() => {
   return cemetery.value?.name
-  ?  `Bekijk en beheer al uw graven van ${cemetery.value?.name} op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date.`
-  : "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
+    ? `Bekijk en beheer al uw graven van ${cemetery.value?.name} op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date.`
+    : "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
 })
 
 useHead({
@@ -111,6 +93,10 @@ useHead({
 })
 
 
+
+function addCemetery() {
+  alert('Toevoegen graf knop geklikt (functie is nog niet gemaakt)')
+}
 
 onMounted(() => {
   axios.get(url)
@@ -128,19 +114,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.grave-image {
-  width: 100%;
-  height: 220px;
-  min-height: 220px;
-  max-height: 220px;
-  object-fit: cover;
-}
-
-.grave-card {
-  min-height: 450px;
-  width: 100%;
-}
-
 .search-field :deep(.v-field) {
   min-height: 32px;
 }
