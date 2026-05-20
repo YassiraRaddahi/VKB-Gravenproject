@@ -70,7 +70,7 @@
                   <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
                       <v-text-field data-testid="first-name" v-model="user.first_names" :rules="nameRules"
-                        label="Voornaam" :readonly="!userStore.hasPermission('user.edit.name')"
+                        label="Voornaamen" :readonly="!userStore.hasPermission('user.edit.name')"
                         :required="userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
                   </v-row>

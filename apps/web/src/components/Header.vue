@@ -46,7 +46,7 @@
           </v-avatar>
 
           <span class="user-name d-none d-sm-block">
-            {{ user.first_names }} {{ user.last_name }}
+            {{ userFullName() }}
           </span>
         </div>
       </v-btn>
@@ -74,7 +74,7 @@ const { user } = storeToRefs(userStore)
 
 const userFullName = () => {
   return [
-    user.value.first_names,
+    user.value.first_names.trim().split(/\s+/)[0] || '', // Gebruik alleen de eerste voornaam
     user.value.infix,
     user.value.last_name
   ]

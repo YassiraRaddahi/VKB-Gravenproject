@@ -41,7 +41,7 @@ exports.seed = async function (knex) {
 
     {
       initials: 'B. C. M.',
-      first_names: 'Bea',
+      first_names: 'Bea Crystaluta Monocle',
       infix: null,
       last_name: 'Bakker',
       partner_infix: null,
