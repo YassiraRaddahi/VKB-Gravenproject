@@ -29,12 +29,14 @@ const labelMap = {
   Cemeteries: 'Kerkhoven',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
+  UserManagement: 'Personenbeheer',
 }
 
 const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
+  UserManagement: 'Dashboard',
 }
 
 const routeParams = {
