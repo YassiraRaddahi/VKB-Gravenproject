@@ -65,7 +65,7 @@ const dashboards = computed(() => {
   if (user.value.role_name === 'beheerder') {
     return [
       {
-        title: 'Beheer gekoppelde begraafplaatsen',
+        title: 'Beheer gekoppelde kerkhoven',
         icon: 'mdi-cross',
         routeName: 'ManagerCemeteries'
       },
