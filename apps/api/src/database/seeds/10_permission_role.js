@@ -21,10 +21,10 @@ exports.seed = async function (knex) {
     { role_id: 3, permission_id: 18 },
     { role_id: 3, permission_id: 19 },
     { role_id: 4, permission_id: 20 },
-
-    
+ 
+   
     // user profile permissions
-    
+   
     //Admin (role_id: 1)
     { role_id: 1, permission_id: 21 }, // view.name
     { role_id: 1, permission_id: 22 }, // edit.name
@@ -35,8 +35,10 @@ exports.seed = async function (knex) {
     { role_id: 1, permission_id: 39 }, // view.position
     { role_id: 1, permission_id: 40 }, // edit.position
     { role_id: 1, permission_id: 41 }, // view.role
-
-    
+    { role_id: 1, permission_id: 42 }, // view.dashboard.maindashboard.cemetery_manager
+    { role_id: 1, permission_id: 43 }, // view.dashboard.user_management
+ 
+   
     //Beheerder (role_id: 2)
     { role_id: 2, permission_id: 21 }, // view.name
     { role_id: 2, permission_id: 22 }, // edit.name
@@ -47,7 +49,9 @@ exports.seed = async function (knex) {
     { role_id: 2, permission_id: 39 }, // view.position
     { role_id: 2, permission_id: 40 }, // edit.position
     { role_id: 2, permission_id: 41 }, // view.role
-
+    { role_id: 2, permission_id: 42 }, // view.dashboard.maindashboard.cemetery_manager
+    { role_id: 2, permission_id: 43 }, // view.dashboard.user_management
+ 
     //Rechthebbende (role_id: 3)
     { role_id: 3, permission_id: 21 }, // view.name
     { role_id: 3, permission_id: 22 }, // edit.name
@@ -66,21 +70,21 @@ exports.seed = async function (knex) {
     { role_id: 3, permission_id: 37 }, // view.profile_picture
     { role_id: 3, permission_id: 38 }, // edit.profile_picture
     { role_id: 3, permission_id: 41 }, // view.role
-
-    
-
+ 
+   
+ 
     //Grafonderhouders (role_id: 4)
     { role_id: 4, permission_id: 21 }, // view.name
     { role_id: 4, permission_id: 22 }, // edit.name
     { role_id: 4, permission_id: 35 }, // view.contact
-    { role_id: 4, permission_id: 36 }, // edit.contact 
+    { role_id: 4, permission_id: 36 }, // edit.contact
     { role_id: 4, permission_id: 37 }, // view.profile_picture
     { role_id: 4, permission_id: 38 }, // edit.profile_picture
     { role_id: 4, permission_id: 39 }, // view.position
     { role_id: 4, permission_id: 40 }, // edit.position
     { role_id: 4, permission_id: 41 }, // view.role
-
-    
-  
+ 
+   
+ 
   ]);
 };
