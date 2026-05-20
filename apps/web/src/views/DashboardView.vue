@@ -62,20 +62,21 @@ const dashboards = computed(() => {
     ]
   }
 
-  if (user.value.role_name === 'beheerder') {
-    return [
-      {
-        title: 'Beheer gekoppelde kerkhoven',
-        icon: 'mdi-cross',
-        routeName: 'ManagerCemeteries'
-      },
-      {
-        title: 'Beheer rechthebbenden, overledenen en grafonderhouders',
-        icon: 'mdi-account-group',
-        routeName: 'UserManagement'
-      }
-    ]
-  }
+ if (user.value.role_name === 'beheerder') {
+  return [
+    {
+      title: 'Beheer gekoppelde kerkhoven',
+      icon: 'mdi-cross',
+      routeName: 'Cemeteries',
+      query: { manager: user.value.id }
+    },
+    {
+      title: 'Beheer rechthebbenden, overledenen en grafonderhouders',
+      icon: 'mdi-account-group',
+      routeName: 'UserManagement'
+    }
+  ]
+}
 
   return []
 })

@@ -9,8 +9,8 @@ const router = createRouter({
       path: "/home",
       name: "Home",
       component: () => import("../views/HomeView.vue"),
-      meta: {  
-        showBreadcrumbs: false, 
+      meta: {
+        showBreadcrumbs: false,
         showNavigationDrawer: true,
         title: "Kerkhovenbeheer Nederland | Home",
         description: "Kerkhovenbeheer Nederland vereenvoudigt het beheer van kerkhoven. Beheer efficiënt uw graven, rechthebbenden en overledenen met ons automatiseringsysteem."
@@ -20,7 +20,7 @@ const router = createRouter({
       path: "/login",
       name: "Login",
       component: () => import("../views/LoginView.vue"),
-      meta: { 
+      meta: {
         showBreadcrumbs: false,
         showNavigationDrawer: false,
         title: "Inloggen | Kerkhovenbeheer Nederland",
@@ -31,56 +31,56 @@ const router = createRouter({
       path: "/dashboard",
       name: "Dashboard",
       component: () => import("../views/DashboardView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: false,
         showNavigationDrawer: true,
         title: "Hoofddashboard Admin | Kerkhovenbeheer Nederland",
-        description: "Via het hoofdashboard kunt u navigeren naar alle kerkhoven die u in beheer heeft en naar alle beheerders van uw kerkhoven.", 
+        description: "Via het hoofdashboard kunt u navigeren naar alle kerkhoven die u in beheer heeft en naar alle beheerders van uw kerkhoven.",
       },
     },
     {
       path: "/kerkhoven",
       name: "Cemeteries",
       component: () => import("../views/CemeteriesView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Kerkhoven in uw beheer| Kerkhovenbeheer Nederland",
-        description: "Beheer al uw kerkhoven op één plek. Zoek, filter of klik op een kerkhof en bekijk de details, voeg nieuwe kerkhoven toe en houd uw gegevens up-to-date." 
+        description: "Beheer al uw kerkhoven op één plek. Zoek, filter of klik op een kerkhof en bekijk de details, voeg nieuwe kerkhoven toe en houd uw gegevens up-to-date."
       },
     },
     {
       path: "/kerkhoven/:cemetery_id/graven",
       name: "Graves",
       component: () => import("../views/GravesView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Graven van uw kerkhof | Kerkhovenbeheer Nederland",
-        description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."   
+        description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
       },
     },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
       component: () => import("../views/CemeteryManagersView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Beheerders van uw kerkhoven | Kerkhovenbeheer Nederland",
-        description: "Beheer al uw beheerders op één plek. Zoek, of klik op een beheerder en bekijk de details, voeg nieuwe beheerders toe en houd uw gegevens up-to-date."  
+        description: "Beheer al uw beheerders op één plek. Zoek, of klik op een beheerder en bekijk de details, voeg nieuwe beheerders toe en houd uw gegevens up-to-date."
       },
     },
     {
       path: "/profiel",
       name: "Profile",
       component: () => import("../views/ProfileView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: false,
         showNavigationDrawer: false,
         title: "Profiel | Kerkhovenbeheer Nederland",
@@ -91,14 +91,24 @@ const router = createRouter({
       path: "/profiel/beveiliging",
       name: "Security",
       component: () => import("../views/SecurityView.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: false,
         showNavigationDrawer: false,
         title: "Profielbeveiliging | Kerkhovenbeheer Nederland",
-        description: "Beheer hier uw beveiligingsinstellingen en wachtwoord. Houd uw account veilig voor een optimale ervaring met Kerkhovenbeheer Nederland."  
+        description: "Beheer hier uw beveiligingsinstellingen en wachtwoord. Houd uw account veilig voor een optimale ervaring met Kerkhovenbeheer Nederland."
       },
     },
+    {
+  path: "/personenbeheer",
+  name: "UserManagement",
+  component: () => import("../views/UserManagementView.vue"),
+  meta: {
+    requiresAuth: true,
+    showBreadcrumbs: true,
+    showNavigationDrawer: true,
+  },
+}
   ],
 });
 
@@ -115,18 +125,18 @@ router.beforeEach(async (to, from) => {
     } catch {
     }
   }
-  
+
   // If the route requires authentication and the user is not logged in, redirect to login
   if (to.meta.requiresAuth && !userStore.user) {
     return "/login";
   }
 
   // If the user is logged in and tries to access the login page, redirect to dashboard
-  if(to.path === "/login" && userStore.user) {
+  if (to.path === "/login" && userStore.user) {
     return "/dashboard"
   }
 
-    return true;
+  return true;
 });
 
 export default router;
