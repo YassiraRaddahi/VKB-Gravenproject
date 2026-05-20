@@ -5,7 +5,7 @@ import app from '../src/app.js'
 const permissionFieldMap = {
     'user.view.name': [
       'initials',
-      'first_name',
+      'first_names',
       'infix',
       'last_name'
     ],
@@ -16,6 +16,8 @@ const permissionFieldMap = {
     ],
 
     'user.view.name_usage': ['name_usage'],
+
+    'user.view.gender': ['gender'],
 
     'user.view.date_of_birth': ['date_of_birth'],
     'user.view.place_of_birth': ['place_of_birth'],
@@ -98,6 +100,8 @@ describe('GET /api/active-token', ()  => {
       'user.edit.partner_name',
       'user.view.name_usage',
       'user.edit.name_usage',
+      'user.view.gender',
+      'user.edit.gender',
       'user.view.date_of_birth',
       'user.view.place_of_birth',
       'user.view.address'
@@ -195,6 +199,8 @@ describe('GET /api/active-token', ()  => {
       'user.edit.partner_name',
       'user.view.name_usage',
       'user.edit.name_usage',
+      'user.view.gender',
+      'user.edit.gender',
       'user.view.date_of_birth',
       'user.view.place_of_birth',
       'user.view.address'
@@ -279,6 +285,8 @@ describe('GET /api/active-token', ()  => {
       'user.edit.partner_name',
       'user.view.name_usage',
       'user.edit.name_usage',
+      'user.view.gender',
+      'user.edit.gender',
       'user.view.date_of_birth',
       'user.view.place_of_birth',
       'user.view.address',
@@ -386,6 +394,8 @@ describe('GET /api/active-token', ()  => {
       'user.edit.partner_name',
       'user.view.name_usage',
       'user.edit.name_usage',
+      'user.view.gender',
+      'user.edit.gender',
       'user.view.date_of_birth',
       'user.view.place_of_birth',
       'user.view.address'

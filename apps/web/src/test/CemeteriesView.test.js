@@ -50,7 +50,7 @@ vi.mock('../views/CemeteriesView.vue', () => ({
         this.cemeteries.forEach(cemetery => {
           if (cemetery.cemetery_managers) {
             cemetery.cemetery_managers.forEach(manager => {
-              const fullName = [manager.first_name, manager.infix, manager.last_name]
+              const fullName = [manager.first_names, manager.infix, manager.last_name]
                 .filter(Boolean)
                 .join(' ')
               managers.set(manager.id, { value: manager.id, title: fullName })
@@ -92,8 +92,8 @@ const mockCemeteries = [
     city: 'Zwolle',
     image_url: '/images/cemeteries/kranenburg.webp',
     cemetery_managers: [
-      { id: 2, first_name: 'Bea', infix: null, last_name: 'Bakker' },
-      { id: 3, first_name: 'Liza', infix: null, last_name: 'Petrushenko' }
+      { id: 2, first_names: 'Bea', infix: null, last_name: 'Bakker' },
+      { id: 3, first_names: 'Liza', infix: null, last_name: 'Petrushenko' }
     ]
   },
   {
@@ -102,7 +102,7 @@ const mockCemeteries = [
     city: 'Zwolle',
     image_url: '/images/cemeteries/meppelerstraatweg.png',
     cemetery_managers: [
-      { id: 15, first_name: 'Tom', infix: 'van der', last_name: 'Meer' }
+      { id: 15, first_names: 'Tom', infix: 'van der', last_name: 'Meer' }
     ]
   },
   {
@@ -111,7 +111,7 @@ const mockCemeteries = [
     city: 'Nieuwleusen',
     image_url: '/images/cemeteries/nieuwleusen.png',
     cemetery_managers: [
-      { id: 3, first_name: 'Liza', infix: null, last_name: 'Petrushenko' }
+      { id: 3, first_names: 'Liza', infix: null, last_name: 'Petrushenko' }
     ]
   }
 ]
@@ -175,7 +175,7 @@ describe('CemeteriesView', () => {
         this.cemeteries.forEach(cemetery => {
           if (cemetery.cemetery_managers) {
             cemetery.cemetery_managers.forEach(manager => {
-              const fullName = [manager.first_name, manager.infix, manager.last_name]
+              const fullName = [manager.first_names, manager.infix, manager.last_name]
                 .filter(Boolean)
                 .join(' ')
               managers.set(manager.id, { value: manager.id, title: fullName })

@@ -1,5 +1,5 @@
 module.exports = function (app, conn_db) {
-    //const argon2 = require("argon2");
+    const bcrypt = require("bcrypt");
     const jwt = require("jsonwebtoken");
     const rateLimit = require("express-rate-limit");
     const isProduction = process.env.NODE_ENV === 'production';
@@ -52,12 +52,13 @@ module.exports = function (app, conn_db) {
 
                 let user = rows[0];
 
-                let password_correct = true;
+                const password_correct = await bcrypt.compare(password, user.password_hash);
 
-                // let password_correct = await argon2.verify(
-                //     user.password_hash,
-                //     password
-                // );
+                if (!password_correct) 
+                {
+                    return res.status(401).send({ error: "Invalid credentials" });
+                }
+
                 if (!password_correct) {
                     return res.status(401).send({ error: "Invalid credentials" });
                 }
@@ -92,9 +93,9 @@ module.exports = function (app, conn_db) {
     
 
         const userSql = `
-            SELECT users.id, users.initials, users.first_name, users.infix, 
+            SELECT users.id, users.initials, users.first_names, users.infix, 
             users.last_name, users.partner_infix, users.partner_last_name, 
-            users.name_usage, users.date_of_birth, users.place_of_birth, 
+            users.name_usage, users.gender, users.date_of_birth, users.place_of_birth, 
             users.street_name, users.house_number, users.house_letter, 
             users.house_number_addition, users.zip_code, users.city, users.email,
             users.phone_number, users.mobile_number, users.profile_picture_url,
@@ -130,7 +131,7 @@ module.exports = function (app, conn_db) {
             }
 
             if (!permissionRows || permissionRows.length === 0) {
-                return res.status(403).json({ error: "Geen rechten" });
+                return res.status(403).json({ error: "Er zijn geen permissies gekoppeld aan deze rol" });
             }
 
             const permissions = permissionRows.map(r => r.name);
@@ -140,7 +141,7 @@ module.exports = function (app, conn_db) {
 
             if(permissions.includes('user.view.name')) {
                 filteredUser.initials = user.initials;
-                filteredUser.first_name = user.first_name;
+                filteredUser.first_names = user.first_names;
                 filteredUser.infix = user.infix;
                 filteredUser.last_name = user.last_name;
             }
@@ -152,6 +153,10 @@ module.exports = function (app, conn_db) {
 
             if(permissions.includes('user.view.name_usage')) {
                 filteredUser.name_usage = user.name_usage;
+            }
+
+            if(permissions.includes('user.view.gender')) {
+                filteredUser.gender = user.gender;
             }
 
             if(permissions.includes('user.view.date_of_birth')) {

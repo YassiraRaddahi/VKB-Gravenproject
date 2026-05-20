@@ -2,7 +2,7 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/users', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
+            let sql = `SELECT users.first_names, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id`;
@@ -24,7 +24,7 @@ module.exports = function (app, conn_db) {
 
                 users.forEach(element => {
                     usersJSON.push({
-                        "first_name": element.first_name,
+                        "first_names": element.first_names,
                         "infix": element.infix,
                         "last_name": element.last_name,
                         "email": element.email,
@@ -43,7 +43,7 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/admin', (req, res) => {
         try {
-            let sql = `SELECT users.first_name, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
+            let sql = `SELECT users.first_names, users.infix, users.last_name, users.address, users.city, users.email, users.phone_number, users.relation_to_deceased, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -64,7 +64,7 @@ module.exports = function (app, conn_db) {
 
                 res.send({
                     "admin": {
-                        "first_name": user.first_name,
+                        "first_names": user.first_names,
                         "infix": user.infix,
                         "last_name": user.last_name,
                         "email": user.email,
@@ -81,7 +81,7 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/cemetery-managers', (req, res) => {
         try {
-            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            let sql = `SELECT users.id, users.initials, users.first_names, users.infix, 
             users.last_name,  users.email, users.phone_number, users.mobile_number, users.profile_picture_url,
             users.position, roles.name AS role_name, roles.id AS role_id
             FROM users
@@ -108,7 +108,7 @@ module.exports = function (app, conn_db) {
                     usersJSON.push({
                         "id": element.id,
                         "initials": element.initials,
-                        "first_name": element.first_name,
+                        "first_names": element.first_names,
                         "infix": element.infix,
                         "last_name": element.last_name,
                         "email": element.email,
@@ -133,7 +133,7 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/grave-caretaker', (req, res) => {
         try {
-            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            let sql = `SELECT users.id, users.initials, users.first_names, users.infix, 
             users.last_name,  users.email, users.phone_number, users.mobile_number, users.profile_picture_url,
             users.position, roles.name AS role_name, roles.id AS role_id
             FROM users
@@ -160,7 +160,7 @@ module.exports = function (app, conn_db) {
                     usersJSON.push({
                         "id": element.id,
                         "initials": element.initials,
-                        "first_name": element.first_name,
+                        "first_names": element.first_names,
                         "infix": element.infix,
                         "last_name": element.last_name,
                         "email": element.email,
@@ -185,7 +185,7 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/grave-owner', (req, res) => {
         try {
-            let sql = `SELECT users.id, users.initials, users.first_name, users.infix, 
+            let sql = `SELECT users.id, users.initials, users.first_names, users.infix, 
             users.last_name, users.partner_infix, users.partner_last_name, 
             users.name_usage, users.date_of_birth, users.place_of_birth, 
             users.street_name, users.house_number, users.house_letter, 
@@ -216,7 +216,7 @@ module.exports = function (app, conn_db) {
                     usersJSON.push({
                         "id": element.id,
                         "initials": element.initials,
-                        "first_name": element.first_name,
+                        "first_names": element.first_names,
                         "infix": element.infix,
                         "last_name": element.last_name,
                         "partner_infix": element.partner_infix,

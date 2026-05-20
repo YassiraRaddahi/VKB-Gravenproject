@@ -46,7 +46,7 @@
           </v-avatar>
 
           <span class="user-name d-none d-sm-block">
-            {{ user.first_name }} {{ user.last_name }}
+            {{ user.first_names }} {{ user.last_name }}
           </span>
         </div>
       </v-btn>
@@ -74,7 +74,7 @@ const { user } = storeToRefs(userStore)
 
 const userFullName = () => {
   return [
-    user.value.first_name,
+    user.value.first_names,
     user.value.infix,
     user.value.last_name
   ]

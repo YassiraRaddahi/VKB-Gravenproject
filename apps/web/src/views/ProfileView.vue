@@ -69,7 +69,7 @@
                   </v-row>
                   <v-row v-if="userStore.hasPermission('user.view.name')">
                     <v-col cols="12">
-                      <v-text-field data-testid="first-name" v-model="user.first_name" :rules="nameRules"
+                      <v-text-field data-testid="first-name" v-model="user.first_names" :rules="nameRules"
                         label="Voornaam" :readonly="!userStore.hasPermission('user.edit.name')"
                         :required="userStore.hasPermission('user.edit.name')"></v-text-field>
                     </v-col>
@@ -107,6 +107,14 @@
                         item-title="label" item-value="value" label="Naamgebruik"
                         :readonly="!userStore.hasPermission('user.edit.name_usage')"
                         :required="userStore.hasPermission('user.edit.name_usage')"></v-select>
+                    </v-col>
+                  </v-row>
+                  <v-row v-if="userStore.hasPermission('user.view.gender')">
+                    <v-col cols="12">
+                      <v-select data-testid="gender" v-model="user.gender" :items="genderOptions"
+                        item-title="label" item-value="value" label="Geslacht"
+                        :readonly="!userStore.hasPermission('user.edit.gender')"
+                        :required="userStore.hasPermission('user.edit.gender')"></v-select>
                     </v-col>
                   </v-row>
                   <v-row v-if="userStore.hasPermission('user.view.date_of_birth')">
@@ -189,6 +197,7 @@
                         :readonly="!userStore.hasPermission('user.edit.position')"></v-text-field>
                     </v-col>
                   </v-row>
+                 
                 </v-container>
               </v-form>
             </v-col>
@@ -197,7 +206,7 @@
 
         <v-card-actions class="pa-4 px-md-8">
           <v-spacer />
-          <v-btn data-testid="save-button" color="#0d475a" variant="elevated" v-ripple.center @click="saveProfile">
+          <v-btn v-if="canEdit" data-testid="save-button" color="#0d475a" variant="elevated" v-ripple.center @click="saveProfile">
             Opslaan
           </v-btn>
 
@@ -208,7 +217,7 @@
     </v-col>
   </v-row>
 </v-container> 
- <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
+ <SnackbarSuccess data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
             message="Profiel succesvol bijgewerkt!" timeout="4000" />
 </template>
 
@@ -221,12 +230,12 @@ import TitleUnderline from '../components/TitleUnderline.vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const { mdAndUp } = useDisplay()
 
 const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+const { user, permissions } = storeToRefs(userStore)
 
 const nameUsageOptions = [
 
@@ -237,6 +246,13 @@ const nameUsageOptions = [
 
 ]
 
+const genderOptions = [
+  { label: 'Man', value: 'man' },
+  { label: 'Vrouw', value: 'vrouw' },
+  { label: 'Anders', value: 'anders' },
+  { label: 'Onbekend', value: 'onbekend' }
+]
+
 function formatDateNl(date) {
   if (!date) return ''
   let d = new Date(date)
@@ -245,7 +261,7 @@ function formatDateNl(date) {
 
 const userFullName = () => {
   return [
-    user.value.first_name,
+    user.value.first_names,
     user.value.infix,
     user.value.last_name
   ]
@@ -276,6 +292,10 @@ const handleFileUpload = (event) => {
   console.log('Geselecteerd bestand:', file)
 
 }
+
+const canEdit = computed(() => {
+  return permissions.value.some(p => p.startsWith('user.edit.'))
+})
 
 const valid = ref(true)
 

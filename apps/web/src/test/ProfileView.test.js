@@ -33,6 +33,8 @@ const formPermissionFieldMap = {
     'user.view.name_usage': ['name-usage'],
     'user.edit.name_usage': ['name-usage'],
 
+    'user.view.gender': ['gender'],
+    'user.edit.gender': ['gender'],
 
     'user.view.date_of_birth': ['date-of-birth'],
     'user.edit.date_of_birth': ['date-of-birth'],
@@ -143,7 +145,7 @@ function setupUser(permissions) {
     const userStore = useUserStore()
     userStore.user = {
         id: 1,
-        first_name: 'Test',
+        first_names: 'Test',
         infix: 'van',
         last_name: 'Test',
         email: 'testuser@example.com',
@@ -169,7 +171,8 @@ function setupRole(role) {
 
 
     if (role === 'grave owner') {
-        return setupUser(['user.view.name', 'user.edit.name', 'user.view.contact', 'user.edit.contact', 'user.view.profile_picture', 'user.edit.profile_picture', 'user.view.role', 'user.view.partner_name', 'user.edit.partner_name', 'user.view.name_usage', 'user.edit.name_usage', 'user.view.date_of_birth', 'user.view.place_of_birth', 'user.view.address', 'user.edit.address'])
+        return setupUser(['user.view.name', 'user.edit.name', 'user.view.contact', 'user.edit.contact', 'user.view.profile_picture', 'user.edit.profile_picture', 'user.view.role', 'user.view.partner_name', 
+            'user.edit.partner_name', 'user.view.name_usage', 'user.edit.name_usage', 'user.view.gender', 'user.edit.gender', 'user.view.date_of_birth', 'user.view.place_of_birth', 'user.view.address', 'user.edit.address'])
     }
 
     if (role === 'grave caretaker') {
@@ -245,7 +248,7 @@ roles.forEach(role => {
 
                 Object.entries(formPermissionFieldMap).forEach(([permission, fields]) => {
                     if (!user.permissions.includes(permission)
-                        && user.permissions.includes(permission.replace('edit', 'view'))
+                        && user.permissions.includes(permission.replace('user.edit.', 'user.view.'))
                     ) {
                         expectFieldsReadonly(wrapper, fields)
                     }
@@ -261,7 +264,7 @@ roles.forEach(role => {
 describe('Snackbar', () => {
 
     it('is shown when save button is clicked and form is valid', async () => {
-        setupUser(['user.view.name'])
+        const user = setupRole('admin')
 
         const wrapper = mount(ProfileView)
 
@@ -280,7 +283,7 @@ describe('Snackbar', () => {
 
 
     it('is not shown when save button is clicked and form is not valid', async () => {
-        setupUser(['user.view.name'])
+        const user = setupRole('admin')
 
         const wrapper = mount(ProfileView)
 

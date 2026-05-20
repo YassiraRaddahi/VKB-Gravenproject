@@ -65,7 +65,7 @@ const cemeteryManagers = ref([])
 
 const managerFullName = (cemeteryManager) => {
   return [
-    cemeteryManager.first_name,
+    cemeteryManager.first_names,
     cemeteryManager.infix,
     cemeteryManager.last_name
   ]

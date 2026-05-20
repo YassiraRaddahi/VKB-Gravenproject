@@ -55,7 +55,7 @@
                     class="manager-item">
                     <span class="manager-label">Beheerder</span>
                     <span class="manager-name">
-                      {{ cemeteryManager.first_name }}
+                      {{ cemeteryManager.first_names }}
                       {{ cemeteryManager.infix }}
                       {{ cemeteryManager.last_name }}
                     </span>
@@ -94,7 +94,7 @@ const managerOptions = computed(() => {
   cemeteries.value.forEach(cemetery => {
     cemetery.cemetery_managers?.forEach(manager => {
       const key = manager.id
-      const label = `${manager.first_name} ${manager.infix || ''} ${manager.last_name}`.trim()
+      const label = `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
       if (!managers.has(key)) {
         managers.set(key, { title: label, value: key })
       }

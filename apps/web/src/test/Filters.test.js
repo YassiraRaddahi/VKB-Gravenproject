@@ -16,8 +16,8 @@ describe('Filter logica', () => {
         name: 'Kerkhof Kranenburg',
         city: 'Zwolle',
         cemetery_managers: [
-          { id: 2, first_name: 'Bea', last_name: 'Bakker' },
-          { id: 3, first_name: 'Liza', last_name: 'Petrushenko' }
+          { id: 2, first_names: 'Bea', last_name: 'Bakker' },
+          { id: 3, first_names: 'Liza', last_name: 'Petrushenko' }
         ]
       },
       {
@@ -25,7 +25,7 @@ describe('Filter logica', () => {
         name: 'Kerkhof Meppelerstraatweg',
         city: 'Zwolle',
         cemetery_managers: [
-          { id: 15, first_name: 'Tom', last_name: 'van der Meer' }
+          { id: 15, first_names: 'Tom', last_name: 'van der Meer' }
         ]
       },
       {
@@ -33,7 +33,7 @@ describe('Filter logica', () => {
         name: 'Kerkhof Nieuwleusen',
         city: 'Nieuwleusen',
         cemetery_managers: [
-          { id: 3, first_name: 'Liza', last_name: 'Petrushenko' }
+          { id: 3, first_names: 'Liza', last_name: 'Petrushenko' }
         ]
       },
       {
@@ -231,7 +231,7 @@ describe('Filter logica', () => {
           if (cemetery.cemetery_managers && cemetery.cemetery_managers.length > 0) {
             cemetery.cemetery_managers.forEach(manager => {
               const key = manager.id
-              const label = `${manager.first_name} ${manager.last_name}`.trim()
+              const label = `${manager.first_names} ${manager.last_name}`.trim()
               if (!managers.has(key)) {
                 managers.set(key, { title: label, value: key })
               }
@@ -280,7 +280,7 @@ describe('Filter logica', () => {
           if (cemetery.cemetery_managers && cemetery.cemetery_managers.length > 0) {
             cemetery.cemetery_managers.forEach(manager => {
               const key = manager.id
-              const label = `${manager.first_name} ${manager.last_name}`.trim()
+              const label = `${manager.first_names} ${manager.last_name}`.trim()
               if (!managers.has(key)) {
                 managers.set(key, { title: label, value: key })
               }
