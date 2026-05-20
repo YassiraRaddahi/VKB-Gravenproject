@@ -4,31 +4,31 @@ exports.seed = async function (knex) {
     { id: 1, name: 'manager.create' },
     { id: 2, name: 'manager.edit' },
     { id: 3, name: 'manager.delete' },
-
+ 
     { id: 4, name: 'cemetery.create' },
     { id: 5, name: 'cemetery.edit' },
-
+ 
     { id: 6, name: 'grave_owner.create' },
     { id: 7, name: 'grave_owner.edit' },
     { id: 8, name: 'grave_owner.delete' },
-
+ 
     { id: 9, name: 'deceased.create' },
     { id: 10, name: 'deceased.edit' },
     { id: 11, name: 'deceased.delete' },
-
+ 
     { id: 12, name: 'grave.create' },
     { id: 13, name: 'grave.edit' },
     { id: 14, name: 'grave.delete' },
-
+ 
     { id: 15, name: 'grave_caretaker.create' },
     { id: 16, name: 'grave_caretaker.edit' },
     { id: 17, name: 'grave_caretaker.delete' },
-
+ 
     { id: 18, name: 'own_graves.view' },
     { id: 19, name: 'own_invoices.view' },
-
+ 
     { id: 20, name: 'grave_maintenance.view' },
-
+ 
     // user profile permissions
     { id: 21, name: 'user.view.name' },
     { id: 22, name: 'user.edit.name' },
@@ -50,7 +50,11 @@ exports.seed = async function (knex) {
     { id: 38, name: 'user.edit.profile_picture' },
     { id: 39, name: 'user.view.position' },
     { id: 40, name: 'user.edit.position' },
-    { id: 41, name: 'user.view.role' }
-
+    { id: 41, name: 'user.view.role' },
+ 
+    // dashboard permissions for the cemetery manager role
+    { id: 42, name: 'view.dashboard.maindashboard.cemetery_manager'},
+    { id: 43, name: 'view.dashboard.user_management'},
+ 
   ]);
 };
