@@ -23,7 +23,7 @@
                                 mdi-account
                             </v-icon>
 
-                            <v-btn v-if="isEditing" icon size="large" elevation="6" color="#16495d" class="avatar-btn"
+                            <v-btn  :class="mdAndDown ? 'avatar-btn-mobile' : 'avatar-btn'" v-if="isEditing" icon size="large" elevation="6" color="#16495d" class="avatar-btn"
                                 @click="selectFile">
                                 <v-icon color="white">
                                     mdi-camera
@@ -112,7 +112,9 @@ import TitleUnderline from '@/components/TitleUnderline.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import  {useDisplay} from 'vuetify'
 
+const { mdAndDown } = useDisplay()
 const route = useRoute()
 const router = useRouter()
 
@@ -259,8 +261,14 @@ onMounted(() => {
 <style scoped>
 .profile-avatar {
     overflow: hidden;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* desktop */
 .avatar-btn {
     position: absolute;
     top: 50%;
@@ -280,7 +288,30 @@ onMounted(() => {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* .profile-avatar {
-    overflow: hidden;
-} */
+
+/* mobile */
+@media (hover: hover) {
+.avatar-btn {
+  opacity: 0;
+  transition: 'opacity 0.2s, transform 0.2s';
+  transform: scale(0.8);
+}
+ 
+.v-avatar:hover .avatar-btn {
+  opacity: 0.7;
+  transform: scale(1);
+}
+ 
+}
+ 
+@media (hover: none) {
+  .avatar-btn {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+.avatar-btn-mobile {
+    transform: translate(-50%, -50%);
+    opacity: 0.85;
+}
 </style>
