@@ -51,10 +51,5 @@ exports.seed = async function (knex) {
     { id: 39, name: 'user.view.position' },
     { id: 40, name: 'user.edit.position' },
     { id: 41, name: 'user.view.role' },
- 
-    // dashboard permissions for the cemetery manager role
-    { id: 42, name: 'view.dashboard.maindashboard.cemetery_manager'},
-    { id: 43, name: 'view.dashboard.user_management'},
- 
   ]);
 };
