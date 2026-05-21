@@ -1,98 +1,91 @@
 module.exports = function (app, conn_db) {
-    const bcrypt = require("bcrypt");
-    const jwt = require("jsonwebtoken");
-    const rateLimit = require("express-rate-limit");
-    const isProduction = process.env.NODE_ENV === 'production';
+  const bcrypt = require("bcrypt");
+  const jwt = require("jsonwebtoken");
+  const rateLimit = require("express-rate-limit");
+  const isProduction = process.env.NODE_ENV === "production";
 
-    const loginLimiter = rateLimit({
-        windowMs: 15 * 60 * 1000,
-        max: 5,
-        message: { error: "Te veel pogingen, probeer het later opnieuw" },
-        standardHeaders: true,
-        legacyHeaders: false,
-    });
+  const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    message: { error: "Te veel pogingen, probeer het later opnieuw" },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
 
-    function verifyToken(req, res, next) {
-        const token = req.cookies?.token;
+  function verifyToken(req, res, next) {
+    const token = req.cookies?.token;
 
-        if (!token) {
-            return res.status(401).json({ error: "Niet ingelogd" });
-        }
-
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decoded;
-            next();
-        } catch (err) {
-            return res.status(401).json({ error: "Ongeldig of verlopen token" });
-        }
+    if (!token) {
+      return res.status(401).json({ error: "Niet ingelogd" });
     }
 
-    // ─── Login ───
-    app.post("/api/login", loginLimiter, (req, res) => {
-        try {
-            let email = req.body.email;
-            let password = req.body.password;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      next();
+    } catch (err) {
+      return res.status(401).json({ error: "Ongeldig of verlopen token" });
+    }
+  }
 
-            let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name
+  // ─── Login ───
+  app.post("/api/login", loginLimiter, (req, res) => {
+    try {
+      let email = req.body.email;
+      let password = req.body.password;
+
+      let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
                 WHERE users.email = ?`;
 
-            conn_db.query(sql, [email], async function (err, rows) {
-                if (err) {
-                    console.error("Database error:", err);
-                    return res.status(500).json({ error: "Database error" });
-                }
-
-                if (!rows || rows.length === 0) {
-                    return res.status(401).json({ error: "Invalid credentials" });
-                }
-
-                let user = rows[0];
-
-                const password_correct = await bcrypt.compare(password, user.password_hash);
-
-                if (!password_correct) 
-                {
-                    return res.status(401).send({ error: "Invalid credentials" });
-                }
-
-                if (!password_correct) {
-                    return res.status(401).send({ error: "Invalid credentials" });
-                }
-
-                const token = jwt.sign(
-                    { id: user.id, email: user.email, role: user.role_name },
-                    process.env.JWT_SECRET,
-                    { expiresIn: "1h" }
-                );
-
-                res.cookie("token", token, {
-                    httpOnly: true,
-                    secure: isProduction,
-                    sameSite: isProduction ? 'none' : 'lax',
-                    domain: isProduction
-                        ? '.bram.kerkhovenbeheer.nl'
-                        : undefined,
-                    path: '/',
-                    maxAge: 3600000, // 1 uur
-                });
-
-                res.send({ message: "Login successful" });
-
-            });
-        } catch (error) {
-            console.error("Error during login:", error);
-            res.status(500).json({ error: "Internal server error" });
+      conn_db.query(sql, [email], async function (err, rows) {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Database error" });
         }
-    });
 
-    app.get("/api/active-token", verifyToken, (req, res) => {
-    
+        if (!rows || rows.length === 0) {
+          return res.status(401).json({ error: "Invalid credentials" });
+        }
 
-        const userSql = `
+        let user = rows[0];
+
+        const password_correct = await bcrypt.compare(
+          password,
+          user.password_hash
+        );
+
+        if (!password_correct) {
+          return res.status(401).send({ error: "Invalid credentials" });
+        }
+
+        const token = jwt.sign(
+          { id: user.id, email: user.email, role: user.role_name },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          domain: isProduction ? ".bram.kerkhovenbeheer.nl" : undefined,
+          path: "/",
+          maxAge: 3600000, // 1 uur
+        });
+
+        res.send({ message: "Login successful" });
+      });
+    } catch (error) {
+      console.error("Error during login:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.get("/api/active-token", verifyToken, (req, res) => {
+    const userSql = `
             SELECT users.id, users.initials, users.first_names, users.infix, 
             users.last_name, users.partner_infix, users.partner_last_name, 
             users.name_usage, users.gender, users.date_of_birth, users.place_of_birth, 
@@ -106,20 +99,18 @@ module.exports = function (app, conn_db) {
             WHERE users.id = ?
         `;
 
- 
-        conn_db.query(userSql, [req.user.id], (err, userRows) => {
-            if (err) {
-                return res.status(500).json({ error: "Database error" });
-            }
+    conn_db.query(userSql, [req.user.id], (err, userRows) => {
+      if (err) {
+        return res.status(500).json({ error: "Database error" });
+      }
 
-            if (!userRows || userRows.length === 0) {
-                return res.status(404).json({ error: "Gebruiker niet gevonden" });
-            }
+      if (!userRows || userRows.length === 0) {
+        return res.status(404).json({ error: "Gebruiker niet gevonden" });
+      }
 
-            const user = userRows[0];
-        
+      const user = userRows[0];
 
-        const permissionSql = `
+      const permissionSql = `
             SELECT permissions.name
             FROM permission_role
             JOIN permissions ON permission_role.permission_id = permissions.id
@@ -201,20 +192,83 @@ module.exports = function (app, conn_db) {
             res.json({ user: filteredUser, permissions });
         });
     });
-});
+  });
 
-    app.post("/api/logout", (req, res) => {
+  // ─── Wachtwoord aanpassen ───
+  app.post("/api/change-password", verifyToken, (req, res) => {
+    const currentPassword = req.body.currentPassword;
+    const newPassword = req.body.newPassword;
 
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? 'none' : 'lax',
-            domain: isProduction
-                ? '.bram.kerkhovenbeheer.nl'
-                : undefined,
-            path: '/',
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: "Vul beide wachtwoorden in" });
+    }
+
+    if (newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Nieuw wachtwoord moet minimaal 6 tekens zijn" });
+    }
+
+    const selectSql = `SELECT id, password_hash FROM users WHERE id = ?`;
+
+    conn_db.query(selectSql, [req.user.id], async function (err, rows) {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      if (!rows || rows.length === 0) {
+        return res.status(404).json({ error: "Gebruiker niet gevonden" });
+      }
+
+      const user = rows[0];
+
+      if (!user.password_hash) {
+        return res.status(400).json({
+          error: "Er is nog geen wachtwoord ingesteld voor dit account",
         });
+      }
 
-        res.send({ message: "Logout successful" });
+      try {
+        const password_correct = await bcrypt.compare(
+          currentPassword,
+          user.password_hash
+        );
+
+        if (!password_correct) {
+          return res
+            .status(401)
+            .json({ error: "Huidig wachtwoord is onjuist" });
+        }
+
+        const newHash = await bcrypt.hash(newPassword, 10);
+
+        const updateSql = `UPDATE users SET password_hash = ? WHERE id = ?`;
+
+        conn_db.query(updateSql, [newHash, user.id], function (updateErr) {
+          if (updateErr) {
+            console.error("Database error:", updateErr);
+            return res.status(500).json({ error: "Database error" });
+          }
+
+          res.json({ message: "Wachtwoord succesvol bijgewerkt" });
+        });
+      } catch (error) {
+        console.error("Error during password change:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
     });
+  });
+
+  app.post("/api/logout", (req, res) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      domain: isProduction ? ".bram.kerkhovenbeheer.nl" : undefined,
+      path: "/",
+    });
+
+    res.send({ message: "Logout successful" });
+  });
 };
