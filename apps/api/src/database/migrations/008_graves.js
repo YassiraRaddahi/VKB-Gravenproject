@@ -9,15 +9,15 @@ exports.up = function (knex) {
     table.enu('sort', ['dubbel graf', 'enkel graf', 'kindergraf', 'urnengraf', 'keldergraf']).notNullable();
     table.decimal('latitude', 10, 7).notNullable();
     table.decimal('longitude', 10, 7).notNullable();
-    table.string('image_url', 1024).defaultTo(null);
-    table.text('remarks').defaultTo(null);
+    table.string('image_url', 1024).nullable().defaultTo(null);
+    table.text('remarks').nullable().defaultTo(null);
     table.enu('status', ['beschikbaar', 'in gebruik', 'gereserveerd']).notNullable();
     table.timestamp('last_opened_at').nullable();
     table.timestamp('last_cleared_at').nullable();
     table.timestamps(true, true);
   });
 };
-
+ 
 exports.down = function (knex) {
   return knex.schema.dropTable('graves');
 };

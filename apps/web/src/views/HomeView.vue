@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import TitleUnderline from '@/components/TitleUnderline.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 
 const slides = [
   { src: '/images/cemeteries/bergklooster.png', name: 'Bergklooster' },

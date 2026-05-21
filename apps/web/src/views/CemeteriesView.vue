@@ -1,76 +1,45 @@
 <template>
   <v-container fluid class="pa-0 list-page-container">
-    <TitleUnderline 
-    title="Lijst met kerkhoven" 
-    underline-class="underlineLightBlue"
-    />
+    <TitleUnderline title="Lijst met kerkhoven" underline-class="underlineLightBlue" />
 
     <v-container fluid class="pa-4">
 
       <!-- Filters -->
-      <v-row no-gutters class="mb-6 gap-2 d-flex align-center">
-        <v-col cols="12" md="4">
-          <v-text-field v-model="search" label="Zoek kerkhof..." prepend-inner-icon="mdi-magnify" clearable outlined dense
-            color="primary" class="search-field" />
-        </v-col>
-
+      <SearchAddBar :search="search" @update:search="search = $event" search-label="Zoek kerkhof..." :search-md="4"
+        @add="addCemetery">
         <v-col cols="12" md="2">
           <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
             color="primary" class="filter-select" />
         </v-col>
-
         <v-col cols="12" md="2">
           <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
             class="filter-select" />
         </v-col>
+      </SearchAddBar>
 
-        <v-col cols="12" md="4" class="d-flex align-center justify-end">
-          <v-btn color="primary" dark class="ma-0" @click="addCemetery">
-            <v-icon left>mdi-plus</v-icon>
-            Toevoegen
-          </v-btn>
-        </v-col>
-      </v-row>
+      <EmptyState v-if="visibleCemeteries.length === 0" message="Geen kerkhoven gevonden." />
 
       <!-- Cemetery cards -->
       <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
-        <v-col v-for="cemetery in filteredCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
+        <v-col v-for="cemetery in visibleCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <router-link :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }"
-            class="text-decoration-none w-100 d-flex full-height">
-            <v-card class="cemetery-card d-flex flex-column ">
-
-              <div class="image-wrapper">
-                <v-img :src="cemetery.image_url" :alt="`Impressiefoto van ${cemetery.name}`" :key="cemetery.image_url + '-' + $route.fullPath" cover class="image-fill" />
+          <ItemCard :image="cemetery.image_url" :image-alt="`Impressiefoto van ${cemetery.name}`" :title="cemetery.name"
+            :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }">
+            <div class="manager-list text-body-2 text-grey-darken-1 w-100">
+              <template v-if="cemetery.cemetery_managers?.length > 0">
+                <div v-for="manager in cemetery.cemetery_managers" :key="manager.id" class="manager-item">
+                  <span class="manager-label">Beheerder</span>
+                  <span class="manager-name">
+                    {{ managerFullName(manager) }}
+                  </span>
+                </div>
+              </template>
+              <div v-else class="manager-item">
+                <span class="manager-label">Beheerder</span>
+                <span class="manager-name text-grey-darken-2">Nog niet toegewezen</span>
               </div>
-
-              <v-card-text class="cemetery-card-text text-center">
-                <div class="text-subtitle-1 font-weight-bold mb-2">
-                  {{ cemetery.name }}
-                </div>
-
-                <div class="manager-list text-body-2 text-grey-darken-1">
-                  <div v-if="cemetery.cemetery_managers?.length > 0"
-                    v-for="cemeteryManager in cemetery.cemetery_managers" :key="cemeteryManager.id"
-                    class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name">
-                      {{ cemeteryManager.first_names }}
-                      {{ cemeteryManager.infix }}
-                      {{ cemeteryManager.last_name }}
-                    </span>
-                  </div>
-
-                  <div v-else class="manager-item">
-                    <span class="manager-label">Beheerder</span>
-                    <span class="manager-name text-grey-darken-2">
-                      Nog niet toegewezen
-                    </span>
-                  </div>
-                </div>
-              </v-card-text>
-            </v-card>
-          </router-link>
+            </div>
+          </ItemCard>
         </v-col>
       </v-row>
     </v-container>
@@ -78,98 +47,165 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import SearchAddBar from '@/components/ui/SearchAddBar.vue'
+import ItemCard from '@/components/ui/ItemCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
+
 import axios from 'axios'
-import TitleUnderline from '../components/TitleUnderline.vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
+const route = useRoute()
+const router = useRouter()
 
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
+
+
 const url = `${import.meta.env.VITE_API_URL}/cemeteries`
+
+
+const managerFullName = (manager) => {
+  return [
+    manager.first_names?.trim().split(/\s+/)[0] || '', // Gebruik alleen de eerste voornaam
+    manager.infix,
+    manager.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+// Router
+if (route.query.manager) {
+  managerFilter.value = Number(route.query.manager)
+}
+
+
+
+// Computed properties voor filteropties
+const pageTitle = computed(() => {
+  return user.value?.role_name === 'beheerder'
+    ? 'Lijst met gekoppelde kerkhoven'
+    : 'Lijst met kerkhoven'
+})
 
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
   const managers = new Map()
+
   cemeteries.value.forEach(cemetery => {
     cemetery.cemetery_managers?.forEach(manager => {
-      const key = manager.id
-      const label = `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
+      const key = Number(manager.id)
+
+      const label =
+        `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
+
       if (!managers.has(key)) {
-        managers.set(key, { title: label, value: key })
+        managers.set(key, {
+          title: label,
+          value: key
+        })
       }
     })
   })
+
   return Array.from(managers.values())
 })
 
 // Dynamisch unieke steden verzamelen voor filteropties
 const cityOptions = computed(() => {
   const cities = new Set()
+
   cemeteries.value.forEach(cemetery => {
-    if (cemetery.city?.trim()) cities.add(cemetery.city.trim())
+    if (cemetery.city?.trim()) {
+      cities.add(cemetery.city.trim())
+    }
   })
+
   return Array.from(cities)
     .sort()
-    .map(city => ({ title: city, value: city }))
+    .map(city => ({
+      title: city,
+      value: city
+    }))
 })
 
 // Filter logica
-const filteredCemeteries = computed(() => {
+const visibleCemeteries = computed(() => {
   let result = cemeteries.value
+
+  // Alleen gekoppelde kerkhoven tonen voor beheerder
+  if (user.value?.role_name === 'beheerder') {
+    result = result.filter(cemetery =>
+      cemetery.cemetery_managers?.some(manager =>
+        Number(manager.id) === Number(user.value.id)
+      )
+    )
+  }
+
+  // Zoekfilter
   const query = search.value.toLowerCase().trim()
-  if (query) result = result.filter(c => c.name.toLowerCase().includes(query))
-  //filteren op beheerder
+
+  if (query) {
+    result = result.filter(c =>
+      c.name.toLowerCase().includes(query)
+    )
+  }
+
+  // Filteren op beheerder
   if (managerFilter.value) {
     result = result.filter(cemetery =>
-      cemetery.cemetery_managers?.some(manager => manager.id === managerFilter.value)
+      cemetery.cemetery_managers?.some(manager =>
+        Number(manager.id) === Number(managerFilter.value)
+      )
     )
   }
 
   // Filteren op stad
   if (cityFilter.value) {
-    result = result.filter(cemetery => cemetery.city === cityFilter.value)
+    result = result.filter(cemetery =>
+      cemetery.city === cityFilter.value
+    )
   }
 
   return result
 })
 
-//knop tovoegen 
+// knop toevoegen
 function addCemetery() {
   alert('Toevoegen kerkhof knop geklikt (Helaas is de functie nog niet gemaakt)')
 }
 
 onMounted(() => {
   axios.get(url)
-    .then(res => cemeteries.value = res.data.cemeteries)
+    .then(res => {
+      cemeteries.value = res.data.cemeteries
+
+      const managerId = route.params.manager_id
+
+      if (managerId) {
+        const foundManager = managerOptions.value.find(manager =>
+          manager.value === Number(managerId)
+        )
+
+        if (foundManager) {
+          managerFilter.value = foundManager.value
+        }
+      }
+    })
     .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>
 
 <style scoped>
-v-field {
-  max-width: 500px;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.cemetery-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 450px;
-}
-
-.cemetery-card-text {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px;
-}
-
 .manager-list {
   min-height: 100px;
   display: flex;
@@ -197,17 +233,5 @@ v-field {
   display: block;
   font-size: 0.95rem;
   color: #2f4f6d;
-}
-
-.image-wrapper {
-  width: 100%;
-  height: 200px;
-  /* harde vaste hoogte */
-  overflow: hidden;
-}
-
-.image-fill {
-  width: 100%;
-  height: 100%;
 }
 </style>

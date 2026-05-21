@@ -14,8 +14,8 @@ config.global.stubs = {
   'v-card': { template: '<div><slot /></div>' },
   'v-card-text': { template: '<div><slot /></div>' },
   'v-card-actions': { template: '<div><slot /></div>' },
-  'v-btn': true,
-  'v-text-field': true,
+  'v-btn':{ template: '<button><slot /></button>' },
+  'v-text-field': { template: '<input />' },
   'v-select': true,
   'v-container': { template: '<div><slot /></div>' },
   'v-form': { template: '<form><slot /></form>' },
@@ -24,6 +24,7 @@ config.global.stubs = {
   'v-icon': true,
   'v-chip': true,
   'v-spacer': true,
+  'v-sheet': { template: '<div><slot /></div>' },
   'ProfileSideBar': true,
   'SnackbarSuccess': {
     template: `
@@ -47,7 +48,9 @@ vi.mock('vuetify/styles', () => ({}))
 // Mock Vuetify composable
 vi.mock('vuetify', () => ({
   useDisplay: () => ({
-    mdAndUp: true
+    mdAndUp: { value: true },
+    smAndUp: { value: true }
+
   })
 }))
 

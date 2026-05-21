@@ -117,78 +117,80 @@ module.exports = function (app, conn_db) {
             WHERE permission_role.role_id = ?
         `;
 
-      conn_db.query(permissionSql, [user.role_id], (err, permissionRows) => {
-        if (err) {
-          return res.status(500).json({ error: "Database error" });
-        }
+ 
+        conn_db.query(permissionSql, [user.role_id], (err, permissionRows) => {
+            if (err) {
+                return res.status(500).json({ error: "Database error" });
+            }
 
-        if (!permissionRows || permissionRows.length === 0) {
-          return res
-            .status(403)
-            .json({ error: "Er zijn geen permissies gekoppeld aan deze rol" });
-        }
+            if (!permissionRows || permissionRows.length === 0) {
+                return res.status(403).json({ error: "Er zijn geen permissies gekoppeld aan deze rol" });
+            }
 
-        const permissions = permissionRows.map((r) => r.name);
+            const permissions = permissionRows.map(r => r.name);
 
-        const filteredUser = { id: user.id };
+            const filteredUser = { id: user.id };
+            
 
-        if (permissions.includes("user.view.name")) {
-          filteredUser.initials = user.initials;
-          filteredUser.first_names = user.first_names;
-          filteredUser.infix = user.infix;
-          filteredUser.last_name = user.last_name;
-        }
+            if(permissions.includes('user.view.name')) {
+                filteredUser.initials = user.initials;
+                filteredUser.first_names = user.first_names;
+                filteredUser.infix = user.infix;
+                filteredUser.last_name = user.last_name;
+            }
 
-        if (permissions.includes("user.view.partner_name")) {
-          filteredUser.partner_infix = user.partner_infix;
-          filteredUser.partner_last_name = user.partner_last_name;
-        }
+            if(permissions.includes('user.view.partner_name')) {
+                filteredUser.partner_infix = user.partner_infix;
+                filteredUser.partner_last_name = user.partner_last_name;
+            }
 
-        if (permissions.includes("user.view.name_usage")) {
-          filteredUser.name_usage = user.name_usage;
-        }
+            if(permissions.includes('user.view.name_usage')) {
+                filteredUser.name_usage = user.name_usage;
+            }
 
-        if (permissions.includes("user.view.gender")) {
-          filteredUser.gender = user.gender;
-        }
+            if(permissions.includes('user.view.gender')) {
+                filteredUser.gender = user.gender;
+            }
 
-        if (permissions.includes("user.view.date_of_birth")) {
-          filteredUser.date_of_birth = user.date_of_birth;
-        }
+            if(permissions.includes('user.view.date_of_birth')) {
+                filteredUser.date_of_birth = user.date_of_birth;
+            }
 
-        if (permissions.includes("user.view.place_of_birth")) {
-          filteredUser.place_of_birth = user.place_of_birth;
-        }
+            if(permissions.includes('user.view.place_of_birth')) {
+                filteredUser.place_of_birth = user.place_of_birth;
+            }
 
-        if (permissions.includes("user.view.address")) {
-          filteredUser.street_name = user.street_name;
-          filteredUser.house_number = user.house_number;
-          filteredUser.house_letter = user.house_letter;
-          filteredUser.house_number_addition = user.house_number_addition;
-          filteredUser.zip_code = user.zip_code;
-          filteredUser.city = user.city;
-        }
+            if(permissions.includes('user.view.address')) {
+                filteredUser.street_name = user.street_name;
+                filteredUser.house_number = user.house_number;
+                filteredUser.house_letter = user.house_letter;
+                filteredUser.house_number_addition = user.house_number_addition;
+                filteredUser.zip_code = user.zip_code;
+                filteredUser.city = user.city;
+            }
 
-        if (permissions.includes("user.view.contact")) {
-          filteredUser.email = user.email;
-          filteredUser.phone_number = user.phone_number;
-          filteredUser.mobile_number = user.mobile_number;
-        }
+ 
+            if(permissions.includes('user.view.contact')) {
+                filteredUser.email = user.email;
+                filteredUser.phone_number = user.phone_number;
+                filteredUser.mobile_number = user.mobile_number;
+            }
 
-        if (permissions.includes("user.view.profile_picture")) {
-          filteredUser.profile_picture_url = user.profile_picture_url;
-        }
+            if(permissions.includes('user.view.profile_picture')) {
+                filteredUser.profile_picture_url = user.profile_picture_url;
+            }
 
-        if (permissions.includes("user.view.position")) {
-          filteredUser.position = user.position;
-        }
+            if(permissions.includes('user.view.position')) {
+                filteredUser.position = user.position;
+            }
 
-        if (permissions.includes("user.view.role")) {
-          filteredUser.role_name = user.role_name;
-        }
+            if(permissions.includes('user.view.role')) {
+                filteredUser.role_name = user.role_name;
+            }
 
-        res.json({ user: filteredUser, permissions });
-      });
+            
+            res.json({ user: filteredUser, permissions });
+        });
     });
   });
 

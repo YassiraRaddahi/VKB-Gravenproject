@@ -8,14 +8,14 @@ import { useUserStore } from '@/stores/userStore'
 const formPermissionFieldMap = {
     'user.view.name': [
         'initials',
-        'first-name',
+        'first-names',
         'infix',
         'last-name'
     ],
 
     'user.edit.name': [
         'initials',
-        'first-name',
+        'first-names',
         'infix',
         'last-name'
     ],

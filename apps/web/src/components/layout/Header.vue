@@ -17,11 +17,9 @@
     <v-spacer />
 
     <template v-if="!user?.id">
-      <v-btn :to="{ name: 'Login' }" color="#ea5a0b" class="text-decoration-none" v-ripple.center variant="elevated">
-        <span class="text-white">
-          Log In
-        </span>
-      </v-btn>
+      <AppButton kind="darkOrange" :to="{ name: 'Login' }" class="text-decoration-none">
+        Log In
+      </AppButton>
     </template>
 
     <template v-else>
@@ -59,6 +57,7 @@
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ContactDialog from '@/components/ContactDialog.vue'
+import AppButton from '@/components/ui/AppButton.vue'
 
 defineProps({
   showDrawerToggle: {
