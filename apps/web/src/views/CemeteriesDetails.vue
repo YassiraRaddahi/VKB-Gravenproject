@@ -66,16 +66,27 @@
                                     </v-col>
 
                                     <v-col cols="12" md="4">
-                                        <v-text-field label="Adres" v-model="form.address" :readonly="!editMode"
-                                            hide-details class="text-white" />
+                                        <v-text-field label="Straatnaam" v-model="form.street_name"
+                                            :readonly="!editMode" hide-details class="text-white" />
                                     </v-col>
 
                                     <v-col cols="12" md="4">
-                                        <v-text-field label="Postcode" v-model="form.zip_code" :readonly="!editMode"
-                                            hide-details class="text-white" />
+                                        <v-text-field label="Huisnummer" v-model="form.house_number"
+                                            :readonly="!editMode" hide-details class="text-white" />
+                                    </v-col>
+                                    <v-col cols="12" md="4">
+                                        <v-text-field label="Huisletter" v-model="form.house_letter"
+                                            :readonly="!editMode" hide-details class="text-white" />
+                                    </v-col>
+                                    <v-text-field label="Postcode" v-model="form.zip_code" :readonly="!editMode"
+                                        hide-details class="text-white" />
+                                    <v-col cols="12" md="4">
+                                        <v-text-field label="Toevoeging" v-model="form.house_number_addition"
+                                            :readonly="!editMode" hide-details class="text-white" />
                                     </v-col>
 
                                 </v-row>
+
 
                                 <!-- CONTACT -->
                                 <v-row>
@@ -111,6 +122,41 @@
                                     </v-col>
 
                                 </v-row>
+
+                                <!-- IBAN -->
+                                <!-- IBAN -->
+<v-row>
+    <v-col cols="12">
+
+        <div class="text-white mb-2 font-weight-medium">
+            IBAN
+        </div>
+
+        <!-- VIEW MODE -->
+        <v-text-field
+            v-if="!editMode"
+            :value="displayedIban"
+            readonly
+            hide-details
+            class="text-white"
+            @mouseenter="showIban = true"
+            @mouseleave="showIban = false"
+            @click="toggleIban"
+        />
+
+        <!-- EDIT MODE -->
+        <v-text-field
+            v-else
+            v-model="form.iban"
+            label="IBAN"
+            hide-details
+            class="text-white"
+        />
+
+    </v-col>
+</v-row>
+
+
 
                                 <!-- MANAGERS -->
                                 <v-col cols="12">
@@ -289,7 +335,10 @@ const cemetery = ref({
     id: null,
     name: '',
     city: '',
-    address: '',
+    street_name: '',
+    house_number: '',
+    house_number_addition: '',
+    house_letter: '',
     zip_code: '',
     email: '',
     phone_number: '',
@@ -348,7 +397,20 @@ const loadCemetery = async () => {
                 }))
         }
 
-        form.value = { ...response.data.cemetery }
+        form.value = {
+    name: response.data.cemetery.name,
+    city: response.data.cemetery.city,
+    street_name: response.data.cemetery.street_name,
+    house_number: response.data.cemetery.house_number,
+    house_letter: response.data.cemetery.house_letter,
+    house_number_addition: response.data.cemetery.house_number_addition,
+    zip_code: response.data.cemetery.zip_code,
+    email: response.data.cemetery.email,
+    phone_number: response.data.cemetery.phone_number,
+    website_url: response.data.cemetery.website_url,
+    remarks: response.data.cemetery.remarks,
+    iban: response.data.cemetery.iban || ''
+};
 
         selectedManagerIds.value =
             cemetery.value.cemetery_managers.map(manager => manager.id)
@@ -519,46 +581,43 @@ async function createManager() {
 
 }
 
+
 async function saveChanges() {
 
     try {
 
-        const apiUrl =
-            `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}`
+        await axios.put(
+            `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}`,
+            {
+                name: form.value.name,
+                city: form.value.city,
+                street_name: form.value.street_name,
+                house_number: form.value.house_number,
+                house_letter: form.value.house_letter,
+                house_number_addition: form.value.house_number_addition,
+                zip_code: form.value.zip_code,
+                email: form.value.email,
+                phone_number: form.value.phone_number,
+                website_url: form.value.website_url,
+                remarks: form.value.remarks,
+                iban: form.value.iban
+            }
+        );
 
-        await axios.put(apiUrl, {
-            name: form.value.name,
-            city: form.value.city,
-            address: form.value.address,
-            zip_code: form.value.zip_code,
-            email: form.value.email,
-            phone_number: form.value.phone_number,
-            website_url: form.value.website_url,
-            remarks: form.value.remarks
-        })
+        await axios.put(
+            `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/managers`,
+            {
+                manager_ids: selectedManagerIds.value
+            }
+        );
 
-        const managerApiUrl =
-            `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/managers`
+        await loadCemetery();
 
-        await axios.put(managerApiUrl, {
-            manager_ids: selectedManagerIds.value
-        })
-
-        cemetery.value = {
-            ...form.value,
-            cemetery_managers: allManagers.value.filter(manager =>
-                selectedManagerIds.value.includes(manager.id)
-            )
-        }
-
-        editMode.value = false
+        editMode.value = false;
 
     } catch (error) {
-
-        console.error('Error saving cemetery details:', error)
-
+        console.error(error);
     }
-
 }
 
 function goToGraves() {
@@ -637,7 +696,36 @@ async function handleFileUpload(event) {
         }
 
     }
+    
 
+}
+const showIban = ref(false)
+
+function formatIban(value) {
+    if (!value) return ''
+
+    const clean = value.replace(/\s/g, '')
+
+    if (clean.length <= 6) return clean
+
+    return (
+        clean.slice(0, 4) +
+        '*'.repeat(clean.length - 6) +
+        clean.slice(-2)
+    )
+}
+
+const displayedIban = computed(() => {
+    const iban = form.value.iban || ''
+
+    if (editMode.value) return iban
+    if (showIban.value) return iban
+
+    return formatIban(iban)
+})
+
+function toggleIban() {
+    showIban.value = !showIban.value
 }
 </script>
 

@@ -144,6 +144,3 @@ onMounted(() => {
     .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>
-
-<style scoped>
-</style>
