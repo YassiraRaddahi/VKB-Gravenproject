@@ -52,7 +52,7 @@ const parentMap = {
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
   UserManagement: 'Dashboard',
-  UserManagementByRole: 'Dashboard',
+  UserManagementByRole: 'UserManagement',
 }
 
 const routeParams = {
