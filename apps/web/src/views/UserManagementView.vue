@@ -24,6 +24,7 @@
             :title="item.title"
             :icon="item.icon"
             :route-name="item.routeName"
+            :params:="item.params"
           />
         </v-col>
 
@@ -49,23 +50,30 @@ const dashboardItems = computed(() => {
       {
         title: 'Overledenen',
         icon: 'mdi-account',
-        routeName: 'Deceased'
+        routeName: 'DeceasedDashboard',
+        params: { role: 'overledenen' },
       },
       {
         title: 'Rechthebbenden',
         icon: 'mdi-account-group',
-        routeName: 'RightHolders'
+        routeName: 'RightHoldersDashboard',
+        params: { role: 'rechthebbenden' },
       },
       {
         title: 'Grafonderhouders',
         icon: 'mdi-account-hard-hat',
-        routeName: 'GraveCaretakers'
+        routeName: 'GraveCaretakersDashboard',
+        params: { role: 'grafonderhouders' },
       }
     ]
   }
 
   return []
 })
+
+function goToDashboard(routeName) {
+  router.push({ name: routeName })
+}
 </script>
 <style scoped>  
 
