@@ -30,7 +30,7 @@
                 <div v-for="manager in cemetery.cemetery_managers" :key="manager.id" class="manager-item">
                   <span class="manager-label">Beheerder</span>
                   <span class="manager-name">
-                    {{ manager.first_name }} {{ manager.infix }} {{ manager.last_name }}
+                    {{ managerFullName(manager) }}
                   </span>
                 </div>
               </template>
@@ -47,18 +47,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import SearchAddBar from '@/components/ui/SearchAddBar.vue'
 import ItemCard from '@/components/ui/ItemCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+
+import axios from 'axios'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
 const url = `${import.meta.env.VITE_API_URL}/cemeteries`
+const route = useRoute()
+
+const managerFullName = (manager) => {
+  return [
+    manager.first_names?.trim().split(/\s+/)[0] || '', // Gebruik alleen de eerste voornaam
+    manager.infix,
+    manager.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+// Router
+if (route.query.manager) {
+  managerFilter.value = Number(route.query.manager)
+}
+
 
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
@@ -113,7 +132,21 @@ function addCemetery() {
 
 onMounted(() => {
   axios.get(url)
-    .then(res => cemeteries.value = res.data.cemeteries)
+    .then(res => {
+      cemeteries.value = res.data.cemeteries
+
+      const managerName = route.query.manager
+
+      if (managerName) {
+        const foundManager = managerOptions.value.find(manager =>
+          manager.title === managerName
+        )
+
+        if (foundManager) {
+          managerFilter.value = foundManager.value
+        }
+      }
+    })
     .catch(err => console.error('Fout bij ophalen kerkhoven:', err))
 })
 </script>

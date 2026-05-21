@@ -29,16 +29,19 @@ const labelMap = {
   Cemeteries: 'Kerkhoven',
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
+  CemeteryManagerView: 'Beheerder Details',
 }
 
 const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
+  CemeteryManagerView: 'CemeteryManagers',
 }
 
 const routeParams = {
   Graves: () => ({ cemetery_id: route.params.cemetery_id }),
+  CemeteryManagerView: () => ({ cemetery_manager_id: route.params.cemetery_manager_id }),
 }
 
 const breadcrumbs = computed(() => {

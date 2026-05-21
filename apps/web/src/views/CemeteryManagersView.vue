@@ -13,6 +13,7 @@
           class="d-flex align-stretch">
           <ItemCard show-avatar :avatar="cemeteryManager.profile_picture_url"
             :image-alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`"
+            :to="{ name: 'CemeteryManagerView', params: { id: cemeteryManager.id } }"
             :title="managerFullName(cemeteryManager)" :elevation="4" />
         </v-col>
       </v-row>
@@ -32,11 +33,11 @@ let url = `${import.meta.env.VITE_API_URL}/cemetery-managers`
 
 const cemeteryManagers = ref([])
 
-const managerFullName = (cemeteryManager) => {
+const managerFullName = (manager) => {
   return [
-    cemeteryManager.first_names,
-    cemeteryManager.infix,
-    cemeteryManager.last_name
+    manager.first_names?.trim().split(/\s+/)[0] || '', // Gebruik alleen de eerste voornaam
+    manager.infix,
+    manager.last_name
   ]
     .filter(Boolean)
     .join(' ')
@@ -62,7 +63,12 @@ function addManager() {
 onMounted(() => {
   axios.get(url)
     .then(response => {
-      cemeteryManagers.value = response.data['cemetery-managers']
+      console.log(response.data)
+
+      cemeteryManagers.value =
+        response.data['cemetery-managers'] ||
+        response.data.cemeteryManagers ||
+        response.data
     })
     .catch(error => {
       console.error('Fout bij ophalen beheerders:', error)

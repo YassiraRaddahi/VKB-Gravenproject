@@ -49,13 +49,12 @@
                     <input ref="fileInput" type="file" accept="image/*" class="d-none" @change="handleFileUpload" />
                   </v-avatar>
 
-                  <v-btn data-testid="profile-picture-upload-btn"
-                    v-if="userStore.hasPermission('user.edit.profile_picture')" icon size="large" elevation="6"
-                    color="#16495d" class="avatar-btn position-absolute" @click="selectFile">
+                  <AppButton data-testid="profile-picture-upload-btn"
+                    v-if="userStore.hasPermission('user.edit.profile_picture')" icon size="large" class="avatar-btn position-absolute" @click="selectFile">
                     <v-icon color="white">
                       mdi-camera
                     </v-icon>
-                  </v-btn>
+                  </AppButton>
                 </v-sheet>
               </v-col>
 

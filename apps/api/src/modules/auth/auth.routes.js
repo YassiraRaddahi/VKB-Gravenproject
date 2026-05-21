@@ -106,6 +106,7 @@ module.exports = function (app, conn_db) {
             WHERE users.id = ?
         `;
 
+ 
         conn_db.query(userSql, [req.user.id], (err, userRows) => {
             if (err) {
                 return res.status(500).json({ error: "Database error" });
@@ -125,6 +126,7 @@ module.exports = function (app, conn_db) {
             WHERE permission_role.role_id = ?
         `;
 
+ 
         conn_db.query(permissionSql, [user.role_id], (err, permissionRows) => {
             if (err) {
                 return res.status(500).json({ error: "Database error" });
@@ -176,6 +178,7 @@ module.exports = function (app, conn_db) {
                 filteredUser.city = user.city;
             }
 
+ 
             if(permissions.includes('user.view.contact')) {
                 filteredUser.email = user.email;
                 filteredUser.phone_number = user.phone_number;

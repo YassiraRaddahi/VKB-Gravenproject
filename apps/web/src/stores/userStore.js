@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-
+ 
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
     permissions: [],
   }),
-
+ 
   actions: {
     async fetchUser() {
       try {
@@ -17,12 +17,13 @@ export const useUserStore = defineStore("user", {
             withCredentials: true,
           }
         );
-
+ 
         this.user = response.data.user;
         this.permissions = response.data.permissions;
        
         console.log("Fetched user and permissions:", response.data);
 
+ 
       } catch (error) {
         this.user = null;
         this.permissions = [];
