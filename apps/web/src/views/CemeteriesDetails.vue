@@ -115,15 +115,11 @@
 
                                 <!-- REMARKS -->
                                 <v-row>
-
-                                    <v-col cols="12">
+                                    <v-col cols="12" md="10">
                                         <v-textarea label="Opmerkingen" v-model="form.remarks" :readonly="!editMode"
-                                            rows="2" hide-details class="text-white" />
+                                            auto-grow rows="5" class="custom-textarea text-white" hide-details />
                                     </v-col>
-
                                 </v-row>
-
-                                <!-- IBAN -->
                                 <!-- IBAN -->
                                 <v-row>
                                     <v-col cols="12">
@@ -143,35 +139,35 @@
 
                                     </v-col>
                                 </v-row>
-<v-row class="mb-4">
-  <v-col cols="12">
-    <v-sheet class="pa-4 d-flex justify-space-between" color="#16495d" rounded="lg">
+                                <v-row class="mb-4">
+                                    <v-col cols="12">
+                                        <v-sheet class="pa-4 d-flex justify-space-between" color="#16495d" rounded="lg">
 
-      <div class="text-white">
-        Totaal: {{ graveStats.total }}
-      </div>
+                                            <div class="text-white">
+                                                Totaal Graven: {{ graveStats.total }}
+                                            </div>
 
-      <div class="text-white">
-        Vrij: {{ graveStats.available }}
-      </div>
+                                            <div class="text-white">
+                                                Vrij: {{ graveStats.available }}
+                                            </div>
 
-      <div class="text-white">
-        In gebruik: {{ graveStats.occupied }}
-      </div>
+                                            <div class="text-white">
+                                                In gebruik: {{ graveStats.occupied }}
+                                            </div>
 
-      <div class="text-white">
-        Gereserveerd: {{ graveStats.reserved }}
-      </div>
+                                            <div class="text-white">
+                                                Gereserveerd: {{ graveStats.reserved }}
+                                            </div>
 
-    </v-sheet>
-  </v-col>
-</v-row>
+                                        </v-sheet>
+                                    </v-col>
+                                </v-row>
 
 
                                 <!-- MANAGERS -->
                                 <v-col cols="12">
 
-                                    <div class="text-subtitle-2 font-weight-medium mb-2">
+                                    <div class="text-subtitle-2 font-weight-medium mb-2 text-white">
                                         Gekoppelde beheerder(s)
                                     </div>
 
@@ -179,20 +175,6 @@
 
                                         <!-- EDIT MODE -->
                                         <template v-if="editMode">
-
-                                            <!-- SELECTED -->
-                                            <div class="d-flex flex-wrap ga-2 mb-4">
-
-                                                <v-chip v-for="manager in selectedManagers" :key="manager.id" closable
-                                                    color="#16495d" text-color="white"
-                                                    @click:close="removeManager(manager.id)">
-                                                    <v-icon start size="16">
-                                                        mdi-account
-                                                    </v-icon>
-                                                    {{ manager.full_name }}
-                                                </v-chip>
-
-                                            </div>
 
                                             <!-- SELECT -->
                                             <v-select v-model="selectedManagerIds" :items="allManagers"
@@ -460,11 +442,11 @@ const loadAllManagers = async () => {
 
 }
 const loadGraves = async () => {
-  const res = await axios.get(
-    `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/graves`
-  )
+    const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/graves`
+    )
 
-  graves.value = res.data.graves || []
+    graves.value = res.data.graves || []
 }
 onMounted(() => {
     loadCemetery()
@@ -747,35 +729,35 @@ function toggleIban() {
 const graves = ref([])
 
 const graveStats = computed(() => {
-  const total = graves.value.length
+    const total = graves.value.length
 
-  const available = graves.value.filter(
-    g => g.status === 'beschikbaar'
-  ).length
+    const available = graves.value.filter(
+        g => g.status === 'beschikbaar'
+    ).length
 
-  const occupied = graves.value.filter(
-    g => g.status === 'in gebruik'
-  ).length
+    const occupied = graves.value.filter(
+        g => g.status === 'in gebruik'
+    ).length
 
-  const reserved = graves.value.filter(
-    g => g.status === 'gereserveerd'
-  ).length
+    const reserved = graves.value.filter(
+        g => g.status === 'gereserveerd'
+    ).length
 
-  return {
-    total,
-    available,
-    occupied,
-    reserved
-  }
+    return {
+        total,
+        available,
+        occupied,
+        reserved
+    }
 })
 const availabilityColor = computed(() => {
-  const free = graveStats.value.available
-  const total = graveStats.value.total
+    const free = graveStats.value.available
+    const total = graveStats.value.total
 
-  if (total === 0) return 'grey'
-  if (free === 0) return 'red'
-  if (free < total / 3) return 'orange'
-  return 'green'
+    if (total === 0) return 'grey'
+    if (free === 0) return 'red'
+    if (free < total / 3) return 'orange'
+    return 'green'
 })
 </script>
 

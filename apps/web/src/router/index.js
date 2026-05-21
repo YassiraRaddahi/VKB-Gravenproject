@@ -10,7 +10,7 @@ import CemeteryManagers from "../views/CemeteryManagersView.vue";
 import Profile from "../views/ProfileView.vue";
 import Security from "../views/SecurityView.vue";
 import CemeteriesDetails from "../views/CemeteriesDetails.vue";
-
+import GravesDetails from "../views/GravesDetails.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -85,6 +85,12 @@ const router = createRouter({
         description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."   
       },
     },
+   {
+    path: "/kerkhoven/:cemetery_id/graves/:grave_id",
+    name: "GravesDetails",
+    component: GravesDetails,
+    meta: { requiresAuth: true }
+  },
     {
       path: "/beheerders",
       name: "CemeteryManagers",

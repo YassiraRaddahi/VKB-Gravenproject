@@ -1,7 +1,12 @@
+<!-- components/Breadcrumbs.vue -->
+
 <template>
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ul>
-      <li v-for="(item, index) in breadcrumbs" :key="item.text">
+      <li
+        v-for="(item, index) in breadcrumbs"
+        :key="item.text"
+      >
         <router-link
           v-if="item.to && index < breadcrumbs.length - 1"
           :to="item.to"
@@ -9,10 +14,20 @@
         >
           {{ item.text }}
         </router-link>
-        <span v-else class="breadcrumb-current">
+
+        <span
+          v-else
+          class="breadcrumb-current"
+        >
           {{ item.text }}
         </span>
-        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">&nbsp; &gt;</span>
+
+        <span
+          v-if="index < breadcrumbs.length - 1"
+          class="breadcrumb-separator"
+        >
+          &nbsp; &gt;
+        </span>
       </li>
     </ul>
   </nav>
@@ -29,44 +44,76 @@ const labelMap = {
   Cemeteries: 'Kerkhoven',
   CemeteryDetails: 'Kerkhof details',
   Graves: 'Graven',
+  GravesDetails: 'Graf details',
   CemeteryManagers: 'Beheerders',
 }
 
 const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryDetails: 'Cemeteries',
-  CemeteryManagers: 'Dashboard',
   Graves: 'CemeteryDetails',
+  GravesDetails: 'Graves',
+  CemeteryManagers: 'Dashboard',
 }
 
 const routeParams = {
-  CemeteryDetails: () => ({ cemetery_id: route.params.cemetery_id }),
-  Graves: () => ({ cemetery_id: route.params.cemetery_id }),
+  CemeteryDetails: () => ({
+    cemetery_id: route.params.cemetery_id,
+  }),
+
+  Graves: () => ({
+    cemetery_id: route.params.cemetery_id,
+  }),
+
+  GravesDetails: () => ({
+    cemetery_id: route.params.cemetery_id,
+    grave_id: route.params.grave_id,
+  }),
 }
 
 const breadcrumbs = computed(() => {
+
   if (!route.name) return []
 
   const chain = []
+
   let current = route.name
 
   while (current) {
+
     const label = labelMap[current] || current
+
     const isCurrent = current === route.name
+
     const to = isCurrent
       ? undefined
       : routeParams[current]
-        ? { name: current, params: routeParams[current]() }
-        : { name: current }
+        ? {
+            name: current,
+            params: routeParams[current](),
+          }
+        : {
+            name: current,
+          }
 
-    chain.unshift({ text: label, to })
+    chain.unshift({
+      text: label,
+      to,
+    })
+
     current = parentMap[current]
   }
 
-  if (chain.length === 0) return []
-
-  if (chain[0].text !== 'Dashboard') {
-    chain.unshift({ text: 'Dashboard', to: { name: 'Dashboard' } })
+  if (
+    chain.length > 0 &&
+    chain[0].text !== 'Dashboard'
+  ) {
+    chain.unshift({
+      text: 'Dashboard',
+      to: {
+        name: 'Dashboard',
+      },
+    })
   }
 
   return chain
@@ -74,7 +121,6 @@ const breadcrumbs = computed(() => {
 </script>
 
 <style scoped>
-
 .breadcrumbs ul {
   display: flex;
   flex-wrap: wrap;
@@ -82,7 +128,8 @@ const breadcrumbs = computed(() => {
   align-items: center;
   justify-content: flex-start;
   list-style: none;
-  padding-right: 40px;
+  padding: 0;
+  margin: 0;
 }
 
 .breadcrumb-link {
