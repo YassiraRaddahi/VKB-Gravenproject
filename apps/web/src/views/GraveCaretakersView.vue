@@ -1,6 +1,6 @@
 <template>
   <TitleUnderline 
-     :title="`Grafonderhouders`"
+     :title="`Lijst van Grafonderhouders`"
      underline-class="underlineLightBlue"
     />
 </template>

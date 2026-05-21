@@ -1,6 +1,6 @@
 <template>
     <TitleUnderline 
-         :title="`Rechthebbenden`"
+         :title="`Lijst van Overledenen`"
          underline-class="underlineLightBlue"
         />
 </template>

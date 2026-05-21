@@ -112,7 +112,7 @@ const router = createRouter({
     {
       path: "/personenbeheer/type/:role",
       name: "UserManagementByRole",
-      component: () => import("../views/UserManagementView.vue"),
+      component: () => import("../views/PersonSubdashboardView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
