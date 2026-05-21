@@ -42,7 +42,7 @@
 
           <v-card-actions class="pa-4 px-md-8">
             <v-spacer />
-            <v-btn class="bg-darkBlue" variant="elevated" v-ripple.center
+            <v-btn class="bg-darkBlue" variant="elevated" v-ripple.center :loading="securityStore.loading"
               :disabled="!currentPassword || !newPassword || !confirmPassword || formError.length > 0" @click="save">
               Opslaan
             </v-btn>
@@ -53,7 +53,7 @@
     </v-row>
   </v-container>
   <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
-    message="Profiel succesvol bijgewerkt!" timeout="4000" />
+    message="Wachtwoord succesvol bijgewerkt!" timeout="4000" />
 </template>
 
 <script setup>
@@ -62,6 +62,9 @@ import TitleUnderline from '../components/TitleUnderline.vue';
 import SnackbarSuccess from '@/components/SnackbarSuccess.vue';
 
 import { ref } from 'vue'
+import { useSecurityStore } from '@/stores/securityStore'
+
+const securityStore = useSecurityStore()
 
 const formError = ref('')
 
@@ -77,7 +80,7 @@ const showConfirmPassword = ref(false)
 const showSnackbar = ref(false)
 
 
-function save() {
+async function save() {
   formError.value = ''
 
   if (newPassword.value.length < 6) {
@@ -90,7 +93,14 @@ function save() {
     return
   }
 
-  formError.value = ''
+  // De API verifieert het huidige wachtwoord met bcrypt en slaat een nieuwe hash op
+  const success = await securityStore.changePassword(currentPassword.value, newPassword.value)
+
+  if (!success) {
+    formError.value = securityStore.error
+    return
+  }
+
   currentPassword.value = ''
   newPassword.value = ''
   confirmPassword.value = ''
