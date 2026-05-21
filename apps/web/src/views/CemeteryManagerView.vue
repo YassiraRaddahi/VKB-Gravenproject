@@ -45,7 +45,7 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-text-field label="Voornaam" v-model="editManager.first_names"
+                                        <v-text-field label="Voornamen" v-model="editManager.first_names"
                                             :readonly="!isEditing" hide-details class="text-white" />
                                     </v-col>
                                 </v-row>
