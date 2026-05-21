@@ -28,10 +28,11 @@ const { user } = storeToRefs(userStore)
 const labelMap = computed(() => ({
   Dashboard: 'Dashboard',
 
-  Cemeteries:
-    user.value?.role_name === 'beheerder'
-      ? 'Gekoppelde kerkhoven'
-      : 'Kerkhoven',
+  Cemeteries: 'kerkhoven',
+    // user.value?.role_name === 'beheerder'
+    //   ? 'Gekoppelde kerkhoven'
+    //   : 'Kerkhoven',
+  CemeteriesOfManager: 'Gekoppelde kerkhoven',
 
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
@@ -50,6 +51,7 @@ const labelMap = computed(() => ({
 
 const parentMap = {
   Cemeteries: 'Dashboard',
+  CemeteriesOfManager: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
   CemeteryManagerView: 'CemeteryManagers',

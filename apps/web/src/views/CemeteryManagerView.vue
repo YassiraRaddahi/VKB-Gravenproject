@@ -180,9 +180,9 @@ function goToLinkedCemeteries() {
     if (!cemeteryManager.value) return
 
     router.push({
-        name: 'Cemeteries',
-        query: {
-            manager: cemeteryManager.value.id
+        name: 'CemeteriesOfManager',
+        params: {
+            manager_id: cemeteryManager.value.id
         }
     })
 }

@@ -189,11 +189,11 @@ onMounted(() => {
     .then(res => {
       cemeteries.value = res.data.cemeteries
 
-      const managerName = route.query.manager
+      const managerId = route.params.manager_id
 
-      if (managerName) {
+      if (managerId) {
         const foundManager = managerOptions.value.find(manager =>
-          manager.title === managerName
+          manager.value === Number(managerId)
         )
 
         if (foundManager) {

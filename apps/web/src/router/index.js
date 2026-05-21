@@ -52,6 +52,18 @@ const router = createRouter({
       },
     },
     {
+      path: "/beheerder/:manager_id/kerkhoven",
+      name: "CemeteriesOfManager",
+      component: () => import("../views/CemeteriesView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Kerkhoven in uw beheer| Kerkhovenbeheer Nederland",
+        description: "Beheer al uw kerkhoven op één plek. Zoek, filter of klik op een kerkhof en bekijk de details, voeg nieuwe kerkhoven toe en houd uw gegevens up-to-date."
+      },
+    },
+    {
       path: "/kerkhoven/:cemetery_id/graven",
       name: "Graves",
       component: () => import("../views/GravesView.vue"),
