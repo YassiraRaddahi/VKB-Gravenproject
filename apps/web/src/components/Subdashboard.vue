@@ -25,12 +25,19 @@ const props = defineProps({
   title: String,
   icon: String,
   routeName: String,
-})
+  params: {
+    type: Object,
+    default: () => ({})
+  }
+}
+)
+
+
 
 const router = useRouter()
 
 function goToPage() {
-  router.push({ name: props.routeName })
+  router.push({ name: props.routeName, params: props.params })
 }
 </script>
 <style scoped>

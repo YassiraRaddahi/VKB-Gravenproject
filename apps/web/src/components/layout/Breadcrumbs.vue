@@ -37,6 +37,15 @@ const labelMap = computed(() => ({
   CemeteryManagers: 'Beheerders',
   CemeteryManagerView: 'Beheerder Details',
   UserManagement: 'Personenbeheer',
+
+  UserManagementByRole:
+    route.params.role === 'overledenen'
+      ? 'Overledenen'
+      : route.params.role === 'rechthebbenden'
+        ? 'Rechthebbenden'
+        : route.params.role === 'grafonderhouders'
+          ? 'Grafonderhouders'
+          : 'Personenbeheer',
 }))
 
 const parentMap = {
@@ -45,6 +54,7 @@ const parentMap = {
   Graves: 'Cemeteries',
   CemeteryManagerView: 'CemeteryManagers',
   UserManagement: 'Dashboard',
+  UserManagementByRole: 'UserManagement',
 }
 
 const routeParams = {
