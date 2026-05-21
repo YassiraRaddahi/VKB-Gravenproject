@@ -125,37 +125,47 @@
 
                                 <!-- IBAN -->
                                 <!-- IBAN -->
-<v-row>
-    <v-col cols="12">
+                                <v-row>
+                                    <v-col cols="12">
 
-        <div class="text-white mb-2 font-weight-medium">
-            IBAN
-        </div>
+                                        <div class="text-white mb-2 font-weight-medium">
+                                            IBAN
+                                        </div>
 
-        <!-- VIEW MODE -->
-        <v-text-field
-            v-if="!editMode"
-            :value="displayedIban"
-            readonly
-            hide-details
-            class="text-white"
-            @mouseenter="showIban = true"
-            @mouseleave="showIban = false"
-            @click="toggleIban"
-        />
+                                        <!-- VIEW MODE -->
+                                        <v-text-field v-if="!editMode" :value="displayedIban" readonly hide-details
+                                            class="text-white" @mouseenter="showIban = true"
+                                            @mouseleave="showIban = false" @click="toggleIban" />
 
-        <!-- EDIT MODE -->
-        <v-text-field
-            v-else
-            v-model="form.iban"
-            label="IBAN"
-            hide-details
-            class="text-white"
-        />
+                                        <!-- EDIT MODE -->
+                                        <v-text-field v-else v-model="form.iban" label="IBAN" hide-details
+                                            class="text-white" />
 
-    </v-col>
+                                    </v-col>
+                                </v-row>
+<v-row class="mb-4">
+  <v-col cols="12">
+    <v-sheet class="pa-4 d-flex justify-space-between" color="#16495d" rounded="lg">
+
+      <div class="text-white">
+        Totaal: {{ graveStats.total }}
+      </div>
+
+      <div class="text-white">
+        Vrij: {{ graveStats.available }}
+      </div>
+
+      <div class="text-white">
+        In gebruik: {{ graveStats.occupied }}
+      </div>
+
+      <div class="text-white">
+        Gereserveerd: {{ graveStats.reserved }}
+      </div>
+
+    </v-sheet>
+  </v-col>
 </v-row>
-
 
 
                                 <!-- MANAGERS -->
@@ -398,19 +408,19 @@ const loadCemetery = async () => {
         }
 
         form.value = {
-    name: response.data.cemetery.name,
-    city: response.data.cemetery.city,
-    street_name: response.data.cemetery.street_name,
-    house_number: response.data.cemetery.house_number,
-    house_letter: response.data.cemetery.house_letter,
-    house_number_addition: response.data.cemetery.house_number_addition,
-    zip_code: response.data.cemetery.zip_code,
-    email: response.data.cemetery.email,
-    phone_number: response.data.cemetery.phone_number,
-    website_url: response.data.cemetery.website_url,
-    remarks: response.data.cemetery.remarks,
-    iban: response.data.cemetery.iban || ''
-};
+            name: response.data.cemetery.name,
+            city: response.data.cemetery.city,
+            street_name: response.data.cemetery.street_name,
+            house_number: response.data.cemetery.house_number,
+            house_letter: response.data.cemetery.house_letter,
+            house_number_addition: response.data.cemetery.house_number_addition,
+            zip_code: response.data.cemetery.zip_code,
+            email: response.data.cemetery.email,
+            phone_number: response.data.cemetery.phone_number,
+            website_url: response.data.cemetery.website_url,
+            remarks: response.data.cemetery.remarks,
+            iban: response.data.cemetery.iban || ''
+        };
 
         selectedManagerIds.value =
             cemetery.value.cemetery_managers.map(manager => manager.id)
@@ -449,10 +459,17 @@ const loadAllManagers = async () => {
     }
 
 }
+const loadGraves = async () => {
+  const res = await axios.get(
+    `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/graves`
+  )
 
+  graves.value = res.data.graves || []
+}
 onMounted(() => {
     loadCemetery()
     loadAllManagers()
+    loadGraves()
 })
 
 function startEdit() {
@@ -696,7 +713,7 @@ async function handleFileUpload(event) {
         }
 
     }
-    
+
 
 }
 const showIban = ref(false)
@@ -727,6 +744,39 @@ const displayedIban = computed(() => {
 function toggleIban() {
     showIban.value = !showIban.value
 }
+const graves = ref([])
+
+const graveStats = computed(() => {
+  const total = graves.value.length
+
+  const available = graves.value.filter(
+    g => g.status === 'beschikbaar'
+  ).length
+
+  const occupied = graves.value.filter(
+    g => g.status === 'in gebruik'
+  ).length
+
+  const reserved = graves.value.filter(
+    g => g.status === 'gereserveerd'
+  ).length
+
+  return {
+    total,
+    available,
+    occupied,
+    reserved
+  }
+})
+const availabilityColor = computed(() => {
+  const free = graveStats.value.available
+  const total = graveStats.value.total
+
+  if (total === 0) return 'grey'
+  if (free === 0) return 'red'
+  if (free < total / 3) return 'orange'
+  return 'green'
+})
 </script>
 
 <style scoped></style>
