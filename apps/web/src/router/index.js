@@ -64,6 +64,18 @@ const router = createRouter({
       },
     },
     {
+      path: "/kerkhoven/:cemetery_id",
+      name: "CemeteryDetails",
+      component: () => import("../views/CemeteriesDetails.vue"),
+      meta: { 
+        requiresAuth: true, 
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Details van kerkhof | Kerkhovenbeheer Nederland",
+        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."   
+      },
+    },
+    {
       path: "/kerkhoven/:cemetery_id/graven",
       name: "Graves",
       component: () => import("../views/GravesView.vue"),
@@ -75,6 +87,12 @@ const router = createRouter({
         description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
       },
     },
+   {
+    path: "/kerkhoven/:cemetery_id/graves/:grave_id",
+    name: "GravesDetails",
+    component: () => import("../views/GravesDetails.vue"),
+    meta: { requiresAuth: true }
+  },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
@@ -88,8 +106,8 @@ const router = createRouter({
       },
     },
     {
-      path: "/beheerders/:id",
-      name: "CemeteryManagerView",
+      path: "/beheerders/:manager_id",
+      name: "CemeteryManager",
       component: () => import("../views/CemeteryManagerView.vue"),
       meta: {
         requiresAuth: true,

@@ -97,7 +97,6 @@ module.exports = function (app, conn_db) {
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // If there are no users with this role, return an error message
                 if (!rows || rows.length === 0) {
                     return res.status(404).json({ error: 'No managers found' });
                 }

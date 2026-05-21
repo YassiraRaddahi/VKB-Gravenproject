@@ -58,6 +58,7 @@ import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import ContactDialog from '@/components/ContactDialog.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import { useRoute } from 'vue-router'
 
 defineProps({
   showDrawerToggle: {
@@ -70,6 +71,7 @@ const logoUrl = '/images/logo/VKB_Logo.svg'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+const route = useRoute()
 
 const userFullName = () => {
   return [

@@ -19,34 +19,37 @@
           class="d-flex align-stretch">
           <ItemCard :image="grave.image_url"
             :image-alt="`Vooraanzicht van graf ${grave.grave_number} op ${cemetery?.name}`" :title="grave.grave_number"
-            title-class="text-h6">
+            title-class="text-h6" :to="{ name: 'GravesDetails', params: { cemetery_id: cemetery_id.value, grave_id: grave.id } }">
             <div class="text-caption">Status: {{ grave.status }}</div>
           </ItemCard>
         </v-col>
       </v-row>
+
     </v-container>
   </v-container>
 </template>
 
 <script setup>
-
 import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
-import { useRoute } from 'vue-router'
-import { useHead } from '@vueuse/head'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import SearchAddBar from '@/components/ui/SearchAddBar.vue'
 import ItemCard from '@/components/ui/ItemCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useHead } from '@vueuse/head'
 
 const route = useRoute()
-const cemetery_id = route.params.cemetery_id
+const router = useRouter()
+
+const cemetery_id = computed(() => route.params.cemetery_id)
 
 const graves = ref([])
 const cemetery = ref(null)
 const search = ref('')
 const statusFilter = ref(null)
-const url = `${import.meta.env.VITE_API_URL}/cemeteries/${cemetery_id}/graves`
+
+const url = `${import.meta.env.VITE_API_URL}/cemeteries/${cemetery_id.value}/graves`
 
 const statusOptions = [
   { title: 'Beschikbaar', value: 'beschikbaar' },
@@ -57,14 +60,17 @@ const statusOptions = [
 const visibleGraves = computed(() => {
   let result = graves.value
 
-
   const query = search.value.toLowerCase().trim()
   if (query) {
-    result = result.filter(grave => grave.grave_number.toString().toLowerCase().includes(query))
+    result = result.filter(grave =>
+      grave.grave_number.toString().toLowerCase().includes(query)
+    )
   }
 
   if (statusFilter.value) {
-    result = result.filter(grave => grave.status?.toLowerCase() === statusFilter.value.toLowerCase())
+    result = result.filter(
+      grave => grave.status?.toLowerCase() === statusFilter.value.toLowerCase()
+    )
   }
 
   return result
@@ -82,16 +88,15 @@ let pageDescription = computed(() => {
     : "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
 })
 
-useHead({
-  title: pageTitle,
+useHead(() => ({
+  title: pageTitle.value,
   meta: [
     {
       name: 'description',
-      content: pageDescription
+      content: pageDescription.value
     }
   ]
-})
-
+}))
 
 
 function addCemetery() {
@@ -101,7 +106,6 @@ function addCemetery() {
 onMounted(() => {
   axios.get(url)
     .then(response => {
-      console.log(response)
       graves.value = response.data.graves
       cemetery.value = response.data.cemetery
     })
@@ -109,8 +113,6 @@ onMounted(() => {
       console.error("Fout bij ophalen graven:", error)
     })
 })
-
-
 </script>
 
 <style scoped>

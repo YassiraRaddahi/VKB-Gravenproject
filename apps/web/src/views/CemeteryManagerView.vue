@@ -128,7 +128,7 @@ const route = useRoute()
 const router = useRouter()
 
 const cemeteryManager = ref(null)
-const managerId = Number(route.params.id)
+const managerId = Number(route.params.manager_id)
 
 const isEditing = ref(false)
 const linkedCemeteryId = ref(null)

@@ -38,10 +38,10 @@ import Breadcrumbs from './components/layout/Breadcrumbs.vue'
 import NavigationDrawer from './components/layout/NavigationDrawer.vue'
 
 import { useRoute } from 'vue-router'
-import { useHead } from '@vueuse/head'
 import { computed, ref, watch } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
+import {useHead} from '@vueuse/head'
 
 const route = useRoute()
 const userStore = useUserStore()

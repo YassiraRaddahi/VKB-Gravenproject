@@ -13,7 +13,7 @@
           class="d-flex align-stretch">
           <ItemCard show-avatar :avatar="cemeteryManager.profile_picture_url"
             :image-alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`"
-            :to="{ name: 'CemeteryManagerView', params: { id: cemeteryManager.id } }"
+            :to="{ name: 'CemeteryManager', params: { manager_id: cemeteryManager.id } }"
             :title="managerFullName(cemeteryManager)" :elevation="4" />
         </v-col>
       </v-row>

@@ -9,11 +9,10 @@
         @add="addCemetery">
         <v-col cols="12" md="2">
           <v-select v-model="managerFilter" :items="managerOptions" label="Beheerder" clearable outlined dense
-            color="primary" class="filter-select" />
+            color="primary" />
         </v-col>
         <v-col cols="12" md="2">
-          <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary"
-            class="filter-select" />
+          <v-select v-model="cityFilter" :items="cityOptions" label="Plaats" clearable outlined dense color="primary" />
         </v-col>
       </SearchAddBar>
 
@@ -23,8 +22,9 @@
       <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
         <v-col v-for="cemetery in visibleCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
+          
           <ItemCard :image="cemetery.image_url" :image-alt="`Impressiefoto van ${cemetery.name}`" :title="cemetery.name"
-            :to="{ name: 'Graves', params: { cemetery_id: cemetery.id } }">
+            :to="{ name: 'CemeteryDetails', params: { cemetery_id: cemetery.id } }">
             <div class="manager-list text-body-2 text-grey-darken-1 w-100">
               <template v-if="cemetery.cemetery_managers?.length > 0">
                 <div v-for="manager in cemetery.cemetery_managers" :key="manager.id" class="manager-item">

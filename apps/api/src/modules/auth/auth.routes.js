@@ -4,13 +4,16 @@ module.exports = function (app, conn_db) {
   const rateLimit = require("express-rate-limit");
   const isProduction = process.env.NODE_ENV === "production";
 
-  const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5,
-    message: { error: "Te veel pogingen, probeer het later opnieuw" },
-    standardHeaders: true,
-    legacyHeaders: false,
-  });
+    const loginLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 5,
+        message: function (req, res) {
+            const resetTime = new Date(req.rateLimit.resetTime).toLocaleString('nl-NL');
+            return res.status(429).json({ error: `Te veel pogingen, probeer het na ${resetTime} opnieuw` });
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+    });
 
   function verifyToken(req, res, next) {
     const token = req.cookies?.token;

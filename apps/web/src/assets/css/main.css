@@ -93,3 +93,7 @@ img,
     height: var(--title-underline-thickness-mobile);
   }
 }
+
+.v-field__overlay {
+    opacity: 0.00;
+}
