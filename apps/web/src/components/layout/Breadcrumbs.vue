@@ -2,11 +2,7 @@
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ul>
       <li v-for="(item, index) in breadcrumbs" :key="item.text">
-        <router-link
-          v-if="item.to && index < breadcrumbs.length - 1"
-          :to="item.to"
-          class="breadcrumb-link"
-        >
+        <router-link v-if="item.to && index < breadcrumbs.length - 1" :to="item.to" class="breadcrumb-link">
           {{ item.text }}
         </router-link>
         <span v-else class="breadcrumb-current">
@@ -21,22 +17,34 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 
-const labelMap = {
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
+const labelMap = computed(() => ({
   Dashboard: 'Dashboard',
-  Cemeteries: 'Kerkhoven',
+
+  Cemeteries:
+    user.value?.role_name === 'beheerder'
+      ? 'Gekoppelde kerkhoven'
+      : 'Kerkhoven',
+
   Graves: 'Graven',
   CemeteryManagers: 'Beheerders',
   CemeteryManagerView: 'Beheerder Details',
-}
+  UserManagement: 'Personenbeheer',
+}))
 
 const parentMap = {
   Cemeteries: 'Dashboard',
   CemeteryManagers: 'Dashboard',
   Graves: 'Cemeteries',
   CemeteryManagerView: 'CemeteryManagers',
+  UserManagement: 'Dashboard',
 }
 
 const routeParams = {
@@ -48,25 +56,39 @@ const breadcrumbs = computed(() => {
   if (!route.name) return []
 
   const chain = []
+
   let current = route.name
 
   while (current) {
-    const label = labelMap[current] || current
+    const label = labelMap.value[current] || current
+
     const isCurrent = current === route.name
+
     const to = isCurrent
       ? undefined
       : routeParams[current]
-        ? { name: current, params: routeParams[current]() }
-        : { name: current }
+        ? {
+          name: current,
+          params: routeParams[current]()
+        }
+        : {
+          name: current
+        }
+    chain.unshift({
+      text: label,
+      to
+    })
 
-    chain.unshift({ text: label, to })
     current = parentMap[current]
   }
 
   if (chain.length === 0) return []
 
   if (chain[0].text !== 'Dashboard') {
-    chain.unshift({ text: 'Dashboard', to: { name: 'Dashboard' } })
+    chain.unshift({
+      text: 'Dashboard',
+      to: { name: 'Dashboard' }
+    })
   }
 
   return chain
@@ -74,7 +96,6 @@ const breadcrumbs = computed(() => {
 </script>
 
 <style scoped>
-
 .breadcrumbs ul {
   display: flex;
   flex-wrap: wrap;

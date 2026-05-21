@@ -110,7 +110,17 @@ const router = createRouter({
         title: "Profielbeveiliging | Kerkhovenbeheer Nederland",
         description: "Beheer hier uw beveiligingsinstellingen en wachtwoord. Houd uw account veilig voor een optimale ervaring met Kerkhovenbeheer Nederland."
       },
-    }
+    },
+    {
+  path: "/personenbeheer",
+  name: "UserManagement",
+  component: () => import("../views/UserManagementView.vue"),
+  meta: {
+    requiresAuth: true,
+    showBreadcrumbs: true,
+    showNavigationDrawer: true,
+  },
+}
   ],
 });
 

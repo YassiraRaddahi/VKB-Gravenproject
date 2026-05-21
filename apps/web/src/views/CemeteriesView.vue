@@ -54,14 +54,24 @@ import EmptyState from '@/components/ui/EmptyState.vue'
 
 import axios from 'axios'
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
+const route = useRoute()
+const router = useRouter()
 
 const cemeteries = ref([])
 const search = ref('')
 const managerFilter = ref(null)
 const cityFilter = ref(null)
+
+
 const url = `${import.meta.env.VITE_API_URL}/cemeteries`
-const route = useRoute()
+
 
 const managerFullName = (manager) => {
   return [
@@ -79,53 +89,97 @@ if (route.query.manager) {
 }
 
 
+
+// Computed properties voor filteropties
+const pageTitle = computed(() => {
+  return user.value?.role_name === 'beheerder'
+    ? 'Lijst met gekoppelde kerkhoven'
+    : 'Lijst met kerkhoven'
+})
+
 // Dynamisch unieke beheerders verzamelen voor filteropties
 const managerOptions = computed(() => {
   const managers = new Map()
+
   cemeteries.value.forEach(cemetery => {
     cemetery.cemetery_managers?.forEach(manager => {
-      const key = manager.id
-      const label = `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
+      const key = Number(manager.id)
+
+      const label =
+        `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
+
       if (!managers.has(key)) {
-        managers.set(key, { title: label, value: key })
+        managers.set(key, {
+          title: label,
+          value: key
+        })
       }
     })
   })
+
   return Array.from(managers.values())
 })
 
 // Dynamisch unieke steden verzamelen voor filteropties
 const cityOptions = computed(() => {
   const cities = new Set()
+
   cemeteries.value.forEach(cemetery => {
-    if (cemetery.city?.trim()) cities.add(cemetery.city.trim())
+    if (cemetery.city?.trim()) {
+      cities.add(cemetery.city.trim())
+    }
   })
+
   return Array.from(cities)
     .sort()
-    .map(city => ({ title: city, value: city }))
+    .map(city => ({
+      title: city,
+      value: city
+    }))
 })
 
 // Filter logica
 const visibleCemeteries = computed(() => {
   let result = cemeteries.value
+
+  // Alleen gekoppelde kerkhoven tonen voor beheerder
+  if (user.value?.role_name === 'beheerder') {
+    result = result.filter(cemetery =>
+      cemetery.cemetery_managers?.some(manager =>
+        Number(manager.id) === Number(user.value.id)
+      )
+    )
+  }
+
+  // Zoekfilter
   const query = search.value.toLowerCase().trim()
-  if (query) result = result.filter(c => c.name.toLowerCase().includes(query))
-  //filteren op beheerder
+
+  if (query) {
+    result = result.filter(c =>
+      c.name.toLowerCase().includes(query)
+    )
+  }
+
+  // Filteren op beheerder
   if (managerFilter.value) {
     result = result.filter(cemetery =>
-      cemetery.cemetery_managers?.some(manager => manager.id === managerFilter.value)
+      cemetery.cemetery_managers?.some(manager =>
+        Number(manager.id) === Number(managerFilter.value)
+      )
     )
   }
 
   // Filteren op stad
   if (cityFilter.value) {
-    result = result.filter(cemetery => cemetery.city === cityFilter.value)
+    result = result.filter(cemetery =>
+      cemetery.city === cityFilter.value
+    )
   }
 
   return result
 })
 
-//knop tovoegen 
+// knop toevoegen
 function addCemetery() {
   alert('Toevoegen kerkhof knop geklikt (Helaas is de functie nog niet gemaakt)')
 }
