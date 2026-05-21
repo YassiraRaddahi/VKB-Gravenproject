@@ -1,11 +1,8 @@
 <template>
     <v-container fluid class="pa-0">
 
-        <v-row>
-            <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
-                <h1 class="title">Personenbeheer</h1>
-            </v-col>
-        </v-row>
+        <TitleUnderline title="Personenbeheer" underline-class="underlineLightBlue" />
+
 
         <v-container fluid class="pa-4">
             <v-row class="d-flex justify-center gap-6">
@@ -26,6 +23,7 @@ import { computed } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import Subdashboard from '@/components/Subdashboard.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
