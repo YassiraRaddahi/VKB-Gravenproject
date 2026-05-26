@@ -187,18 +187,19 @@ module.exports = function (app, conn_db) {
             infix,
             last_name,
             email,
-            phone_number
+            phone_number,
+            position
         } = req.body
 
         const sql = `
         UPDATE users
-        SET first_names = ?, infix = ?, last_name = ?, email = ?, phone_number = ?
+        SET first_names = ?, infix = ?, last_name = ?, email = ?, phone_number = ?, position = ?
         WHERE id = ?
     `
 
         conn_db.query(
             sql,
-            [first_names, infix, last_name, email, phone_number, userId],
+            [first_names, infix, last_name, email, phone_number, position, userId],
             (err, result) => {
                 if (err) {
                     console.error('Database error:', err)

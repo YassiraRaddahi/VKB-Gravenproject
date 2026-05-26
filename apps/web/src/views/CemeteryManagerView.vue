@@ -215,13 +215,14 @@ async function saveManager() {
             last_name: editManager.value.last_name,
             email: editManager.value.email,
             phone_number: editManager.value.phone_number,
-            position: editManager.value.position
+            position: editManager.value.position || null
         })
 
         cemeteryManager.value = {
             ...cemeteryManager.value,
             ...editManager.value,
-            infix: editManager.value.infix || null
+            infix: editManager.value.infix || null,
+            position: editManager.value.position || null
         }
 
         isEditing.value = false
