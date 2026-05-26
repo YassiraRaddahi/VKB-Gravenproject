@@ -77,6 +77,17 @@
                                             :readonly="!isEditing" hide-details class="text-white" />
                                     </v-col>
                                 </v-row>
+   <v-row>
+  <v-col cols="12">
+    <v-text-field
+      label="Functie"
+      v-model="editManager.position"
+      :readonly="!isEditing"
+      hide-details
+      class="text-white"
+    />
+  </v-col>
+</v-row>
                             </v-container>
                         </v-form>
 
@@ -116,6 +127,7 @@
 <script setup>
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import AppButton from '@/components/ui/AppButton.vue'
+import AppInput from '@/components/ui/AppInput.vue'
 import FormCard from '@/components/ui/FormCard.vue'
 
 import { useRoute, useRouter } from 'vue-router'
@@ -141,7 +153,8 @@ const editManager = ref({
     infix: '',
     last_name: '',
     email: '',
-    phone_number: ''
+    phone_number: '',
+    position: ''
 })
 
 const managerFullName = (manager) => {
@@ -162,7 +175,8 @@ function fillEditManager() {
         infix: cemeteryManager.value.infix || '',
         last_name: cemeteryManager.value.last_name || '',
         email: cemeteryManager.value.email || '',
-        phone_number: cemeteryManager.value.phone_number || ''
+        phone_number: cemeteryManager.value.phone_number || '',
+        position: cemeteryManager.value.position || ''
     }
 }
 
@@ -200,7 +214,8 @@ async function saveManager() {
             infix: editManager.value.infix || null,
             last_name: editManager.value.last_name,
             email: editManager.value.email,
-            phone_number: editManager.value.phone_number
+            phone_number: editManager.value.phone_number,
+            position: editManager.value.position
         })
 
         cemeteryManager.value = {
