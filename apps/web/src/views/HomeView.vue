@@ -4,8 +4,8 @@
     underline-class="underlineOrange"
     />
   
-  <div class="home-text mx-auto text-center px-7">
-    <p>
+  <v-container class="mx-auto text-center px-7" style="max-width: 672px;">
+    <p style="color: #0d475a;">
       Welkom op de homepagina van Kerkhovenbeheer Nederland van de Vereniging Kerkrentmeesterlijk Beheer.
       Wij zijn een organisatie die zich onder andere inzet voor het vereenvoudigen en uniformeren van het
       kerkhovenbeheer in Nederland.
@@ -16,16 +16,18 @@
       kerkhoven efficiënt kunnen worden beheerd.
     </p>
 
-    <p class="mt-6">
+    <p class="mt-6" style="color: #0d475a;">
       Vragen omtrent ons systeem of onze diensten? Neem gerust contact met ons op via de <a
         href="https://www.kerkrentmeester.nl/contact/" target="_blank" rel="noopener noreferrer"
-        class="anchor-decoration">contactpagina van de VKB</a>.
+        style="color: #ea5a0b; text-decoration: none;">
+        contactpagina van de VKB
+      </a>.
       We hopen dat u hier alles vindt wat u zoekt en dat we u kunnen helpen bij het beheren van uw kerkhoven.
     </p>
-  </div>
+  </v-container>
 
   <div id="carousel" :key="$route.fullPath">
-    <v-container class="carousel-container mt-20 px-7">
+    <v-container class="mx-auto mt-20 px-7" style="max-width: 1152px;">
       <v-carousel height="400px" cycle interval="2500" show-arrows="hover" hide-delimiter-background class="mx-auto">
         <v-carousel-item v-for="(slide, i) in slides" :key="i">
           <v-img :src="slide.src" :alt="`Impressiefoto van aangesloten kerkhof ${slide.name}`"
@@ -48,13 +50,6 @@ const slides = [
 </script>
 
 <style scoped>
-.home-text {
-  max-width: 672px;
-}
-
-.carousel-container {
-  max-width: 1152px;
-}
 
 .v-carousel {
   position: relative;

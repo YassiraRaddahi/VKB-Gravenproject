@@ -45,7 +45,7 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-text-field label="Voornaam" v-model="editManager.first_names"
+                                        <v-text-field label="Voornamen" v-model="editManager.first_names"
                                             :readonly="!isEditing" hide-details class="text-white" />
                                     </v-col>
                                 </v-row>
@@ -140,7 +140,7 @@ const route = useRoute()
 const router = useRouter()
 
 const cemeteryManager = ref(null)
-const managerId = Number(route.params.id)
+const managerId = Number(route.params.manager_id)
 
 const isEditing = ref(false)
 const linkedCemeteryId = ref(null)
@@ -194,9 +194,9 @@ function goToLinkedCemeteries() {
     if (!cemeteryManager.value) return
 
     router.push({
-        name: 'Cemeteries',
-        query: {
-            manager: cemeteryManager.value.id
+        name: 'CemeteriesOfManager',
+        params: {
+            manager_id: cemeteryManager.value.id
         }
     })
 }

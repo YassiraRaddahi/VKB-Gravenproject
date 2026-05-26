@@ -69,10 +69,6 @@ const rules = {
     required: helpers.withMessage(
       'Wachtwoord is verplicht',
       required
-    ),
-    minLength: helpers.withMessage(
-      'Wachtwoord moet minimaal 6 tekens zijn',
-      minLength(6)
     )
   }
 

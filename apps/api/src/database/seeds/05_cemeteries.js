@@ -78,7 +78,7 @@ exports.seed = async function (knex) {
       house_number_addition: null,
       zip_code: '8021 GA', 
       city: 'Zwolle', 
-      email: 'admin.rkkerkhof@cemetery.nl', 
+      email: 'admin.rkkerkhof@cemetery.nl',
       phone_number: '+31384533853', 
       iban_iv: null,
       iban_encrypted: null,

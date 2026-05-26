@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 // Middleware om JSON-gegevens te kunnen verwerken
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser())
 
 require('./routes/index.js')(app);

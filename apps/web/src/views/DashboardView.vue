@@ -1,5 +1,7 @@
 <template>
   <v-container fluid class="pa-0">
+
+    <!-- Titel -->
     <v-row>
       <v-col cols="12" class="text-center d-flex justify-center mt-10 mb-12">
         <h1 class="title">
@@ -7,8 +9,10 @@
         </h1>
       </v-col>
     </v-row>
+
   </v-container>
 
+  <!-- Dashboard cards -->
   <v-container fluid class="pa-4">
     <v-row class="d-flex justify-center gap-6">
       <v-col
@@ -29,9 +33,13 @@
               <v-icon size="48">{{ dashboard.icon }}</v-icon>
             </div>
           </v-card-text>
+
         </v-card>
+
       </v-col>
+
     </v-row>
+
   </v-container>
 </template>
 
