@@ -35,4 +35,4 @@ startServer(knex);
 
 
 
-
+console.log("SERVER STARTED - RESET RUN");
