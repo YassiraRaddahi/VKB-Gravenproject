@@ -11,6 +11,8 @@ pnpm-debug.log*
 .env*
 .env.*.local
 
+deploy.sh
+
 # Build output
 dist/
 build/
