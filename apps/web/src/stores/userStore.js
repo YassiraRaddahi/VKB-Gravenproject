@@ -21,7 +21,7 @@ export const useUserStore = defineStore("user", {
         this.user = response.data.user;
         this.permissions = response.data.permissions;
        
-        console.log("Fetched user and permissions:", response.data);
+        // console.log("Fetched user and permissions:", response.data);
 
  
       } catch (error) {
