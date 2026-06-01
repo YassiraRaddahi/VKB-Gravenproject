@@ -5,58 +5,54 @@ on:
     branches:
       - main
       - develop
-      
     paths:
-      - 'apps/web/**'
-      - 'apps/api/**'
+      - "apps/web/**"
+      - "apps/api/**"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Code ophalen
+      # ✅ Code ophalen
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Node setup
+      # ✅ Node setup
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      # Build frontend
+      # ✅ Build frontend
       - name: Install & build frontend
         working-directory: apps/web
         run: |
           npm ci
           npx vite build
 
-      # Upload frontend
-      - name: Upload frontend
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: kerkhovenbeheer.nl
-          username: deb2004916
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "apps/web/dist/*"
-          target: "/home/deb2004916/domains/kerkhovenbeheer.nl/public_html"
-
-          
-      # Create restart trigger (nieuw bestand)
+      # ✅ Create restart trigger
       - name: Create restart file
         run: |
           mkdir -p apps/api/tmp
           date > apps/api/tmp/restart.txt
 
-
-      # Upload API
-      - name: Upload API
-        uses: appleboy/scp-action@v0.1.7
+      # ✅ Upload frontend via FTP
+      - name: Deploy frontend via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: kerkhovenbeheer.nl
-          username: deb2004916
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "apps/api/*"
-          target: "/home/deb2004916/domains/api.kerkhovenbeheer.nl"
-          strip_components: 2
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: apps/web/dist/
+          server-dir: domains/kerkhovenbeheer.nl/public_html/
+
+      # ✅ Upload API via FTP
+      - name: Deploy API via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: apps/api/
+          server-dir: domains/api.kerkhovenbeheer.nl/
