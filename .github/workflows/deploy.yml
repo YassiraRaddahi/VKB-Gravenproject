@@ -24,6 +24,9 @@ jobs:
       # ✅ Build frontend
       - name: Install & build frontend
         working-directory: apps/web
+        env:
+          VITE_API_URL: https://api.kerkhovenbeheer.nl
+
         run: |
           npm ci
           npx vite build
