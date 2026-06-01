@@ -11,6 +11,7 @@ const port = process.env.PORT || 3001;
 
 
 async function startServer() {
+    console.log("SERVER STARTED - RESET RUN");
     try {
         await resetDatabase(knex);
 
@@ -35,4 +36,4 @@ startServer(knex);
 
 
 
-console.log("SERVER STARTED - RESET RUN");
+
