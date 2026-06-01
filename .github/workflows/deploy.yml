@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Code ophalen
+      # Code ophalen
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Node setup
+      # Node setup
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      # ✅ Build frontend
+      # Build frontend
       - name: Install & build frontend
         working-directory: apps/web
         env:
@@ -31,13 +31,13 @@ jobs:
           npm ci
           npx vite build
 
-      # ✅ Create restart trigger
+      # Create restart trigger
       - name: Create restart file
         run: |
           mkdir -p apps/api/tmp
           date > apps/api/tmp/restart.txt
 
-      # ✅ Upload frontend via FTP
+      # Upload frontend via FTP
       - name: Deploy frontend via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -47,7 +47,7 @@ jobs:
           local-dir: apps/web/dist/
           server-dir: domains/kerkhovenbeheer.nl/public_html/
 
-      # ✅ Upload API via FTP
+      # Upload API via FTP
       - name: Deploy API via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

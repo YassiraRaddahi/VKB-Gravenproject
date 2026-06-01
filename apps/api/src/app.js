@@ -13,6 +13,8 @@ app.use(cors({
   credentials: true
 }));
 
+app.options('*', cors());
+
 // Middleware om JSON-gegevens te kunnen verwerken
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser())

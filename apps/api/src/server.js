@@ -1,8 +1,38 @@
+const resetDatabase = require("./utils/resetDatabase.js");
+
+const knexConfig = require("./knexfile");
+
+const knex = require("knex")(knexConfig);
+
 const path = require('path');
 const app = require(path.join(__dirname, 'app'));
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
-})
+
+async function startServer() {
+    try {
+        await resetDatabase(knex);
+
+        console.log("Running migrations...");
+        await knex.migrate.latest();
+        console.log("Migrations succesvol uitgevoerd");
+
+        console.log("Running seeds...");
+        await knex.seed.run();
+        console.log("Seeds succesvol uitgevoerd");
+
+        console.log("Server starten...");
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`)
+        });
+    } catch (err) {
+        console.error("Migration fout:", err);
+    }
+}
+
+startServer(knex);
+
+
+
+
