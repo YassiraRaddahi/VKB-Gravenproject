@@ -1,0 +1,99 @@
+name: Deploy to kerkhovenbeheer.nl
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/web/**'
+      - 'apps/api/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ Backup vóór deploy
+      - name: Backup current API & Web
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: kerkhovenbeheer.nl
+          username: deb2004916
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf backup_api
+            cp -r domains/api.kerkhovenbeheer.nl backup_api
+
+            rm -rf backup_web
+            cp -r kerkhovenbeheer.nl/public_html backup_web
+
+      # ✅ Code ophalen
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ✅ Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # ✅ Build frontend
+      - name: Install & build frontend
+        working-directory: apps/web
+        run: |
+          npm ci
+          npx vite build
+
+      # ✅ Upload frontend
+      - name: Upload frontend
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: kerkhovenbeheer.nl
+          username: deb2004916
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "apps/web/dist/*"
+          target: "/home/domains/kerkhovenbeheer.nl/public_html"
+
+      # ✅ Upload API
+      - name: Upload API
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: kerkhovenbeheer.nl
+          username: deb2004916
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "apps/api/*"
+          target: "/home/domains/api.kerkhovenbeheer.nl"
+          strip_components: 2
+
+      # ✅ Restart API
+      - name: Restart API
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: kerkhovenbeheer.nl
+          username: deb2004916
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd domains/api.kerkhovenbeheer.nl
+            npm install
+            mkdir -p tmp
+            touch tmp/restart.txt
+
+      # ✅ Rollback bij fout
+      - name: Rollback on failure
+        if: ${{ failure() }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: kerkhovenbeheer.nl
+          username: deb2004916
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Rollback gestart..."
+
+            rm -rf domains/api.kerkhovenbeheer.nl
+            mv backup_api domains/api.kerkhovenbeheer.nl
+
+            rm -rf kerkhovenbeheer.nl/public_html
+            mv backup_web kerkhovenbeheer.nl/public_html
+
+            mkdir -p domains/api.kerkhovenbeheer.nl/tmp
+            touch domains/api.kerkhovenbeheer.nl/tmp/restart.txt
