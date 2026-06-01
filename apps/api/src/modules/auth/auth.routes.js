@@ -77,7 +77,7 @@ module.exports = function (app, conn_db) {
             httpOnly: true,
             secure: isProduction,
             sameSite: isProduction ? "none" : "lax",
-            domain: isProduction ? ".bram.kerkhovenbeheer.nl" : undefined,
+            domain: isProduction ? ".kerkhovenbeheer.nl" : undefined,
             path: "/",
             maxAge: 3600000, // 1 uur
           });
@@ -270,7 +270,7 @@ module.exports = function (app, conn_db) {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
-      domain: isProduction ? ".bram.kerkhovenbeheer.nl" : undefined,
+      domain: isProduction ? ".kerkhovenbeheer.nl" : undefined,
       path: "/",
     });
 
