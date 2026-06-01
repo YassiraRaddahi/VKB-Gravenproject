@@ -18,7 +18,7 @@ jobs:
       - name: Backup current API & Web
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: kerkhovenbeheer.nl
+          host: ssh.antagonist.nl
           username: deb2004916
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
@@ -49,7 +49,7 @@ jobs:
       - name: Upload frontend
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: kerkhovenbeheer.nl
+          host: ssh.antagonist.nl
           username: deb2004916
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "apps/web/dist/*"
@@ -59,7 +59,7 @@ jobs:
       - name: Upload API
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: kerkhovenbeheer.nl
+          host: ssh.antagonist.nl
           username: deb2004916
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "apps/api/*"
@@ -70,7 +70,7 @@ jobs:
       - name: Restart API
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: kerkhovenbeheer.nl
+          host: ssh.antagonist.nl
           username: deb2004916
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
@@ -84,7 +84,7 @@ jobs:
         if: ${{ failure() }}
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: kerkhovenbeheer.nl
+          host: ssh.antagonist.nl
           username: deb2004916
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
