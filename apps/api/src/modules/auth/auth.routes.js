@@ -9,13 +9,17 @@ module.exports = function (app, conn_db) {
     max: 5,
 
     keyGenerator: (req) => {
-      return req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
+      return (req.body.email || "").toLocaleString().trim() || req.ip;
     },
 
-    message: function (req, res) {
+
+    handler: function (req, res) {
       const resetTime = new Date(req.rateLimit.resetTime).toLocaleString('nl-NL');
       return res.status(429).json({ error: `Te veel pogingen, probeer het na ${resetTime} opnieuw` });
     },
+
+    skipSuccessfulRequests: true,
+
     standardHeaders: true,
     legacyHeaders: false,
   });
