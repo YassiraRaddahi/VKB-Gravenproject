@@ -268,7 +268,7 @@
                                             <template v-else>
 
                                                 <div class="text-body-2">
-                                                    Geen beheerders ingesteld
+                                                    Er zijn nog geen beheerders gekoppeld aan deze begraafplaats.
                                                 </div>
 
                                             </template>
@@ -311,11 +311,24 @@
 
         </v-container>
 
+    <!-- Confirmation dialog for removing the last manager -->
+    <v-dialog v-model="showConfirmDialog" width="480">
+        <v-card>
+            <v-card-title>Bevestiging</v-card-title>
+            <v-card-text>Weet je zeker dat je de laatste beheerder wilt ontkoppelen?</v-card-text>
+            <v-card-actions>
+                <v-spacer />
+                <v-btn text @click="cancelClearManagers">Annuleren</v-btn>
+                <v-btn color="#d32f2f" dark @click="confirmClearManagers">Bevestig</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
     </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
@@ -351,6 +364,10 @@ const imagePreview = ref('')
 const allManagers = ref([])
 
 const selectedManagerIds = ref([])
+let managerSelectionReady = false
+const showConfirmDialog = ref(false)
+const pendingOldManagerIds = ref(null)
+const suppressManagerWatcher = ref(false)
 
 const newManager = ref({
     first_names: '',
@@ -362,14 +379,52 @@ const creatingManager = ref(false)
 
 const cemeteryId = route.params.cemetery_id
 
-const managerFullName = (manager) =>
-    `${manager.first_names} ${manager.infix || ''} ${manager.last_name}`.trim()
+const managerFullName = (manager) => {
+    const firstNames = manager.first_names || ''
+    const infix = manager.infix || ''
+    const lastName = manager.last_name || ''
+
+    return [firstNames, infix, lastName]
+        .filter(Boolean)
+        .join(' ')
+        .trim()
+}
 
 const selectedManagers = computed(() => {
     return allManagers.value.filter(manager =>
         selectedManagerIds.value.includes(manager.id)
     )
 })
+
+watch(selectedManagerIds, (newIds, oldIds) => {
+    if (!managerSelectionReady || suppressManagerWatcher.value) {
+        return
+    }
+
+    if (oldIds.length > 0 && newIds.length === 0) {
+        // Revert the change visually and open the custom confirmation dialog
+        selectedManagerIds.value = oldIds
+        pendingOldManagerIds.value = oldIds
+        showConfirmDialog.value = true
+    }
+})
+
+const confirmClearManagers = async () => {
+    // User confirmed removal: clear selection without retriggering watcher
+    suppressManagerWatcher.value = true
+    selectedManagerIds.value = []
+    pendingOldManagerIds.value = null
+    showConfirmDialog.value = false
+    await nextTick()
+    suppressManagerWatcher.value = false
+}
+
+const cancelClearManagers = () => {
+    // User cancelled: restore old selection (already restored) and close dialog
+    selectedManagerIds.value = pendingOldManagerIds.value || selectedManagerIds.value
+    pendingOldManagerIds.value = null
+    showConfirmDialog.value = false
+}
 
 const loadCemetery = async () => {
 
@@ -383,10 +438,12 @@ const loadCemetery = async () => {
         cemetery.value = {
             ...response.data.cemetery,
             cemetery_managers:
-                response.data.cemetery.cemetery_managers.map(manager => ({
-                    ...manager,
-                    full_name: managerFullName(manager)
-                }))
+                response.data.cemetery.cemetery_managers
+                    .filter(manager => manager && (manager.first_names || manager.last_name))
+                    .map(manager => ({
+                        ...manager,
+                        full_name: managerFullName(manager)
+                    }))
         }
 
         form.value = {
@@ -406,6 +463,8 @@ const loadCemetery = async () => {
 
         selectedManagerIds.value =
             cemetery.value.cemetery_managers.map(manager => manager.id)
+
+        managerSelectionReady = true
 
     } catch (error) {
 
@@ -494,7 +553,7 @@ function removeManager(managerId) {
 async function createManager() {
 
     if (
-        !newManager.value.first_name?.trim() ||
+        !newManager.value.first_names?.trim() ||
         !newManager.value.last_name?.trim()
     ) {
 
