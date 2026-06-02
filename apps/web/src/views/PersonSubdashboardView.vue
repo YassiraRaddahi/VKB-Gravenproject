@@ -12,11 +12,12 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import TitleUnderline from '../components/ui/TitleUnderline.vue'
 import Subdashboard from '@/components/Subdashboard.vue'
 
 const route = useRoute()
+const router = useRouter()
 
 
 const pageConfig = computed(() => {
@@ -45,7 +46,7 @@ const pageConfig = computed(() => {
                     {
                         title: 'Beheer rechthebbenden',
                         icon: 'mdi-account-group',
-                        routeName: 'RightHolders'
+                        routeName: 'RightsHolders'
                     },
                     {
                         title: 'Koppel rechthebbende aan graf',

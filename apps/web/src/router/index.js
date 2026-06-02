@@ -160,7 +160,17 @@ const router = createRouter({
         showBreadcrumbs: true,
         showNavigationDrawer: true,
       },
-    }
+    },
+    {   
+      path: "/rechthebbenden",
+      name: "RightsHolders",
+      component: () => import("../views/RightsHoldersView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      }
+    },
   ],
 });
 
