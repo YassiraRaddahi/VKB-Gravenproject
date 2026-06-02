@@ -37,14 +37,31 @@ import Footer from './components/layout/Footer.vue'
 import Breadcrumbs from './components/layout/Breadcrumbs.vue'
 import NavigationDrawer from './components/layout/NavigationDrawer.vue'
 
-import { useRoute } from 'vue-router'
-import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
-import {useHead} from '@vueuse/head'
+import { useHead } from '@vueuse/head'
 
 const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
+
+
+let tokenCheck = null
+onMounted(() => {
+  tokenCheck = setInterval(async () => {
+    if (!userStore.user) return
+    try {
+      await userStore.fetchUser()
+    } catch {
+      userStore.user = null
+      userStore.permissions = []
+      router.push('/login')
+    }
+  }, 60000)
+})
+onUnmounted(() => clearInterval(tokenCheck))
 
 
 const { mdAndUp } = useDisplay()

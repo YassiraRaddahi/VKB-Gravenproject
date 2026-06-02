@@ -170,12 +170,13 @@ router.beforeEach(async (to, from) => {
 
   const userStore = useUserStore()
 
-  // If the user is not loaded yet, try to fetch it
-  if (!userStore.user) {
-    try {
-      await userStore.fetchUser()
-    } catch {
-    }
+  // Bij elke navigatie controleren of het token nog geldig is.
+  // Is het token verlopen/ongeldig, dan wordt de gebruiker uitgelogd.
+  try {
+    await userStore.fetchUser()
+  } catch {
+    userStore.user = null
+    userStore.permissions = []
   }
 
   // If the route requires authentication and the user is not logged in, redirect to login
