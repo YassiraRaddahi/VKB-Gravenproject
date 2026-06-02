@@ -1,6 +1,53 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { ref, computed } from 'vue'
 
+// Test constants
+const TEST_CEMETERIES = {
+  KRANENBURG: {
+    id: 1,
+    name: 'Kerkhof Kranenburg',
+    city: 'Zwolle'
+  },
+  MEPPELERSTRAATWEG: {
+    id: 2,
+    name: 'Kerkhof Meppelerstraatweg',
+    city: 'Zwolle'
+  },
+  NIEUWLEUSEN: {
+    id: 12,
+    name: 'Kerkhof Nieuwleusen',
+    city: 'Nieuwleusen'
+  },
+  TEST: {
+    id: 13,
+    name: 'Kerkhof Test',
+    city: 'Amsterdam'
+  }
+}
+
+const TEST_MANAGERS = {
+  BEA_BAKKER: { id: 2, first_names: 'Bea', last_name: 'Bakker' },
+  LIZA_PETRUSHENKO: { id: 3, first_names: 'Liza', last_name: 'Petrushenko' },
+  TOM_VAN_DER_MEER: { id: 15, first_names: 'Tom', last_name: 'van der Meer' }
+}
+
+const TEST_CITIES = {
+  ZWOLLE: 'Zwolle',
+  NIEUWLEUSEN: 'Nieuwleusen',
+  AMSTERDAM: 'Amsterdam',
+  ROTTERDAM: 'Rotterdam'
+}
+
+const TEST_STRINGS = {
+  KERKHOF: 'Kerkhof',
+  KRANENBURG: 'Kranenburg',
+  STRAATWEG: 'straatweg',
+  NIEUWLEUSEN_UPPER: 'NIEUWLEUSEN',
+  NON_EXISTENT_NAME: 'NietBestaandeNaam',
+  ROTTERDAM: 'Rotterdam',
+  TEST_MANAGER: 'Test Manager'
+}
+
 // Test utilities voor filter logica
 describe('Filter logica', () => {
   let mockCemeteries
@@ -12,34 +59,26 @@ describe('Filter logica', () => {
     // Mock data
     mockCemeteries = [
       {
-        id: 1,
-        name: 'Kerkhof Kranenburg',
-        city: 'Zwolle',
+        ...TEST_CEMETERIES.KRANENBURG,
         cemetery_managers: [
-          { id: 2, first_names: 'Bea', last_name: 'Bakker' },
-          { id: 3, first_names: 'Liza', last_name: 'Petrushenko' }
+          TEST_MANAGERS.BEA_BAKKER,
+          TEST_MANAGERS.LIZA_PETRUSHENKO
         ]
       },
       {
-        id: 2,
-        name: 'Kerkhof Meppelerstraatweg',
-        city: 'Zwolle',
+        ...TEST_CEMETERIES.MEPPELERSTRAATWEG,
         cemetery_managers: [
-          { id: 15, first_names: 'Tom', last_name: 'van der Meer' }
+          TEST_MANAGERS.TOM_VAN_DER_MEER
         ]
       },
       {
-        id: 12,
-        name: 'Kerkhof Nieuwleusen',
-        city: 'Nieuwleusen',
+        ...TEST_CEMETERIES.NIEUWLEUSEN,
         cemetery_managers: [
-          { id: 3, first_names: 'Liza', last_name: 'Petrushenko' }
+          TEST_MANAGERS.LIZA_PETRUSHENKO
         ]
       },
       {
-        id: 13,
-        name: 'Kerkhof Test',
-        city: 'Amsterdam',
+        ...TEST_CEMETERIES.TEST,
         cemetery_managers: [] // Geen beheerder
       }
     ]
@@ -81,39 +120,39 @@ describe('Filter logica', () => {
 
   describe('Zoek filter', () => {
     it('moet correct filteren op exacte naam match', () => {
-      search.value = 'Kranenburg'
+      search.value = TEST_STRINGS.KRANENBURG
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Kerkhof Kranenburg')
+      expect(filtered.value[0].name).toBe(TEST_CEMETERIES.KRANENBURG.name)
     })
 
     it('moet correct filteren op deel van naam', () => {
-      search.value = 'straatweg'
+      search.value = TEST_STRINGS.STRAATWEG
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Kerkhof Meppelerstraatweg')
+      expect(filtered.value[0].name).toBe(TEST_CEMETERIES.MEPPELERSTRAATWEG.name)
     })
 
     it('moet hoofdletter ongevoelig filteren', () => {
-      search.value = 'NIEUWLEUSEN'
+      search.value = TEST_STRINGS.NIEUWLEUSEN_UPPER
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Kerkhof Nieuwleusen')
+      expect(filtered.value[0].name).toBe(TEST_CEMETERIES.NIEUWLEUSEN.name)
     })
 
     it('moet meerdere resultaten tonen bij meerdere matches', () => {
-      search.value = 'Kerkhof'
+      search.value = TEST_STRINGS.KERKHOF
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(4)
-      expect(filtered.value.every(c => c.name.includes('Kerkhof'))).toBe(true)
+      expect(filtered.value.every(c => c.name.includes(TEST_STRINGS.KERKHOF))).toBe(true)
     })
 
     it('moet lege resultaten tonen bij geen matches', () => {
-      search.value = 'NietBestaandeNaam'
+      search.value = TEST_STRINGS.NON_EXISTENT_NAME
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(0)
@@ -122,12 +161,12 @@ describe('Filter logica', () => {
 
   describe('Beheerder filter', () => {
     it('moet correct filteren op beheerder ID', () => {
-      managerFilter.value = 3 // Liza Petrushenko
+      managerFilter.value = TEST_MANAGERS.LIZA_PETRUSHENKO.id
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(2)
       expect(filtered.value.every(cemetery =>
-        cemetery.cemetery_managers.some(manager => manager.id === 3)
+        cemetery.cemetery_managers.some(manager => manager.id === TEST_MANAGERS.LIZA_PETRUSHENKO.id)
       )).toBe(true)
     })
 
@@ -139,33 +178,33 @@ describe('Filter logica', () => {
     })
 
     it('moet kerkhof zonder beheerder uitsluiten', () => {
-      managerFilter.value = 2 // Bea Bakker
+      managerFilter.value = TEST_MANAGERS.BEA_BAKKER.id
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].id).toBe(1) // Alleen Kranenburg heeft Bea Bakker
+      expect(filtered.value[0].id).toBe(TEST_CEMETERIES.KRANENBURG.id)
     })
   })
 
   describe('Plaats filter', () => {
     it('moet correct filteren op plaatsnaam', () => {
-      cityFilter.value = 'Zwolle'
+      cityFilter.value = TEST_CITIES.ZWOLLE
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(2)
-      expect(filtered.value.every(cemetery => cemetery.city === 'Zwolle')).toBe(true)
+      expect(filtered.value.every(cemetery => cemetery.city === TEST_CITIES.ZWOLLE)).toBe(true)
     })
 
     it('moet correct filteren op unieke plaats', () => {
-      cityFilter.value = 'Nieuwleusen'
+      cityFilter.value = TEST_CITIES.NIEUWLEUSEN
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].city).toBe('Nieuwleusen')
+      expect(filtered.value[0].city).toBe(TEST_CITIES.NIEUWLEUSEN)
     })
 
     it('moet lege resultaten tonen voor niet-bestaande plaats', () => {
-      cityFilter.value = 'Rotterdam'
+      cityFilter.value = TEST_CITIES.ROTTERDAM
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(0)
@@ -174,49 +213,49 @@ describe('Filter logica', () => {
 
   describe('Gecombineerde filters', () => {
     it('moet zoeken EN beheerder filter combineren', () => {
-      search.value = 'Kerkhof'
-      managerFilter.value = 3 // Liza Petrushenko
+      search.value = TEST_STRINGS.KERKHOF
+      managerFilter.value = TEST_MANAGERS.LIZA_PETRUSHENKO.id
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(2)
       expect(filtered.value.every(cemetery =>
-        cemetery.name.includes('Kerkhof') &&
-        cemetery.cemetery_managers.some(manager => manager.id === 3)
+        cemetery.name.includes(TEST_STRINGS.KERKHOF) &&
+        cemetery.cemetery_managers.some(manager => manager.id === TEST_MANAGERS.LIZA_PETRUSHENKO.id)
       )).toBe(true)
     })
 
     it('moet zoeken EN plaats filter combineren', () => {
-      search.value = 'Nieuwleusen'
-      cityFilter.value = 'Nieuwleusen'
+      search.value = TEST_CITIES.NIEUWLEUSEN
+      cityFilter.value = TEST_CITIES.NIEUWLEUSEN
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].name).toBe('Kerkhof Nieuwleusen')
-      expect(filtered.value[0].city).toBe('Nieuwleusen')
+      expect(filtered.value[0].name).toBe(TEST_CEMETERIES.NIEUWLEUSEN.name)
+      expect(filtered.value[0].city).toBe(TEST_CITIES.NIEUWLEUSEN)
     })
 
     it('moet beheerder EN plaats filter combineren', () => {
-      managerFilter.value = 3 // Liza Petrushenko
-      cityFilter.value = 'Zwolle'
+      managerFilter.value = TEST_MANAGERS.LIZA_PETRUSHENKO.id
+      cityFilter.value = TEST_CITIES.ZWOLLE
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].id).toBe(1) // Alleen Kranenburg heeft Liza EN is in Zwolle
+      expect(filtered.value[0].id).toBe(TEST_CEMETERIES.KRANENBURG.id)
     })
 
     it('moet alle drie filters combineren', () => {
-      search.value = 'Kerkhof'
-      managerFilter.value = 3 // Liza Petrushenko
-      cityFilter.value = 'Nieuwleusen'
+      search.value = TEST_STRINGS.KERKHOF
+      managerFilter.value = TEST_MANAGERS.LIZA_PETRUSHENKO.id
+      cityFilter.value = TEST_CITIES.NIEUWLEUSEN
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(1)
-      expect(filtered.value[0].id).toBe(12)
+      expect(filtered.value[0].id).toBe(TEST_CEMETERIES.NIEUWLEUSEN.id)
     })
 
     it('moet lege resultaten tonen bij conflicterende filters', () => {
-      managerFilter.value = 3 // Liza Petrushenko
-      cityFilter.value = 'Amsterdam' // Liza heeft geen kerkhof in Amsterdam
+      managerFilter.value = TEST_MANAGERS.LIZA_PETRUSHENKO.id
+      cityFilter.value = TEST_CITIES.AMSTERDAM
       const filtered = createFilteredCemeteries()
 
       expect(filtered.value).toHaveLength(0)
@@ -246,9 +285,9 @@ describe('Filter logica', () => {
 
       // Check of alle unieke beheerders aanwezig zijn
       const managerNames = options.map(opt => opt.title)
-      expect(managerNames).toContain('Bea Bakker')
-      expect(managerNames).toContain('Liza Petrushenko')
-      expect(managerNames).toContain('Tom van der Meer')
+      expect(managerNames).toContain(`${TEST_MANAGERS.BEA_BAKKER.first_names} ${TEST_MANAGERS.BEA_BAKKER.last_name}`)
+      expect(managerNames).toContain(`${TEST_MANAGERS.LIZA_PETRUSHENKO.first_names} ${TEST_MANAGERS.LIZA_PETRUSHENKO.last_name}`)
+      expect(managerNames).toContain(`${TEST_MANAGERS.TOM_VAN_DER_MEER.first_names} ${TEST_MANAGERS.TOM_VAN_DER_MEER.last_name}`)
     })
 
     it('moet unieke plaats opties genereren (gesorteerd)', () => {
@@ -268,9 +307,9 @@ describe('Filter logica', () => {
       expect(options).toHaveLength(3) // Amsterdam, Nieuwleusen, Zwolle
 
       // Check alfabetische sortering
-      expect(options[0].title).toBe('Amsterdam')
-      expect(options[1].title).toBe('Nieuwleusen')
-      expect(options[2].title).toBe('Zwolle')
+      expect(options[0].title).toBe(TEST_CITIES.AMSTERDAM)
+      expect(options[1].title).toBe(TEST_CITIES.NIEUWLEUSEN)
+      expect(options[2].title).toBe(TEST_CITIES.ZWOLLE)
     })
 
     it('moet beheerder opties uitsluiten voor kerkhoven zonder beheerder', () => {
@@ -293,7 +332,7 @@ describe('Filter logica', () => {
       const options = managerOptions.value
 
       // Kerkhof Test (id: 13) heeft geen beheerder, dus geen nieuwe opties
-      expect(options.some(opt => opt.title === 'Test Manager')).toBe(false)
+      expect(options.some(opt => opt.title === TEST_STRINGS.TEST_MANAGER)).toBe(false)
     })
   })
 })
