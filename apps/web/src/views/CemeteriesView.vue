@@ -22,21 +22,47 @@
       <v-row dense class="d-flex align-stretch" :key="$route.fullPath">
         <v-col v-for="cemetery in visibleCemeteries" :key="cemetery.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          
+
           <ItemCard :image="cemetery.image_url" :image-alt="`Impressiefoto van ${cemetery.name}`" :title="cemetery.name"
             :to="{ name: 'CemeteryDetails', params: { cemetery_id: cemetery.id } }">
-            <div class="manager-list text-body-2 text-grey-darken-1 w-100">
-              <template v-if="cemetery.cemetery_managers?.length > 0">
-                <div v-for="manager in cemetery.cemetery_managers" :key="manager.id" class="manager-item">
-                  <span class="manager-label">Beheerder</span>
-                  <span class="manager-name">
-                    {{ managerFullName(manager) }}
-                  </span>
-                </div>
+            <div
+              class="manager-list text-body-2 text-grey-darken-1 w-100 px-100 py-50 d-flex flex-column justify-end gap-10">
+              <template v-if="
+                cemetery.cemetery_managers?.filter(manager => manager?.id != null).length > 0
+              ">
+               <div
+  v-if="cemetery.cemetery_managers?.filter(m => m?.id != null).length"
+  class="manager-item"
+>
+  <span class="manager-label">
+    {{
+      cemetery.cemetery_managers.filter(m => m?.id != null).length === 1
+        ? 'Beheerder'
+        : 'Beheerders'
+    }}
+  </span>
+
+  <span
+    v-for="manager in cemetery.cemetery_managers.filter(m => m?.id != null)"
+    :key="manager.id"
+    class="manager-name"
+  >
+    {{ managerFullName(manager) }}
+  </span>
+</div>
+
+<div v-else class="manager-item">
+  <span class="manager-label">Beheerder</span>
+  <span class="manager-name">
+    Geen beheerder gekoppeld
+  </span>
+</div>
               </template>
+
               <div v-else class="manager-item">
-                <span class="manager-label">Beheerder</span>
-                <span class="manager-name text-grey-darken-2">Nog niet toegewezen</span>
+                <span class="manager-name">
+                  Geen beheerders
+                </span>
               </div>
             </div>
           </ItemCard>
@@ -188,6 +214,7 @@ onMounted(() => {
   axios.get(url)
     .then(res => {
       cemeteries.value = res.data.cemeteries
+      console.log('Kerkhoven succesvol opgehaald:', cemeteries.value)
 
       const managerId = route.params.manager_id
 
@@ -233,5 +260,13 @@ onMounted(() => {
   display: block;
   font-size: 0.95rem;
   color: #2f4f6d;
+}
+.item-card-title {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.4;
 }
 </style>

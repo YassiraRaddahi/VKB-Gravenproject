@@ -463,6 +463,7 @@ const loadCemetery = async () => {
 
         selectedManagerIds.value =
             cemetery.value.cemetery_managers.map(manager => manager.id)
+            console.log('Cemetery details loaded:', cemetery.value)
 
         managerSelectionReady = true
 

@@ -34,7 +34,7 @@ const { user } = storeToRefs(userStore)
 const labelMap = computed(() => ({
   Dashboard: 'Dashboard',
 
-  Cemeteries: 'kerkhoven',
+  Cemeteries: 'Kerkhoven',
   // user.value?.role_name === 'beheerder'
   //   ? 'Gekoppelde kerkhoven'
   //   : 'Kerkhoven',

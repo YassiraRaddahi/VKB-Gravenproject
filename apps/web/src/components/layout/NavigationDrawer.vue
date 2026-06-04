@@ -14,7 +14,9 @@
         :to="{ name: 'Cemeteries' }"></v-list-item>
       <v-list-item prepend-icon="mdi-account-multiple" title="Beheerders" value="cemetery_managers"
         :to="{ name: 'CemeteryManagers' }"></v-list-item>
+        
     </v-list>
+
   </v-navigation-drawer>
 </template>
 

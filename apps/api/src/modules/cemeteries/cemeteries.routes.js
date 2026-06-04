@@ -55,26 +55,28 @@ module.exports = function (app, conn_db) {
     // =====================================================
     app.get('/api/cemeteries/:id', (req, res) => {
 
-        const sql = `
-            SELECT
-                c.*,
-                ci.image_url,
-                GROUP_CONCAT(
+       const sql = `
+    SELECT
+        c.*,
+        ci.image_url,
+        GROUP_CONCAT(
+            CASE
+                WHEN u.id IS NOT NULL THEN
                     JSON_OBJECT(
                         'id', u.id,
                         'first_names', u.first_names,
                         'infix', u.infix,
                         'last_name', u.last_name
                     )
-                ) AS cemetery_managers
-            FROM cemeteries c
-            LEFT JOIN cemetery_images ci ON c.id = ci.cemetery_id
-            LEFT JOIN cemetery_manager cm ON c.id = cm.cemetery_id
-            LEFT JOIN users u ON cm.user_id = u.id
-            WHERE c.id = ?
-            GROUP BY c.id
-        `;
-
+            END
+        ) AS cemetery_managers
+    FROM cemeteries c
+    LEFT JOIN cemetery_images ci ON c.id = ci.cemetery_id
+    LEFT JOIN cemetery_manager cm ON c.id = cm.cemetery_id
+    LEFT JOIN users u ON cm.user_id = u.id
+    WHERE c.id = ?
+    GROUP BY c.id
+`;
         conn_db.query(sql, [req.params.id], (err, rows) => {
 
             if (err) return res.status(500).json({ error: err });
@@ -108,9 +110,10 @@ module.exports = function (app, conn_db) {
                     remarks: row.remarks,
                     image_url: row.image_url,
                     iban,
-                    cemetery_managers: row.cemetery_managers
-                        ? JSON.parse(`[${row.cemetery_managers}]`)
-                        : []
+                   cemetery_managers: row.cemetery_managers
+    ? JSON.parse(`[${row.cemetery_managers}]`)
+        .filter(manager => manager.id !== null)
+    : []
                 }
             });
         });
