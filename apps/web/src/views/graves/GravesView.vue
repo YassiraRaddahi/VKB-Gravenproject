@@ -100,7 +100,10 @@ useHead(() => ({
 
 
 function addCemetery() {
-  alert('Toevoegen graf knop geklikt (functie is nog niet gemaakt)')
+  router.push({
+    name: 'GravesCreate',
+    params: { cemetery_id: cemetery_id.value },
+  })
 }
 
 onMounted(() => {

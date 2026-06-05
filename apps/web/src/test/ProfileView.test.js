@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import ProfileView from '@/views/ProfileView.vue'
+import ProfileView from '@/views/profile/ProfileView.vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 

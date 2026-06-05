@@ -43,6 +43,7 @@ const labelMap = computed(() => ({
 
   Graves: 'Graven',
   GravesDetails: 'Graf details',
+  GravesCreate: 'Graf aanmaken',
   CemeteryManagers: 'Beheerders',
   CemeteryManager: 'Beheerder Details',
   UserManagement: 'Personenbeheer',
@@ -67,6 +68,7 @@ const parentMap = {
   CemeteryDetails: 'Cemeteries',
   Graves: 'CemeteryDetails',
   GravesDetails: 'Graves',
+  GravesCreate: 'Graves',
 }
 
 const routeParams = {
@@ -89,6 +91,10 @@ const routeParams = {
   GravesDetails: () => ({
     cemetery_id: route.params.cemetery_id,
     grave_id: route.params.grave_id,
+  }),
+
+  GravesCreate: () => ({
+    cemetery_id: route.params.cemetery_id,
   }),
 }
 
