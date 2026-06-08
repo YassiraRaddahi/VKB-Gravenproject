@@ -171,6 +171,16 @@ const router = createRouter({
         showNavigationDrawer: true,
       }
     },
+    {
+      path: "/kerkhoven/toevoegen",
+      name: "AddCemetery",
+      component: () => import("../views/CemeteryAddView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      }
+    }
   ],
 });
 
