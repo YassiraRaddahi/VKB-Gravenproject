@@ -103,7 +103,7 @@ const API = import.meta.env.VITE_API_URL
 
 const form = ref({
   grave_number: '',
-  status: 'beschikbaar',
+  status: '',
   type: '',
   sort: '',
   latitude: '',
@@ -114,6 +114,7 @@ const form = ref({
 const formRef = ref(null)
 const fileInput = ref(null)
 const imagePreview = ref('')
+const imageFile = ref(null)
 const showSuccess = ref(false)
 const errorMessage = ref('')
 
@@ -131,9 +132,17 @@ async function createGrave() {
   errorMessage.value = ''
 
   try {
+    const payload = new FormData()
+    Object.entries(form.value).forEach(([key, value]) => {
+      payload.append(key, value ?? '')
+    })
+    if (imageFile.value) {
+      payload.append('image', imageFile.value)
+    }
+
     const res = await axios.post(
       `${API}/cemeteries/${route.params.cemetery_id}/graves`,
-      form.value
+      payload
     )
 
     showSuccess.value = true
@@ -160,6 +169,7 @@ function handleFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
 
+  imageFile.value = file
   imagePreview.value = URL.createObjectURL(file)
 }
 </script>

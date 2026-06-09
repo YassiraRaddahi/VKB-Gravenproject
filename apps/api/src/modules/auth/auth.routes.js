@@ -1,7 +1,7 @@
 module.exports = function (app, conn_db) {
   const bcrypt = require("bcrypt");
   const jwt = require("jsonwebtoken");
-  const rateLimit = require("express-rate-limit");
+  const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
   const isProduction = process.env.NODE_ENV === "production";
 
   const loginLimiter = rateLimit({
@@ -9,12 +9,17 @@ module.exports = function (app, conn_db) {
     max: 5,
 
     keyGenerator: (req) => {
-      return req.headers['x-forwarded-for']?.split(',')[0] || req.ip;
+      const ip = (req.body.email || "").toLowerCase().trim() || req.ip;
+      return ipKeyGenerator(ip);
     },
 
-    message: function (req, res) {
-      const resetTime = new Date(req.rateLimit.resetTime).toLocaleString('nl-NL');
-      return res.status(429).json({ error: `Te veel pogingen, probeer het na ${resetTime} opnieuw` });
+    handler: function (req, res) {
+      const resetTime = new Date(req.rateLimit.resetTime).toLocaleString(
+        "nl-NL"
+      );
+      return res.status(429).json({
+        error: `Te veel pogingen, probeer het na ${resetTime} opnieuw`,
+      });
     },
     standardHeaders: true,
     legacyHeaders: false,
