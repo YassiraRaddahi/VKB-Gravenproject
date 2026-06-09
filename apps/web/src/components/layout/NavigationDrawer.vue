@@ -1,7 +1,8 @@
 <template>
   <v-navigation-drawer expand-on-hover permanent rail width="256">
     <v-list nav>
-      <v-list-item class="menu-title-section" prepend-icon="mdi-menu-close" title="Menu" :subtitle="toUpperCaseFirstLetter(user?.role_name)"></v-list-item>
+      <v-list-item class="menu-title-section" prepend-icon="mdi-menu-close" title="Menu"
+        :subtitle="toUpperCaseFirstLetter(user?.role_name)"></v-list-item>
     </v-list>
 
     <v-divider></v-divider>
@@ -14,18 +15,22 @@
         :to="{ name: 'Cemeteries' }"></v-list-item>
       <v-list-item prepend-icon="mdi-account-multiple" title="Beheerders" value="cemetery_managers"
         :to="{ name: 'CemeteryManagers' }"></v-list-item>
-        
+      <v-list-item v-if="isAdmin" prepend-icon="mdi-cog" title="Instellingen" value="settings"
+        :to="{ name: 'SettingsGrave' }"></v-list-item>
     </v-list>
 
   </v-navigation-drawer>
 </template>
 
 <script setup>
-import { useUserStore} from '@/stores/userStore';
+import { useUserStore } from '@/stores/userStore';
 import { storeToRefs } from 'pinia'
+import { computed } from 'vue';
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore)
+
+const isAdmin = computed(() => user.value?.role_name === 'admin');
 
 function toUpperCaseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

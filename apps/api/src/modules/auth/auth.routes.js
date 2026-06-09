@@ -32,13 +32,48 @@ module.exports = function (app, conn_db) {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded;
-      next();
+     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+const sql = `
+  SELECT permissions.name
+  FROM permission_role
+  JOIN permissions ON permission_role.permission_id = permissions.id
+  JOIN role_user ON role_user.role_id = permission_role.role_id
+  WHERE role_user.user_id = ?
+`;
+
+conn_db.query(sql, [decoded.id], (err, rows) => {
+  if (err) {
+    return res.status(500).json({ error: "Database error" });
+  }
+
+  const permissions = rows.map(r => r.name);
+
+  req.user = {
+    ...decoded,
+    permissions
+  };
+
+  next();
+});
     } catch (err) {
       return res.status(401).json({ error: "Ongeldig of verlopen token" });
     }
   }
+
+  function requirePermission(permission) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: "Niet ingelogd" });
+    }
+
+    if (!req.user.permissions || !req.user.permissions.includes(permission)) {
+      return res.status(403).json({ error: "Geen toegang" });
+    }
+
+    next();
+  };
+}
 
   // ─── Login ───
   app.post(
@@ -208,6 +243,19 @@ module.exports = function (app, conn_db) {
     });
   });
 
+  app.post(
+  "/api/test-admin",
+  verifyToken,
+  requirePermission("admin.edit_settings"),
+  (req, res) => {
+try {
+  console.log("Admin endpoint accessed by user:", req.user);
+} catch (error) {
+  console.error("Error in admin endpoint:", error);
+}
+    res.send("OK");
+  }
+);
   // ─── Wachtwoord aanpassen ───
   app.post("/api/change-password", verifyToken, (req, res) => {
     const currentPassword = req.body.currentPassword;

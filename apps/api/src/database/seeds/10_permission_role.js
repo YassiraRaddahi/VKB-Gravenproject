@@ -1,11 +1,19 @@
 exports.seed = async function (knex) {
   await knex('permission_role').del();
   await knex('permission_role').insert([
+
+    //admin
     { role_id: 1, permission_id: 1 },
     { role_id: 1, permission_id: 2 },
     { role_id: 1, permission_id: 3 },
     { role_id: 1, permission_id: 4 },
     { role_id: 1, permission_id: 5 },
+    { role_id: 1, permission_id: 42 },
+    { role_id: 1, permission_id: 43 },
+    { role_id: 1, permission_id: 44 },
+    { role_id: 1, permission_id: 45 },
+
+    // beheerder
     { role_id: 2, permission_id: 6 },
     { role_id: 2, permission_id: 7 },
     { role_id: 2, permission_id: 8 },
@@ -18,13 +26,17 @@ exports.seed = async function (knex) {
     { role_id: 2, permission_id: 15 },
     { role_id: 2, permission_id: 16 },
     { role_id: 2, permission_id: 17 },
+
+    // rechthebbende
     { role_id: 3, permission_id: 18 },
     { role_id: 3, permission_id: 19 },
+
+    // grafonderhouder
     { role_id: 4, permission_id: 20 },
- 
-   
+
+
     // user profile permissions
-   
+
     //Admin (role_id: 1)
     { role_id: 1, permission_id: 21 }, // view.name
     { role_id: 1, permission_id: 22 }, // edit.name
@@ -35,8 +47,8 @@ exports.seed = async function (knex) {
     { role_id: 1, permission_id: 39 }, // view.position
     { role_id: 1, permission_id: 40 }, // edit.position
     { role_id: 1, permission_id: 41 }, // view.role
- 
-    
+
+
     //Beheerder (role_id: 2)
     { role_id: 2, permission_id: 21 }, // view.name
     { role_id: 2, permission_id: 22 }, // edit.name
@@ -58,7 +70,7 @@ exports.seed = async function (knex) {
     { role_id: 2, permission_id: 50 }, // view.dashboard.user_management.right_holders.link_to_grave
     { role_id: 2, permission_id: 51 }, // view.dashboard.user_management.grave_leaseholders.manage
     { role_id: 2, permission_id: 52 }, // view.dashboard.user_management.grave_leaseholders.link_to_grave
- 
+
     //Rechthebbende (role_id: 3)
     { role_id: 3, permission_id: 21 }, // view.name
     { role_id: 3, permission_id: 22 }, // edit.name
@@ -77,7 +89,7 @@ exports.seed = async function (knex) {
     { role_id: 3, permission_id: 37 }, // view.profile_picture
     { role_id: 3, permission_id: 38 }, // edit.profile_picture
     { role_id: 3, permission_id: 41 }, // view.role
- 
+
     //Grafonderhouders (role_id: 4)
     { role_id: 4, permission_id: 21 }, // view.name
     { role_id: 4, permission_id: 22 }, // edit.name

@@ -52,18 +52,24 @@ exports.seed = async function (knex) {
     { id: 40, name: 'user.edit.position' },
     { id: 41, name: 'user.view.role' },
 
+    //admin permissions
+    { id: 42, name: 'admin.view_settings' },
+    { id: 43, name: 'admin.edit_settings' },
+    { id: 44, name: 'admin.view_grave_settings' },
+    { id: 45, name: 'admin.edit_grave_settings' },
+
     // dashboard permissions for the cemetery manager role
-    { id: 42, name: 'view.dashboard.maindashboard.cemetery_manager' },
-    { id: 43, name: 'view.dashboard.user_management' },
-    { id: 44, name: 'view.dashboard.user_management.deceased' },
-    { id: 45, name: 'view.dashboard.user_management.right_holders' },
-    { id: 46, name: 'view.dashboard.user_management.grave_leaseholders' },
-    { id: 47, name: 'view.dashboard.user_management.deceased.manage' },
-    { id: 48, name: 'view.dashboard.user_management.deceased.link_to_grave' },
-    { id: 49, name: 'view.dashboard.user_management.right_holders.manage' },
-    { id: 50, name: 'view.dashboard.user_management.right_holders.link_to_grave' },
-    { id: 51, name: 'view.dashboard.user_management.grave_leaseholders.manage' },
-    { id: 52, name: 'view.dashboard.user_management.grave_leaseholders.link_to_grave' },
+    { id: 46, name: 'view.dashboard.maindashboard.cemetery_manager' },
+    { id: 47, name: 'view.dashboard.user_management' },
+    { id: 48, name: 'view.dashboard.user_management.deceased' },
+    { id: 49, name: 'view.dashboard.user_management.right_holders' },
+    { id: 50, name: 'view.dashboard.user_management.grave_leaseholders' },
+    { id: 51, name: 'view.dashboard.user_management.deceased.manage' },
+    { id: 52, name: 'view.dashboard.user_management.deceased.link_to_grave' },
+    { id: 53, name: 'view.dashboard.user_management.right_holders.manage' },
+    { id: 54, name: 'view.dashboard.user_management.right_holders.link_to_grave' },
+    { id: 55, name: 'view.dashboard.user_management.grave_leaseholders.manage' },
+    { id: 56, name: 'view.dashboard.user_management.grave_leaseholders.link_to_grave' },
 
   ]);
 };

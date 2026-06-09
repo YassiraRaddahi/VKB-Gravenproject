@@ -67,12 +67,12 @@ const router = createRouter({
       path: "/kerkhoven/:cemetery_id",
       name: "CemeteryDetails",
       component: () => import("../views/CemeteriesDetails.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Details van kerkhof | Kerkhovenbeheer Nederland",
-        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."   
+        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."
       },
     },
     {
@@ -87,12 +87,12 @@ const router = createRouter({
         description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
       },
     },
-   {
-    path: "/kerkhoven/:cemetery_id/graves/:grave_id",
-    name: "GravesDetails",
-    component: () => import("../views/GravesDetails.vue"),
-    meta: { requiresAuth: true }
-  },
+    {
+      path: "/kerkhoven/:cemetery_id/graves/:grave_id",
+      name: "GravesDetails",
+      component: () => import("../views/GravesDetails.vue"),
+      meta: { requiresAuth: true }
+    },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
@@ -152,6 +152,17 @@ const router = createRouter({
       },
     },
     {
+      path: "/settings-grave",
+      name: "SettingsGrave",
+      component: () => import("../views/SettingsGraveView.vue"),
+      meta: {
+        requiresAuth: true,
+        requiredPermission: "admin.view_settings",
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
       path: "/personenbeheer/type/:role",
       name: "UserManagementByRole",
       component: () => import("../views/PersonSubdashboardView.vue"),
@@ -164,31 +175,43 @@ const router = createRouter({
   ],
 });
 
-
-
-router.beforeEach(async (to, from) => {
-
+router.beforeEach(async (to) => {
   const userStore = useUserStore()
 
-  // If the user is not loaded yet, try to fetch it
   if (!userStore.user) {
     try {
       await userStore.fetchUser()
-    } catch {
-    }
+    } catch { }
   }
 
-  // If the route requires authentication and the user is not logged in, redirect to login
+  // 🔐 Niet ingelogd
   if (to.meta.requiresAuth && !userStore.user) {
-    return "/login";
+    return "/login"
   }
 
-  // If the user is logged in and tries to access the login page, redirect to dashboard
+  // 🔁 Al ingelogd → login blokkeren
   if (to.path === "/login" && userStore.user) {
     return "/dashboard"
   }
 
-  return true;
-});
+  // 🔒 PERMISSION CHECK
+  if (to.meta.requiredPermission) {
+    if (!userStore.hasPermission(to.meta.requiredPermission)) {
+      return "/dashboard" // of 403 pagina
+    }
+  }
+
+  if (to.meta.requiredPermissions) {
+    const hasOne = to.meta.requiredPermissions.some(p =>
+      userStore.hasPermission(p)
+    )
+
+    if (!hasOne) {
+      return "/dashboard"
+    }
+  }
+
+  return true
+})
 
 export default router;
