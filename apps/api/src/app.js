@@ -1,12 +1,27 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const cookieParser = require('cookie-parser')
+require('dotenv').config()
 
-app.use(cors());
+module.exports = function(knex) {
+  const app = express();
+  app.set('trust proxy', true);
 
-// Middleware om JSON-gegevens te kunnen verwerken
-app.use(express.json());
+  app.use(cors({
+    origin: [
+      'http://localhost:5173',
+      'https://kerkhovenbeheer.nl'
+    ],
+    credentials: true
+  }));
 
-require('./routes/index.js')(app);
+  app.options((/.*/), cors());
 
-module.exports = app;
+  // Middleware om JSON-gegevens te kunnen verwerken
+  app.use(express.json({ limit: '10mb' }));
+  app.use(cookieParser())
+
+  require('./routes/index.js')(app, knex);
+
+  return app;
+};

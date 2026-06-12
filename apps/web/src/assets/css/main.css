@@ -1,31 +1,99 @@
-@import "tailwindcss";
+/* Design tokens leven in tokens.css */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+}
+
+.anchor-decoration {
+  color: var(--color-darkOrange);
+  text-decoration: none;
+}
+
+.anchor-decoration:hover {
+  text-decoration: underline;
+}
+
+.list-page-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
 
 .title {
-    font-size: 28pt;
-    color: #0d475a;
-    display: block;
-    position: relative;
-    width: fit-content;
-    text-align: center;
-    font-family: "Hero New bold", sans-serif;
+  font-size: var(--font-size-title);
+  line-height: var(--line-height-title);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  display: inline;
+  position: relative;
+  isolation: isolate;
 }
 
-.title:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 0.2em;
-    left: -0.25em;
-    right: 0;
-    border-bottom: 0.307em solid #bee1e0;
+.title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  transform: translateX(calc(-1 * var(--title-underline-indent)));
+  bottom: 0;
+  height: var(--title-underline-thickness);
+  width: calc(100% + var(--title-underline-indent));
+  z-index: -1;
 }
 
-body
-{
-    font-family: "Hero New light", sans-serif;
-    font-weight: 300;                     /* Light */
-    font-size: 16px;                     /* 11.33px */
-    line-height: 1.6;                   /* 13.33px */
-    color: #0d475a;
+.underlineOrange::after      { background-color: var(--color-orange); }
+.underlineDarkOrange::after  { background-color: var(--color-darkOrange); }
+.underlineDarkBlue::after    { background-color: var(--color-darkBlue); }
+.underlineLightBlue::after   { background-color: var(--color-lightBlue); }
+.underlineYellow::after      { background-color: var(--color-yellow); }
+
+img,
+.v-img__image {
+  max-width: 100%;
 }
 
+.bg-primary {
+  background-color: var(--color-darkOrange);
+}
+
+.bg-blue {
+  background-color: #164653;
+}
+
+.snackbar-success .v-snackbar__content,
+.snackbar-success .v-snackbar__wrapper {
+  font-weight: var(--font-weight-semi);
+  color: #0d6b3c;
+}
+
+@media (max-width: 750px) {
+  .title {
+    font-size: var(--font-size-title-mobile);
+  }
+
+  .title__text::after {
+    height: var(--title-underline-thickness-mobile);
+  }
+}
+
+.v-field__overlay {
+    opacity: 0.00;
+}

@@ -1,52 +1,79 @@
 <template>
+  <v-container fluid class="pa-0 list-page-container">
+    <TitleUnderline title="Lijst met beheerders" underline-class="underlineLightBlue" />
 
-    <div class="flex justify-center mt-10 mb-20 ">
-      <h2 class="title w-min min-[500px]:w-fit">
-        Lijst met beheerders
-      </h2>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-      <div v-for="cemeteryManager in cemeteryManagers" :key="cemeteryManager.id" class="flex flex-col items-center text-center gap-4">
-        <div class="h-40 w-40 mb-4">
-          <img :src="cemeteryManager.profile_picture_url" :alt="cemeteryManager.name">
-        </div>
-        <div class="flex gap-1">
-          <span v-for="header in headers">{{ cemeteryManager[header.field] }} </span>
-        </div>
-      </div>
-    </div>
+    <v-container fluid class="pa-4">
+      <SearchAddBar :search="search" @update:search="search = $event" search-label="Zoek beheerder..." :search-md="6"
+        @add="addManager" />
+
+      <EmptyState v-if="visibleManagers.length === 0" message="Geen beheerders gevonden." />
+
+      <v-row dense :key="$route.fullPath">
+        <v-col v-for="cemeteryManager in visibleManagers" :key="cemeteryManager.id" cols="12" sm="6" md="4" lg="3"
+          class="d-flex align-stretch">
+          <ItemCard show-avatar :avatar="cemeteryManager.profile_picture_url"
+            :image-alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`"
+            :to="{ name: 'CemeteryManager', params: { manager_id: cemeteryManager.id } }"
+            :title="managerFullName(cemeteryManager)" :elevation="4" />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-container>
 </template>
 
 <script setup>
-
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import SearchAddBar from '@/components/ui/SearchAddBar.vue'
+import ItemCard from '@/components/ui/ItemCard.vue'
+import EmptyState from '@/components/ui/EmptyState.vue'
 
-let url = "http://localhost:3001/api/cemetery-managers"
-
+let url = `${import.meta.env.VITE_API_URL}/cemetery-managers`
 
 const cemeteryManagers = ref([])
-const headers = [
-  { field: "first_name" },
-  { field: "infix" },
-  { field: "last_name" },
-  // { field: "email" },
-  // { field: "phone_number" },
-]
 
+const managerFullName = (manager) => {
+  return [
+    manager.first_names?.trim().split(/\s+/)[0] || '', // Gebruik alleen de eerste voornaam
+    manager.infix,
+    manager.last_name
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+
+const search = ref('')
+
+//property voor gefilterde beheerders
+const visibleManagers = computed(() => {
+  const query = search.value.toLowerCase().trim()
+  if (!query) return cemeteryManagers.value
+  return cemeteryManagers.value.filter(m => {
+    const fullName = managerFullName(m).toLowerCase()
+    return fullName.includes(query)
+  })
+})
+
+function addManager() {
+  alert('Toevoegen beheerder knop geklikt (functie is nog niet gemaakt)')
+}
 
 onMounted(() => {
-
   axios.get(url)
     .then(response => {
-      cemeteryManagers.value = response.data['cemetery-managers']
+      console.log(response.data)
+
+      cemeteryManagers.value =
+        response.data['cemetery-managers'] ||
+        response.data.cemeteryManagers ||
+        response.data
     })
     .catch(error => {
-      console.error("Fout bij ophalen beheerders:", error)
+      console.error('Fout bij ophalen beheerders:', error)
     })
 })
 </script>
 
-<style scoped>
-/* alleen voor deze component */
-</style>
+<style scoped></style>

@@ -1,0 +1,57 @@
+name: Deploy to kerkhovenbeheer.nl
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Code ophalen
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Node setup
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Build frontend
+      - name: Install & build frontend
+        working-directory: apps/web
+        env:
+          VITE_API_URL: https://api.kerkhovenbeheer.nl/api
+
+        run: |
+          npm ci
+          npx vite build
+
+      # Create restart trigger
+      - name: Create restart file
+        run: |
+          mkdir -p apps/api/tmp
+          date > apps/api/tmp/restart.txt
+
+      # Upload frontend via FTP
+      - name: Deploy frontend via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: apps/web/dist/
+          server-dir: domains/kerkhovenbeheer.nl/public_html/
+
+      # Upload API via FTP
+      - name: Deploy API via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: apps/api/
+          server-dir: domains/api.kerkhovenbeheer.nl/
