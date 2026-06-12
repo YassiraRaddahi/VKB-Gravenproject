@@ -5,13 +5,11 @@ module.exports = function (app, conn_db) {
     // =========================
     app.get('/api/cemeteries/:cemetery_id/graves', (req, res) => {
 
-        const cemetery_id = req.params.cemetery_id
-
         const sql = `
             SELECT
-                cemeteries.id as cemetery_id,
-                cemeteries.name as cemetery_name,
-                graves.id as grave_id,
+                cemeteries.id AS cemetery_id,
+                cemeteries.name AS cemetery_name,
+                graves.id AS grave_id,
                 graves.grave_number,
                 graves.type,
                 graves.sort,
@@ -31,7 +29,7 @@ module.exports = function (app, conn_db) {
             ORDER BY graves.grave_number ASC
         `
 
-        conn_db.query(sql, [cemetery_id], (err, rows) => {
+        conn_db.query(sql, [req.params.cemetery_id], (err, rows) => {
 
             if (err) return res.status(500).json({ error: 'Database error' })
 
@@ -68,12 +66,20 @@ module.exports = function (app, conn_db) {
 
 
     // =========================
-    // SINGLE GRAVE
+    // SINGLE GRAVE + DIMENSIONS
     // =========================
     app.get('/api/graves/:grave_id', (req, res) => {
 
         const sql = `
-            SELECT * FROM graves WHERE id = ? LIMIT 1
+            SELECT 
+                graves.*,
+                graves_dimensions.lengte,
+                graves_dimensions.breedte
+            FROM graves
+            LEFT JOIN graves_dimensions
+                ON graves.id = graves_dimensions.grave_id
+            WHERE graves.id = ?
+            LIMIT 1
         `
 
         conn_db.query(sql, [req.params.grave_id], (err, rows) => {
@@ -90,44 +96,63 @@ module.exports = function (app, conn_db) {
 
 
     // =========================
-    // UPDATE GRAVE (EDIT ENABLED)
+    // UPDATE GRAVE + DIMENSIONS (UPSERT)
     // =========================
     app.put('/api/graves/:grave_id', (req, res) => {
 
-    const id = req.params.grave_id
+        const id = req.params.grave_id
 
-    const {
-        grave_number,
-        type,
-        sort,
-        status,
-        remarks
-    } = req.body
+        const {
+            grave_number,
+            type,
+            sort,
+            status,
+            remarks,
+            breedte = null,
+            lengte = null
+        } = req.body
 
-    const sql = `
-        UPDATE graves
-        SET grave_number = ?,
-            type = ?,
-            sort = ?,
-            status = ?,
-            remarks = ?
-        WHERE id = ?
-    `
+        // 1. UPDATE graves
+        const sqlGraves = `
+            UPDATE graves
+            SET grave_number = ?,
+                type = ?,
+                sort = ?,
+                status = ?,
+                remarks = ?
+            WHERE id = ?
+        `
 
-    conn_db.query(sql, [
-        grave_number,
-        type,
-        sort,
-        status,
-        remarks,
-        id
-    ], (err) => {
+        conn_db.query(sqlGraves, [
+            grave_number,
+            type,
+            sort,
+            status,
+            remarks,
+            id
+        ], (err) => {
 
-        if (err) {
-            return res.status(500).json({ error: err })
-        }
+            if (err) return res.status(500).json({ error: err })
 
-        res.json({ success: true })
+            // 2. UPSERT dimensions
+            const sqlDim = `
+                INSERT INTO graves_dimensions (grave_id, breedte, lengte)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    breedte = VALUES(breedte),
+                    lengte = VALUES(lengte)
+            `
+
+            conn_db.query(sqlDim, [
+                id,
+                breedte,
+                lengte
+            ], (err2) => {
+
+                if (err2) return res.status(500).json({ error: err2 })
+
+                res.json({ success: true })
+            })
+        })
     })
-})
 }
