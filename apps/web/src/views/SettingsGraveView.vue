@@ -1,67 +1,44 @@
+```vue
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" md="10" lg="6" class="py-6">
+      <v-col cols="12" sm="11" md="10" lg="8" xl="6" class="py-6 px-2">
+        <TitleUnderline title="Instellingen van graven" underline-class="underlineLightBlue" />
 
-        <TitleUnderline
-          title="Instellingen van graven"
-          underline-class="underlineLightBlue"
-        />
-
-        <FormCard embedded bg-color="orange" padding="py-6">
+        <FormCard embedded bg-color="orange" padding="py-6" rounded="lg">
           <v-card-text class="px-4 px-md-8">
-            <v-container>
-
-              <v-row
-                v-for="grave in graves"
-                :key="grave.key"
-                class="mb-2"
-              >
+            <v-container fluid>
+              <v-row v-for="grave in graves" :key="grave.key" class="mb-2">
                 <!-- Label -->
-                <v-col cols="12" md="4" class="d-flex align-center">
+                <v-col cols="12" sm="4" md="4" class="d-flex align-center py-1">
                   <strong>{{ grave.label }}</strong>
                 </v-col>
 
                 <!-- Breedte -->
-                <v-col cols="6" md="4">
-                  <AppInput
-                    v-model="form[grave.key].breedte"
-                    label="Breedte (cm)"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="4" md="4">
+                  <AppInput v-model="form[grave.key].breedte" label="Breedte (cm)" :readonly="!editMode" />
                 </v-col>
 
                 <!-- Lengte -->
-                <v-col cols="6" md="4">
-                  <AppInput
-                    v-model="form[grave.key].lengte"
-                    label="Lengte (cm)"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="4" md="4">
+                  <AppInput v-model="form[grave.key].lengte" label="Lengte (cm)" :readonly="!editMode" />
                 </v-col>
               </v-row>
-
             </v-container>
           </v-card-text>
 
-          <v-card-actions class="px-4 px-md-8">
-            <v-spacer />
+          <v-card-actions class="px-4 px-md-8 flex-wrap">
+            <v-spacer class="d-none d-sm-flex" />
 
-            <AppButton v-if="canEdit" @click="toggleEdit">
+            <AppButton v-if="canEdit" class="w-100 w-sm-auto mb-2 mb-sm-0" @click="toggleEdit">
               {{ editMode ? 'Annuleren' : 'Wijzig' }}
             </AppButton>
 
-            <AppButton
-              v-if="editMode"
-              kind="darkBlue"
-              @click="saveSettings"
-            >
+            <AppButton v-if="editMode" kind="darkBlue" class="w-100 w-sm-auto" @click="saveSettings">
               Opslaan
             </AppButton>
-
           </v-card-actions>
         </FormCard>
-
       </v-col>
     </v-row>
   </v-container>
@@ -141,5 +118,10 @@ async function saveSettings() {
     console.error('Fout bij opslaan:', error)
   }
 }
+defineExpose({
+  form,
+  editMode,
+  toggleEdit,
+  saveSettings
+})
 </script>
- 
