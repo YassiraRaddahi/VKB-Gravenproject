@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, knex) {
 
     const conn_db = require('../config/db-conn.js');
     require('../modules/home/home.routes.js')(app);
@@ -7,4 +7,5 @@ module.exports = function (app) {
     require('../modules/cemeteries/cemeteries.routes.js')(app,conn_db);
     require('../modules/graves/graves.routes.js')(app,conn_db);
     require('../modules/contact/contact.routes.js')(app);
+    require('../modules/settings/settings.routes.js')(app, knex);
 }

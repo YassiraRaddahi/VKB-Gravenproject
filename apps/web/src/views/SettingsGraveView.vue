@@ -86,7 +86,7 @@ const userStore = useUserStore()
 
 // permission
 const canEdit = computed(() => {
-  return userStore.hasPermission('admin.edit_settings')
+  return userStore.hasPermission('admin.edit_grave_settings')
 })
 
 // edit state
@@ -142,3 +142,4 @@ async function saveSettings() {
   }
 }
 </script>
+ 

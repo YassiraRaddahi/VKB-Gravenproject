@@ -152,7 +152,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/settings-grave",
+      path: "/settings/grave",
       name: "SettingsGrave",
       component: () => import("../views/SettingsGraveView.vue"),
       meta: {

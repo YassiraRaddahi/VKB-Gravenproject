@@ -2,23 +2,26 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
-const app = express();
-app.set('trust proxy', true);
 
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://kerkhovenbeheer.nl'
-  ],
-  credentials: true
-}));
+module.exports = function(knex) {
+  const app = express();
+  app.set('trust proxy', true);
 
-app.options((/.*/), cors());
+  app.use(cors({
+    origin: [
+      'http://localhost:5173',
+      'https://kerkhovenbeheer.nl'
+    ],
+    credentials: true
+  }));
 
-// Middleware om JSON-gegevens te kunnen verwerken
-app.use(express.json({ limit: '10mb' }));
-app.use(cookieParser())
+  app.options((/.*/), cors());
 
-require('./routes/index.js')(app);
+  // Middleware om JSON-gegevens te kunnen verwerken
+  app.use(express.json({ limit: '10mb' }));
+  app.use(cookieParser())
 
-module.exports = app;
+  require('./routes/index.js')(app, knex);
+
+  return app;
+};
