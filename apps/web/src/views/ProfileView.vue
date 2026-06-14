@@ -20,7 +20,7 @@
         </v-row>
 
 
-      <FormCard embedded bg-color="orange" padding="py-6" class="profile-card">
+        <FormCard embedded bg-color="orange" padding="py-6" class="profile-card">
 
           <v-card-text class="px-4 px-md-8">
             <v-row>
@@ -50,7 +50,8 @@
                   </v-avatar>
 
                   <AppButton data-testid="profile-picture-upload-btn"
-                    v-if="userStore.hasPermission('user.edit.profile_picture')" icon size="large" class="avatar-btn position-absolute" @click="selectFile">
+                    v-if="userStore.hasPermission('user.edit.profile_picture')" icon size="large"
+                    class="avatar-btn position-absolute" @click="selectFile">
                     <v-icon color="white">
                       mdi-camera
                     </v-icon>
@@ -63,45 +64,44 @@
                   <v-container class="px-0 px-md-4">
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="initials" v-model="user.initials" :rules="nameRules"
-                          label="Voorletters" :readonly="!userStore.hasPermission('user.edit.name')"
-                          :required="userStore.hasPermission('user.edit.name')"/>
+                        <AppInput data-testid="initials" v-model="user.initials" :rules="nameRules" label="Voorletters"
+                          :readonly="!userStore.hasPermission('user.edit.name')"
+                          :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
                         <AppInput data-testid="first-names" v-model="user.first_names" :rules="nameRules"
                           label="Voornamen" :readonly="!userStore.hasPermission('user.edit.name')"
-                          :required="userStore.hasPermission('user.edit.name')"/>
+                          :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
                         <AppInput data-testid="infix" v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"
                           :readonly="!userStore.hasPermission('user.edit.name')"
-                          :required="userStore.hasPermission('user.edit.name')"/>
+                          :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="last-name" v-model="user.last_name" :rules="nameRules"
-                          label="Achternaam" :readonly="!userStore.hasPermission('user.edit.name')"
-                          :required="userStore.hasPermission('user.edit.name')"/>
+                        <AppInput data-testid="last-name" v-model="user.last_name" :rules="nameRules" label="Achternaam"
+                          :readonly="!userStore.hasPermission('user.edit.name')"
+                          :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                       <v-col cols="12">
                         <AppInput data-testid="partner-infix" v-model="user.partner_infix" :rules="nameRules"
                           label="Voorvoegsel partner" :readonly="!userStore.hasPermission('user.edit.partner_name')"
-                          :required="userStore.hasPermission('user.edit.partner_name')"/>
+                          :required="userStore.hasPermission('user.edit.partner_name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                       <v-col cols="12">
-                        <AppInput data-testid="partner-last-name" v-model="user.partner_last_name"
-                          :rules="nameRules" label="Achternaam partner"
-                          :readonly="!userStore.hasPermission('user.edit.partner_name')"
-                          :required="userStore.hasPermission('user.edit.partner_name')"/>
+                        <AppInput data-testid="partner-last-name" v-model="user.partner_last_name" :rules="nameRules"
+                          label="Achternaam partner" :readonly="!userStore.hasPermission('user.edit.partner_name')"
+                          :required="userStore.hasPermission('user.edit.partner_name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name_usage')">
@@ -123,80 +123,80 @@
                       <v-col cols="12">
                         <AppInput data-testid="date-of-birth" :model-value="formatDateNl(user.date_of_birth)"
                           label="Geboortedatum" :readonly="!userStore.hasPermission('user.edit.date_of_birth')"
-                          :required="userStore.hasPermission('user.edit.date_of_birth')"/>
+                          :required="userStore.hasPermission('user.edit.date_of_birth')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.place_of_birth')">
                       <v-col cols="12">
                         <AppInput data-testid="place-of-birth" :model-value="user.place_of_birth" :rules="nameRules"
                           label="Geboorteplaats" :readonly="!userStore.hasPermission('user.edit.place_of_birth')"
-                          :required="userStore.hasPermission('user.edit.place_of_birth')"/>
+                          :required="userStore.hasPermission('user.edit.place_of_birth')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
                         <AppInput data-testid="street-name" v-model="user.street_name" :rules="addressRules"
                           label="Straat" :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="4">
                         <AppInput data-testid="house-number" v-model="user.house_number" :rules="addressRules"
                           label="Huisnummer" :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                       <v-col cols="4">
                         <AppInput data-testid="house-letter" v-model="user.house_letter" :rules="addressRules"
                           label="Letter" :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                       <v-col cols="4">
                         <AppInput data-testid="house-number-addition" v-model="user.house_number_addition"
                           :rules="addressRules" label="Toevoeging"
                           :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
-                        <AppInput data-testid="zip-code" v-model="user.zip_code" :rules="zipcodeRules"
-                          label="Postcode" :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                        <AppInput data-testid="zip-code" v-model="user.zip_code" :rules="zipcodeRules" label="Postcode"
+                          :readonly="!userStore.hasPermission('user.edit.address')"
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
                         <AppInput data-testid="city" v-model="user.city" :rules="cityRules" label="Woonplaats"
                           :readonly="!userStore.hasPermission('user.edit.address')"
-                          :required="userStore.hasPermission('user.edit.address')"/>
+                          :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.contact')">
                       <v-col cols="12">
                         <AppInput data-testid="email" v-model="user.email" :rules="emailRules" label="E-mailadres"
                           :readonly="!userStore.hasPermission('user.edit.contact')"
-                          :required="userStore.hasPermission('user.edit.contact')"/>
+                          :required="userStore.hasPermission('user.edit.contact')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.contact')">
                       <v-col cols="12">
                         <AppInput data-testid="phone-number" v-model="user.phone_number" :rules="phoneRules"
                           label="Telefoonnummer" :readonly="!userStore.hasPermission('user.edit.contact')"
-                          :required="userStore.hasPermission('user.edit.contact')"/>
+                          :required="userStore.hasPermission('user.edit.contact')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.contact')">
                       <v-col cols="12">
                         <AppInput data-testid="mobile-number" v-model="user.mobile_number" :rules="phoneRules"
                           label="Mobiel nummer" :readonly="!userStore.hasPermission('user.edit.contact')"
-                          :required="userStore.hasPermission('user.edit.contact')"/>
+                          :required="userStore.hasPermission('user.edit.contact')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.position')">
                       <v-col cols="12">
                         <AppInput data-testid="position" v-model="user.position" :rules="nameRules" label="Functie"
-                          :readonly="!userStore.hasPermission('user.edit.position')"/>
+                          :readonly="!userStore.hasPermission('user.edit.position')" />
                       </v-col>
                     </v-row>
 
@@ -208,8 +208,7 @@
 
           <v-card-actions class="pa-4 px-md-8">
             <v-spacer />
-            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center
-              @click="saveProfile">
+            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center @click="saveProfile">
               Opslaan
             </AppButton>
 
@@ -242,6 +241,86 @@ const { mdAndUp } = useDisplay()
 
 const userStore = useUserStore()
 const { user, permissions } = storeToRefs(userStore)
+
+const initialsRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 10) || 'Maximaal 10 tekens toegestaan'
+]
+
+const firstNamesRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+
+const infixRules = [
+  v => (v && v.length <= 50) || 'Maximaal 50 tekens toegestaan'
+]
+
+const lastNameRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+
+const nameUsageRules = [
+  v => !!v || 'Dit veld is verplicht'
+]
+
+const genderRules = [
+  v => !!v || 'Dit veld is verplicht'
+]
+
+const dateOfBirthRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && !isNaN(Date.parse(v))) || 'Ongeldige datum'
+]
+
+const placeOfBirthRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+
+const streetNameRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+
+const houseNumberRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[0-9]+$/.test(v)) || 'Ongeldig huisnummer'
+]
+
+const houseLetterRules = [
+  v => (v && /^[a-zA-Z]?$/.test(v)) || 'Ongeldige huisletter'
+]
+
+const houseNumberAdditionRules = [
+  v => (v && /^[a-zA-Z0-9]*$/.test(v)) || 'Ongeldige toevoeging'
+]
+
+const zipcodeRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/.test(v)) || 'Ongeldige postcode'
+]
+
+const cityRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+const emailRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) || 'Ongeldig e-mailadres'
+]
+
+const phoneRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[0-9+\s()-]+$/.test(v)) || 'Ongeldig telefoonnummer'
+]
+
+const positionRules = [
+  v => !!v || 'Dit veld is verplicht',
+  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+]
+
 
 const nameUsageOptions = [
 
@@ -307,12 +386,23 @@ const valid = ref(true)
 
 const showSnackbar = ref(false)
 
-const saveProfile = () => {
+const saveProfile = async () => {
   if (!valid.value) {
     return
   }
 
-  showSnackbar.value = true
+  try {
+
+    await userStore.updateUserProfile(user.value)
+    showSnackbar.value = true
+
+  }
+  catch (error) {
+    console.error('Fout bij het opslaan van profiel:', error)
+    return
+  }
+
+  
 }
 
 </script>

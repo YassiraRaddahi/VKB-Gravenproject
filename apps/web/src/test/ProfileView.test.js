@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest'
 import ProfileView from '@/views/ProfileView.vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
+import flushPromises from 'flush-promises'
 
 // Mapping of permissions to the fields they control (data-testid values)
 const formPermissionFieldMap = {
@@ -266,15 +267,19 @@ describe('Snackbar', () => {
     it('is shown when save button is clicked and form is valid', async () => {
         const user = setupRole('admin')
 
+        vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
+
         const wrapper = mount(ProfileView)
 
         wrapper.vm.valid = true
+        await wrapper.vm.$nextTick()
 
         const button = wrapper.get('[data-testid="save-button"]')
 
         expect(wrapper.find('[data-testid="snackbar-success"]').exists()).toBe(false)
         await button.trigger('click')
 
+        await flushPromises()
         const snackbar = wrapper.get('[data-testid="snackbar-success"]')
         expect(snackbar.exists()).toBe(true)
 
@@ -285,15 +290,19 @@ describe('Snackbar', () => {
     it('is not shown when save button is clicked and form is not valid', async () => {
         const user = setupRole('admin')
 
+        vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
+
         const wrapper = mount(ProfileView)
 
         wrapper.vm.valid = false
+        await wrapper.vm.$nextTick()
 
         const button = wrapper.get('[data-testid="save-button"]')
 
         expect(wrapper.find('[data-testid="snackbar-success"]').exists()).toBe(false)
         await button.trigger('click')
 
+        await flushPromises()
         expect(wrapper.find('[data-testid="snackbar-success"]').exists()).toBe(false)
     })
 

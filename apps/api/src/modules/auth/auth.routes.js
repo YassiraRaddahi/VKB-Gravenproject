@@ -1,15 +1,19 @@
 module.exports = function (app, conn_db) {
   const bcrypt = require("bcrypt");
   const jwt = require("jsonwebtoken");
-  const rateLimit = require("express-rate-limit");
+  const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
   const isProduction = process.env.NODE_ENV === "production";
+
+  const { verifyToken } = require("../../middleware/verifyToken.js");
+  const { getPermissionsByRole } = require("../../services/permissionService.js");
 
   const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 5,
 
     keyGenerator: (req) => {
-      return (req.body.email || "").toLocaleString().trim() || req.ip;
+      const identifier = (req.body.email || "").toLowerCase().trim() || req.ip;
+      return ipKeyGenerator(identifier);
     },
 
 
@@ -24,21 +28,6 @@ module.exports = function (app, conn_db) {
     legacyHeaders: false,
   });
 
-  function verifyToken(req, res, next) {
-    const token = req.cookies?.token;
-
-    if (!token) {
-      return res.status(401).json({ error: "Niet ingelogd" });
-    }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded;
-      next();
-    } catch (err) {
-      return res.status(401).json({ error: "Ongeldig of verlopen token" });
-    }
-  }
 
   // ─── Login ───
   app.post(
@@ -49,7 +38,11 @@ module.exports = function (app, conn_db) {
         let email = req.body.email;
         let password = req.body.password;
 
-        let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name
+        if (!email || !password) {
+          return res.status(400).json({ error: "E-mail en wachtwoord zijn verplicht" });
+        }
+
+        let sql = `SELECT users.id, users.email, users.password_hash, roles.name AS role_name, roles.id AS role_id
                 FROM users
                 JOIN role_user ON users.id = role_user.user_id
                 JOIN roles ON role_user.role_id = roles.id
@@ -76,11 +69,26 @@ module.exports = function (app, conn_db) {
             return res.status(401).send({ error: "Invalid credentials" });
           }
 
+          let permissions;
+
+          try {
+            permissions = await getPermissionsByRole(conn_db, user.role_id)
+          } catch (permErr) {
+            console.error("Error fetching permissions:", permErr);
+            return res.status(500).json({ error: "Database error" });
+          }
+
           const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role_name },
+            {
+              id: user.id,
+              email: user.email,
+              role: user.role_name,
+              permissions: permissions,
+            },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
           );
+
 
           res.cookie("token", token, {
             httpOnly: true,
@@ -92,7 +100,9 @@ module.exports = function (app, conn_db) {
           });
 
           res.send({ message: "Login successful" });
+
         });
+
       } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -126,86 +136,68 @@ module.exports = function (app, conn_db) {
 
       const user = userRows[0];
 
-      const permissionSql = `
-            SELECT permissions.name
-            FROM permission_role
-            JOIN permissions ON permission_role.permission_id = permissions.id
-            WHERE permission_role.role_id = ?
-        `;
+      const filteredUser = { id: user.id };
 
-      conn_db.query(permissionSql, [user.role_id], (err, permissionRows) => {
-        if (err) {
-          return res.status(500).json({ error: "Database error" });
-        }
+      const permissions = req.user.permissions || [];
 
-        if (!permissionRows || permissionRows.length === 0) {
-          return res
-            .status(403)
-            .json({ error: "Er zijn geen permissies gekoppeld aan deze rol" });
-        }
+      if (permissions.includes("user.view.name")) {
+        filteredUser.initials = user.initials;
+        filteredUser.first_names = user.first_names;
+        filteredUser.infix = user.infix;
+        filteredUser.last_name = user.last_name;
+      }
 
-        const permissions = permissionRows.map((r) => r.name);
+      if (permissions.includes("user.view.partner_name")) {
+        filteredUser.partner_infix = user.partner_infix;
+        filteredUser.partner_last_name = user.partner_last_name;
+      }
 
-        const filteredUser = { id: user.id };
+      if (permissions.includes("user.view.name_usage")) {
+        filteredUser.name_usage = user.name_usage;
+      }
 
-        if (permissions.includes("user.view.name")) {
-          filteredUser.initials = user.initials;
-          filteredUser.first_names = user.first_names;
-          filteredUser.infix = user.infix;
-          filteredUser.last_name = user.last_name;
-        }
+      if (permissions.includes("user.view.gender")) {
+        filteredUser.gender = user.gender;
+      }
 
-        if (permissions.includes("user.view.partner_name")) {
-          filteredUser.partner_infix = user.partner_infix;
-          filteredUser.partner_last_name = user.partner_last_name;
-        }
+      if (permissions.includes("user.view.date_of_birth")) {
+        filteredUser.date_of_birth = user.date_of_birth;
+      }
 
-        if (permissions.includes("user.view.name_usage")) {
-          filteredUser.name_usage = user.name_usage;
-        }
+      if (permissions.includes("user.view.place_of_birth")) {
+        filteredUser.place_of_birth = user.place_of_birth;
+      }
 
-        if (permissions.includes("user.view.gender")) {
-          filteredUser.gender = user.gender;
-        }
+      if (permissions.includes("user.view.address")) {
+        filteredUser.street_name = user.street_name;
+        filteredUser.house_number = user.house_number;
+        filteredUser.house_letter = user.house_letter;
+        filteredUser.house_number_addition = user.house_number_addition;
+        filteredUser.zip_code = user.zip_code;
+        filteredUser.city = user.city;
+      }
 
-        if (permissions.includes("user.view.date_of_birth")) {
-          filteredUser.date_of_birth = user.date_of_birth;
-        }
+      if (permissions.includes("user.view.contact")) {
+        filteredUser.email = user.email;
+        filteredUser.phone_number = user.phone_number;
+        filteredUser.mobile_number = user.mobile_number;
+      }
 
-        if (permissions.includes("user.view.place_of_birth")) {
-          filteredUser.place_of_birth = user.place_of_birth;
-        }
+      if (permissions.includes("user.view.profile_picture")) {
+        filteredUser.profile_picture_url = user.profile_picture_url;
+      }
 
-        if (permissions.includes("user.view.address")) {
-          filteredUser.street_name = user.street_name;
-          filteredUser.house_number = user.house_number;
-          filteredUser.house_letter = user.house_letter;
-          filteredUser.house_number_addition = user.house_number_addition;
-          filteredUser.zip_code = user.zip_code;
-          filteredUser.city = user.city;
-        }
+      if (permissions.includes("user.view.position")) {
+        filteredUser.position = user.position;
+      }
 
-        if (permissions.includes("user.view.contact")) {
-          filteredUser.email = user.email;
-          filteredUser.phone_number = user.phone_number;
-          filteredUser.mobile_number = user.mobile_number;
-        }
+      if (permissions.includes("user.view.role")) {
+        filteredUser.role_name = user.role_name;
+      }
 
-        if (permissions.includes("user.view.profile_picture")) {
-          filteredUser.profile_picture_url = user.profile_picture_url;
-        }
-
-        if (permissions.includes("user.view.position")) {
-          filteredUser.position = user.position;
-        }
-
-        if (permissions.includes("user.view.role")) {
-          filteredUser.role_name = user.role_name;
-        }
-
-        res.json({ user: filteredUser, permissions });
-      });
+      res.json({ user: filteredUser, permissions });
     });
+
   });
 
   // ─── Wachtwoord aanpassen ───

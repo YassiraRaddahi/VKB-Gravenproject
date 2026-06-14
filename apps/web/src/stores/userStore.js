@@ -35,6 +35,17 @@ export const useUserStore = defineStore("user", {
       return this.permissions.includes(permission);
     },
 
+    async updateUserProfile(payload) {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/users/me`,
+        payload,
+        { withCredentials: true }
+      );
+
+        // After successful update, fetch the updated user data
+        await this.fetchUser();
+    },
+
     async logout() {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/logout`,
