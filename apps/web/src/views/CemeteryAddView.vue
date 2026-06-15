@@ -1,18 +1,9 @@
 <template>
     <v-container fluid class="pa-0 list-page-container">
-        <TitleUnderline
-            title="Kerkhof toevoegen"
-            underline-class="underlineLightBlue"
-        />
+        <TitleUnderline title="Kerkhof toevoegen" underline-class="underlineLightBlue" />
 
         <v-container fluid class="d-flex justify-center py-8">
-            <v-card
-                rounded="xl"
-                elevation="5"
-                color="#f1a07b"
-                class="pa-6 w-100"
-                max-width="900"
-            >
+            <v-card rounded="xl" elevation="5" color="#f1a07b" class="pa-6 w-100" max-width="900">
                 <v-form @submit.prevent="addCemetery">
                     <v-container>
 
@@ -23,41 +14,20 @@
                         <!-- FOTO -->
                         <v-row class="mb-4">
                             <v-col cols="12" class="d-flex justify-center">
-                                <v-card
-                                    rounded="xl"
-                                    elevation="5"
-                                    width="100%"
-                                    max-width="260"
-                                    class="position-relative overflow-hidden"
-                                >
-                                    <v-img
-                                        :src="imagePreview || '/placeholder-cemetery.jpg'"
-                                        height="260"
-                                        cover
-                                    >
-                                    </v-img>
+                                <v-card rounded="xl" elevation="5" width="100%" max-width="260"
+                                    class="position-relative overflow-hidden">
+                                    <v-img :src="imagePreview || '/images/cemeteries/placeholder_image_camera.png'"
+                                        height="260" cover />
 
-                                    <v-btn
-                                        icon
-                                        size="large"
-                                        elevation="6"
-                                        color="#16495d"
-                                        class="position-absolute"
-                                        style="right: 12px; bottom: 12px;"
-                                        @click="selectFile"
-                                    >
+                                    <v-btn icon size="large" elevation="6" color="#16495d" class="position-absolute"
+                                        style="right: 12px; bottom: 12px;" @click="selectFile">
                                         <v-icon color="white">
                                             mdi-camera
                                         </v-icon>
                                     </v-btn>
 
-                                    <input
-                                        ref="fileInput"
-                                        type="file"
-                                        accept="image/*"
-                                        class="d-none"
-                                        @change="handleFileUpload"
-                                    />
+                                    <input ref="fileInput" type="file" accept="image/*" class="d-none"
+                                        @change="handleFileUpload" />
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -65,145 +35,81 @@
                         <!-- NAAM -->
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field
-                                    v-model="form.name"
-                                    :label="requiredLabel('Naam begraafplaats')"
-                                    class="text-white"
-                                    hide-details
-                                    required
-                                />
+                                <v-text-field v-model="form.name" :label="requiredLabel('Naam begraafplaats')"
+                                    class="text-white" hide-details required />
                             </v-col>
                         </v-row>
 
                         <!-- ADRES -->
                         <v-row>
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.city"
-                                    :label="requiredLabel('Stad')"
-                                    class="text-white"
-                                    hide-details
-                                    required
-                                />
+                                <v-text-field v-model="form.city" :label="requiredLabel('Stad')" class="text-white"
+                                    hide-details required />
                             </v-col>
 
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.street_name"
-                                    :label="requiredLabel('Straatnaam')"
-                                    class="text-white"
-                                    hide-details
-                                    required
-                                />
+                                <v-text-field v-model="form.street_name" :label="requiredLabel('Straatnaam')"
+                                    class="text-white" hide-details required />
                             </v-col>
 
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.house_number"
-                                    label="Huisnummer"
-                                    class="text-white"
-                                    hide-details
-                                />
+                                <v-text-field v-model="form.house_number" label="Huisnummer" class="text-white"
+                                    hide-details />
                             </v-col>
 
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.house_letter"
-                                    label="Huisletter"
-                                    class="text-white"
-                                    hide-details
-                                />
+                                <v-text-field v-model="form.house_letter" label="Huisletter" class="text-white"
+                                    hide-details />
                             </v-col>
 
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.zip_code"
-                                    :label="requiredLabel('Postcode')"
-                                    label="Postcode"
-                                    class="text-white"
-                                    hide-details
-                                    required
-                                />
+                                <v-text-field v-model="form.zip_code" :label="requiredLabel('Postcode')"
+                                    label="Postcode" class="text-white" hide-details required />
                             </v-col>
 
                             <v-col cols="12" md="4">
-                                <v-text-field
-                                    v-model="form.house_number_addition"
-                                    label="Toevoeging"
-                                    class="text-white"
-                                    hide-details
-                                />
+                                <v-text-field v-model="form.house_number_addition" label="Toevoeging" class="text-white"
+                                    hide-details />
                             </v-col>
                         </v-row>
 
                         <!-- CONTACT -->
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field
-                                    v-model="form.email"
-                                    :label="requiredLabel('E-mail')"
-                                    type="email"
-                                    class="text-white"
-                                    hide-details
-                                    required
-                                />
+                                <v-text-field v-model="form.email" :label="requiredLabel('E-mail')" type="email"
+                                    class="text-white" hide-details required />
                             </v-col>
 
                             <v-col cols="12">
-                                <v-text-field
-                                    v-model="form.phone_number"
-                                    label="Telefoonnummer"
-                                    class="text-white"
-                                    hide-details
-                                />
+                                <v-text-field v-model="form.phone_number" label="Telefoonnummer" class="text-white"
+                                    hide-details />
                             </v-col>
                         </v-row>
 
                         <!-- WEBSITE -->
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field
-                                    v-model="form.website_url"
-                                    label="Website"
-                                    class="text-white"
-                                    hide-details
-                                />
+                                <v-text-field v-model="form.website_url" label="Website" class="text-white"
+                                    hide-details />
                             </v-col>
                         </v-row>
 
                         <!-- OPMERKINGEN -->
                         <v-row>
                             <v-col cols="12">
-                                <v-textarea
-                                    v-model="form.remarks"
-                                    label="Opmerkingen"
-                                    class="text-white"
-                                    auto-grow
-                                    rows="5"
-                                    hide-details
-                                />
+                                <v-textarea v-model="form.remarks" label="Opmerkingen" class="text-white" auto-grow
+                                    rows="5" hide-details />
                             </v-col>
                         </v-row>
 
                         <!-- BUTTONS -->
                         <v-row>
-                            <v-col
-                                cols="12"
-                                class="d-flex justify-end ga-3 flex-wrap"
-                            >
-                                <v-btn
-                                    color="#16495d"
-                                    rounded="lg"
-                                    @click="router.back()"
-                                >
+                            <v-col cols="12" class="d-flex justify-end ga-3 flex-wrap">
+                                <v-btn color="#16495d" rounded="lg" @click="router.back()">
                                     Annuleren
                                 </v-btn>
 
-                                <v-btn
-                                    type="submit"
-                                    color="#023047"
-                                    rounded="lg"
-                                >
+                                <v-btn type="submit" color="#023047" rounded="lg">
                                     Kerkhof toevoegen
                                 </v-btn>
                             </v-col>
