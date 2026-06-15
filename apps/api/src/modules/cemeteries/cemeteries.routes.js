@@ -269,5 +269,66 @@ module.exports = function (app, conn_db) {
             }
         );
     });
+    // =====================================================
+// CREATE CEMETERY
+// =====================================================
+app.post('/api/cemeteries/add', (req, res) => {
+    const {
+        name,
+        city,
+        street_name,
+        house_number,
+        house_letter,
+        house_number_addition,
+        zip_code,
+        email,
+        phone_number,
+        website_url,
+        remarks,
+        municipality_id
+    } = req.body;
+
+    const sql = `
+        INSERT INTO cemeteries (
+            name,
+            city,
+            street_name,
+            house_number,
+            house_letter,
+            house_number_addition,
+            zip_code,
+            email,
+            phone_number,
+            website_url,
+            remarks,
+            municipality_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    conn_db.query(sql, [
+        name,
+        city,
+        street_name,
+        house_number || null,
+        house_letter || null,
+        house_number_addition || null,
+        zip_code,
+        email || null,
+        phone_number || null,
+        website_url || null,
+        remarks || null,
+        municipality_id
+    ], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'DB error' });
+        }
+
+        res.status(201).json({
+            message: 'Created',
+            id: result.insertId
+        });
+    });
+});
 
 };
