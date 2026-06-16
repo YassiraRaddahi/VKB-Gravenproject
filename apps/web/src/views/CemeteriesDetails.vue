@@ -143,7 +143,7 @@
                                             </div>
 
                                             <div class="text-white">
-                                                Vrij: {{ graveStats.available }}
+                                                Beschikbaar: {{ graveStats.available }}
                                             </div>
 
                                             <div class="text-white">
