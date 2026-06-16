@@ -140,8 +140,9 @@ module.exports = function (app, conn_db) {
         let iban_encrypted = null;
         let iban_tag = null;
 
-        if (iban) {
-            const enc = encryptIBAN(iban);
+        if (iban && iban.trim()) {
+            const enc = encryptIBAN(iban.trim());
+
             iban_iv = enc.iv;
             iban_encrypted = enc.encrypted;
             iban_tag = enc.tag;
@@ -270,25 +271,25 @@ module.exports = function (app, conn_db) {
         );
     });
     // =====================================================
-// CREATE CEMETERY
-// =====================================================
-app.post('/api/cemeteries/add', (req, res) => {
-    const {
-        name,
-        city,
-        street_name,
-        house_number,
-        house_letter,
-        house_number_addition,
-        zip_code,
-        email,
-        phone_number,
-        website_url,
-        remarks,
-        municipality_id
-    } = req.body;
+    // CREATE CEMETERY
+    // =====================================================
+    app.post('/api/cemeteries/add', (req, res) => {
+        const {
+            name,
+            city,
+            street_name,
+            house_number,
+            house_letter,
+            house_number_addition,
+            zip_code,
+            email,
+            phone_number,
+            website_url,
+            remarks,
+            municipality_id
+        } = req.body;
 
-    const sql = `
+        const sql = `
         INSERT INTO cemeteries (
             name,
             city,
@@ -305,30 +306,30 @@ app.post('/api/cemeteries/add', (req, res) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    conn_db.query(sql, [
-        name,
-        city,
-        street_name,
-        house_number || null,
-        house_letter || null,
-        house_number_addition || null,
-        zip_code,
-        email || null,
-        phone_number || null,
-        website_url || null,
-        remarks || null,
-        municipality_id
-    ], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'DB error' });
-        }
+        conn_db.query(sql, [
+            name,
+            city,
+            street_name,
+            house_number || null,
+            house_letter || null,
+            house_number_addition || null,
+            zip_code,
+            email || null,
+            phone_number || null,
+            website_url || null,
+            remarks || null,
+            municipality_id
+        ], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'DB error' });
+            }
 
-        res.status(201).json({
-            message: 'Created',
-            id: result.insertId
+            res.status(201).json({
+                message: 'Created',
+                id: result.insertId
+            });
         });
     });
-});
 
 };

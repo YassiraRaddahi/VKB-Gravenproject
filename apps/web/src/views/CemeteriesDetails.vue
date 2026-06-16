@@ -126,7 +126,7 @@
                                         <!-- VIEW MODE -->
                                         <v-text-field v-if="!editMode" :value="displayedIban" readonly hide-details
                                             class="text-white" @mouseenter="showIban = true"
-                                            @mouseleave="showIban = false" @click="toggleIban" />
+                                            @mouseleave="showIban = false" />
 
                                         <!-- EDIT MODE -->
                                         <v-text-field v-else v-model="form.iban" label="IBAN" hide-details
@@ -726,9 +726,6 @@ const displayedIban = computed(() => {
     return formatIban(iban)
 })
 
-function toggleIban() {
-    showIban.value = !showIban.value
-}
 const graves = ref([])
 
 const graveStats = computed(() => {
