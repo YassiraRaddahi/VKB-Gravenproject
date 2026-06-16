@@ -64,43 +64,44 @@
                   <v-container class="px-0 px-md-4">
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="initials" v-model="user.initials" :rules="nameRules" label="Voorletters"
-                          :readonly="!userStore.hasPermission('user.edit.name')"
+                        <AppInput data-testid="initials" v-model="user.initials" :rules="initialsRules"
+                          label="Voorletters" :readonly="!userStore.hasPermission('user.edit.name')"
                           :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="first-names" v-model="user.first_names" :rules="nameRules"
+                        <AppInput data-testid="first-names" v-model="user.first_names" :rules="firstNamesRules"
                           label="Voornamen" :readonly="!userStore.hasPermission('user.edit.name')"
                           :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="infix" v-model="user.infix" :rules="nameRules" label="Tussenvoegsel"
+                        <AppInput data-testid="infix" v-model="user.infix" :rules="infixRules" label="Tussenvoegsel"
                           :readonly="!userStore.hasPermission('user.edit.name')"
                           :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.name')">
                       <v-col cols="12">
-                        <AppInput data-testid="last-name" v-model="user.last_name" :rules="nameRules" label="Achternaam"
-                          :readonly="!userStore.hasPermission('user.edit.name')"
+                        <AppInput data-testid="last-name" v-model="user.last_name" :rules="lastNameRules"
+                          label="Achternaam" :readonly="!userStore.hasPermission('user.edit.name')"
                           :required="userStore.hasPermission('user.edit.name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                       <v-col cols="12">
-                        <AppInput data-testid="partner-infix" v-model="user.partner_infix" :rules="nameRules"
+                        <AppInput data-testid="partner-infix" v-model="user.partner_infix" :rules="infixRules"
                           label="Voorvoegsel partner" :readonly="!userStore.hasPermission('user.edit.partner_name')"
                           :required="userStore.hasPermission('user.edit.partner_name')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.partner_name')">
                       <v-col cols="12">
-                        <AppInput data-testid="partner-last-name" v-model="user.partner_last_name" :rules="nameRules"
-                          label="Achternaam partner" :readonly="!userStore.hasPermission('user.edit.partner_name')"
+                        <AppInput data-testid="partner-last-name" v-model="user.partner_last_name"
+                          :rules="lastNamePartnerRules" label="Achternaam partner"
+                          :readonly="!userStore.hasPermission('user.edit.partner_name')"
                           :required="userStore.hasPermission('user.edit.partner_name')" />
                       </v-col>
                     </v-row>
@@ -128,32 +129,32 @@
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.place_of_birth')">
                       <v-col cols="12">
-                        <AppInput data-testid="place-of-birth" :model-value="user.place_of_birth" :rules="nameRules"
-                          label="Geboorteplaats" :readonly="!userStore.hasPermission('user.edit.place_of_birth')"
+                        <AppInput data-testid="place-of-birth" :model-value="user.place_of_birth" label="Geboorteplaats"
+                          :readonly="!userStore.hasPermission('user.edit.place_of_birth')"
                           :required="userStore.hasPermission('user.edit.place_of_birth')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="12">
-                        <AppInput data-testid="street-name" v-model="user.street_name" :rules="addressRules"
+                        <AppInput data-testid="street-name" v-model="user.street_name" :rules="streetNameRules"
                           label="Straat" :readonly="!userStore.hasPermission('user.edit.address')"
                           :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.address')">
                       <v-col cols="4">
-                        <AppInput data-testid="house-number" v-model="user.house_number" :rules="addressRules"
+                        <AppInput data-testid="house-number" v-model="user.house_number" :rules="houseNumberRules"
                           label="Huisnummer" :readonly="!userStore.hasPermission('user.edit.address')"
                           :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                       <v-col cols="4">
-                        <AppInput data-testid="house-letter" v-model="user.house_letter" :rules="addressRules"
+                        <AppInput data-testid="house-letter" v-model="user.house_letter" :rules="houseLetterRules"
                           label="Letter" :readonly="!userStore.hasPermission('user.edit.address')"
                           :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
                       <v-col cols="4">
                         <AppInput data-testid="house-number-addition" v-model="user.house_number_addition"
-                          :rules="addressRules" label="Toevoeging"
+                          :rules="houseNumberAdditionRules" label="Toevoeging"
                           :readonly="!userStore.hasPermission('user.edit.address')"
                           :required="userStore.hasPermission('user.edit.address')" />
                       </v-col>
@@ -195,7 +196,7 @@
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.position')">
                       <v-col cols="12">
-                        <AppInput data-testid="position" v-model="user.position" :rules="nameRules" label="Functie"
+                        <AppInput data-testid="position" v-model="user.position" :rules="positionRules" label="Functie"
                           :readonly="!userStore.hasPermission('user.edit.position')" />
                       </v-col>
                     </v-row>
@@ -208,7 +209,7 @@
 
           <v-card-actions class="pa-4 px-md-8">
             <v-spacer />
-            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center @click="saveProfile">
+            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center :loading="loadingProfileSave" @click="saveProfile">
               Opslaan
             </AppButton>
 
@@ -235,7 +236,7 @@ import FormCard from '@/components/ui/FormCard.vue'
 import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const { mdAndUp } = useDisplay()
 
@@ -244,66 +245,62 @@ const { user, permissions } = storeToRefs(userStore)
 
 const initialsRules = [
   v => !!v || 'Dit veld is verplicht',
+  v => (v && /^([A-ZÀ-ÖØ-Þ]\.\s?)+$/.test(v)) || 'Voorletters moeten in hoofdletters zijn en eindigen met een punt (bijv. J.D.)',
   v => (v && v.length <= 10) || 'Maximaal 10 tekens toegestaan'
 ]
 
 const firstNamesRules = [
   v => !!v || 'Dit veld is verplicht',
-  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ'\s-]+$/.test(v)) || 'Ongeldige voornamen',
+  v => (v && v.length <= 255) || 'Maximaal 255 tekens toegestaan'
 ]
 
 const infixRules = [
-  v => (v && v.length <= 50) || 'Maximaal 50 tekens toegestaan'
+  v => (!v || /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/.test(v)) || 'Ongeldig tussenvoegsel',
+  v => (!v || v.length <= 20) || 'Maximaal 20 tekens toegestaan'
 ]
 
 const lastNameRules = [
   v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige achternaam',
   v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 
-const nameUsageRules = [
-  v => !!v || 'Dit veld is verplicht'
-]
-
-const genderRules = [
-  v => !!v || 'Dit veld is verplicht'
-]
-
-const dateOfBirthRules = [
-  v => !!v || 'Dit veld is verplicht',
-  v => (v && !isNaN(Date.parse(v))) || 'Ongeldige datum'
-]
-
-const placeOfBirthRules = [
-  v => !!v || 'Dit veld is verplicht',
-  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+const lastNamePartnerRules = [
+  v => (!v || /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige achternaam partner',
+  v => (!v || v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 
 const streetNameRules = [
   v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige straatnaam',
   v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 
 const houseNumberRules = [
   v => !!v || 'Dit veld is verplicht',
-  v => (v && /^[0-9]+$/.test(v)) || 'Ongeldig huisnummer'
+  v => (v && /^[0-9]+$/.test(v)) || 'Ongeldig huisnummer',
+  v => (v && v.length <= 10) || 'Maximaal 10 cijfers toegestaan'
 ]
 
 const houseLetterRules = [
-  v => (v && /^[a-zA-Z]?$/.test(v)) || 'Ongeldige huisletter'
+  v => (!v || /^[a-zA-Z]?$/.test(v)) || 'Ongeldige huisletter',
+  v => (!v || v.length <= 4) || 'Maximaal 4 tekens toegestaan'
 ]
 
 const houseNumberAdditionRules = [
-  v => (v && /^[a-zA-Z0-9]*$/.test(v)) || 'Ongeldige toevoeging'
+  v => (!v || /^[a-zA-Z0-9\s-]*$/.test(v)) || 'Ongeldige toevoeging',
+  v => (!v || v.length <= 10) || 'Maximaal 10 tekens toegestaan'
 ]
 
 const zipcodeRules = [
   v => !!v || 'Dit veld is verplicht',
-  v => (v && /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/.test(v)) || 'Ongeldige postcode'
+  v => (v && /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/i.test(v)) || 'Ongeldige postcode'
 ]
 
 const cityRules = [
   v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige woonplaats',
   v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 const emailRules = [
@@ -313,14 +310,30 @@ const emailRules = [
 
 const phoneRules = [
   v => !!v || 'Dit veld is verplicht',
-  v => (v && /^[0-9+\s()-]+$/.test(v)) || 'Ongeldig telefoonnummer'
+  v => (v && /^[0-9+\s()-]{8,15}$/.test(v)) || 'Ongeldig telefoonnummer'
 ]
 
 const positionRules = [
   v => !!v || 'Dit veld is verplicht',
+  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige functie',
   v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 
+function normalizeInputs() {
+  if (user.value.zip_code) {
+    user.value.zip_code = user.value.zip_code
+      .toUpperCase()
+      .replace(/\s+/g, '')
+      .replace(/^(\d{4})([A-Z]{2})$/, '$1 $2')
+
+  }
+
+  if (user.value.initials) {
+    user.value.initials = user.value.initials
+      .replace(/\s+/g, '')
+      .toUpperCase()
+  }
+}
 
 const nameUsageOptions = [
 
@@ -354,6 +367,22 @@ const userFullName = () => {
     .join(' ')
 }
 
+function getInitials(firstNames) {
+  if (!firstNames) return ''
+  return firstNames
+    .split(' ')
+    .filter(name => name.length > 0)
+    .map(name => name.charAt(0).toUpperCase() + '.')
+    .join('')
+}
+
+watch(() => user.value.first_names, (newFirstNames, oldFirstNames) => {
+  const oldInitials = getInitials(oldFirstNames || '')
+  if (!user.value.initials || user.value.initials === oldInitials) {
+    user.value.initials = getInitials(newFirstNames)
+  }
+}, { immediate: true })
+
 const fileInput = ref(null)
 
 const selectFile = () => {
@@ -386,13 +415,19 @@ const valid = ref(true)
 
 const showSnackbar = ref(false)
 
+const loadingProfileSave = ref(false)
+
 const saveProfile = async () => {
   if (!valid.value) {
     return
   }
 
-  try {
+  loadingProfileSave.value = true
 
+
+
+  try {
+    normalizeInputs()
     await userStore.updateUserProfile(user.value)
     showSnackbar.value = true
 
@@ -401,8 +436,11 @@ const saveProfile = async () => {
     console.error('Fout bij het opslaan van profiel:', error)
     return
   }
+  finally {
+    loadingProfileSave.value = false
+  }
 
-  
+
 }
 
 </script>
