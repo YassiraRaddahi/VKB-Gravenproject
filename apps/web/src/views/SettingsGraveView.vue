@@ -16,12 +16,12 @@
 
                 <!-- Breedte -->
                 <v-col cols="12" sm="4" md="4">
-                  <AppInput v-model="form[grave.key].breedte" label="Breedte (cm)" :readonly="!editMode" />
+                  <AppInput v-model="form[grave.key].width" label="Breedte (cm)" :readonly="!editMode" />
                 </v-col>
 
                 <!-- Lengte -->
                 <v-col cols="12" sm="4" md="4">
-                  <AppInput v-model="form[grave.key].lengte" label="Lengte (cm)" :readonly="!editMode" />
+                  <AppInput v-model="form[grave.key].length" label="Lengte (cm)" :readonly="!editMode" />
                 </v-col>
               </v-row>
             </v-container>
@@ -71,18 +71,20 @@ const editMode = ref(false)
 
 // grave types
 const graves = [
-  { key: 'dubbel', label: 'Dubbel graf' },
-  { key: 'enkel', label: 'Enkel graf' },
-  { key: 'kind', label: 'Kindergraf' },
-  { key: 'kelder', label: 'Keldergraf' }
+  { key: 'dubbel graf', label: 'Dubbel graf' },
+  { key: 'enkel graf', label: 'Enkel graf' },
+  { key: 'kindergraf', label: 'Kindergraf' },
+  { key: 'keldergraf', label: 'Keldergraf' },
+  { key: 'urnengraf', label: 'Urnengraf' }
 ]
 
 // form data
 const form = ref({
-  dubbel: { breedte: '', lengte: '' },
-  enkel: { breedte: '', lengte: '' },
-  kind: { breedte: '', lengte: '' },
-  kelder: { breedte: '', lengte: '' }
+  'dubbel graf': { width: '', length: '' },
+  'enkel graf': { width: '', length: '' },
+  'kindergraf': { width: '', length: '' },
+  'keldergraf': { width: '', length: '' },
+  'urnengraf': { width: '', length: '' }
 })
 
 const originalForm = ref(null)

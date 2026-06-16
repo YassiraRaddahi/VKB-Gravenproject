@@ -2,9 +2,9 @@ exports.seed = async function(knex) {
   await knex('graves_dimensions').del();
 
   await knex('graves_dimensions').insert([
-    { grave_id: 1, breedte: 100, lengte: 200},
-    { grave_id: 2, breedte: 80, lengte: 180},
-    { grave_id: 3, breedte: 60, lengte: 120},
-    { grave_id: 4, breedte: 120, lengte: 220}
+    { id: 1, grave_id: 1, width: 100, length: 200},
+    { id: 2, grave_id: 2, width: 80, length: 180},
+    { id: 3, grave_id: 3, width: 60, length: 120},
+    { id: 4, grave_id: 4, width: 120, length: 220}
   ]);
 };

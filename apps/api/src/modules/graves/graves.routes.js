@@ -73,8 +73,8 @@ module.exports = function (app, conn_db) {
         const sql = `
             SELECT 
                 graves.*,
-                graves_dimensions.lengte,
-                graves_dimensions.breedte
+                graves_dimensions.length,
+                graves_dimensions.width
             FROM graves
             LEFT JOIN graves_dimensions
                 ON graves.id = graves_dimensions.grave_id
@@ -108,8 +108,8 @@ module.exports = function (app, conn_db) {
             sort,
             status,
             remarks,
-            breedte = null,
-            lengte = null
+            width = null,
+            length = null
         } = req.body
 
         // 1. UPDATE graves
@@ -136,17 +136,17 @@ module.exports = function (app, conn_db) {
 
             // 2. UPSERT dimensions
             const sqlDim = `
-                INSERT INTO graves_dimensions (grave_id, breedte, lengte)
+                INSERT INTO graves_dimensions (grave_id, width, length)
                 VALUES (?, ?, ?)
                 ON DUPLICATE KEY UPDATE
-                    breedte = VALUES(breedte),
-                    lengte = VALUES(lengte)
+                    width = VALUES(width),
+                    length = VALUES(length)
             `
 
             conn_db.query(sqlDim, [
                 id,
-                breedte,
-                lengte
+                width,
+                length
             ], (err2) => {
 
                 if (err2) return res.status(500).json({ error: err2 })

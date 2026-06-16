@@ -6,19 +6,20 @@ module.exports = function (app, knex) {
   app.get('/api/settings/grave', async (req, res) => {
     try {
 
-      const rows = await knex('grave_type_settings');
+      const rows = await knex('grave_sort');
 
       const result = {
-        'dubbel graf': { breedte: '', lengte: '' },
-        'enkel graf': { breedte: '', lengte: '' },
-        'kindergraf': { breedte: '', lengte: '' },
-        'keldergraf': { breedte: '', lengte: '' }
+        'dubbel graf': { width: '', length: '' },
+        'enkel graf': { width: '', length: '' },
+        'kindergraf': { width: '', length: '' },              
+        'keldergraf': { width: '', length: '' },
+        'urnengraf': { width: '', length: '' }
       };
 
       rows.forEach(r => {
-        result[r.type] = {
-          breedte: r.breedte_default || '',
-          lengte: r.lengte_default || ''
+        result[r.grave_id] = {
+          width: r.width || '',
+          length: r.length || ''
         };
       });
 
@@ -41,16 +42,16 @@ module.exports = function (app, knex) {
 
       for (const type of Object.keys(data)) {
 
-        const { breedte, lengte } = data[type];
+        const { width, length } = data[type];
 
-        await knex('grave_type_settings')
+        await knex('grave_sort')
           .insert({
-            type,
-            breedte_default: breedte,
-            lengte_default: lengte,
+            grave_id: type,
+            width: width,
+            length: length,
             updated_at: knex.fn.now()
           })
-          .onConflict('type')
+          .onConflict('grave_id')
           .merge();
       }
 
@@ -78,19 +79,19 @@ module.exports = function (app, knex) {
         return res.status(404).json({ error: 'Grave not found' });
       }
 
-      const dim = await knex('graves_dimensions')
-        .where({ grave_id: grave.id })
-        .first();
+const dim = await knex('graves_dimensions')
+  .where({ grave_id: grave.id })
+  .first();
 
-      const typeSettings = await knex('grave_type_settings')
-        .where({ type: grave.type })
-        .first();
+const typeSettings = await knex('grave_sort')
+  .where({ grave_id: grave.sort })
+  .first();
 
-      const result = {
-        ...grave,
-        breedte: dim?.breedte ?? typeSettings?.breedte_default ?? null,
-        lengte: dim?.lengte ?? typeSettings?.lengte_default ?? null
-      };
+const result = {
+  ...grave,
+  width: dim?.width ?? typeSettings?.width ?? null,
+  length: dim?.length ?? typeSettings?.length ?? null
+};
 
       res.json({ grave: result });
 
@@ -116,8 +117,8 @@ module.exports = function (app, knex) {
         sort,
         status,
         remarks,
-        breedte,
-        lengte
+        width,
+        length
       } = req.body;
 
       // 1. update basis info
@@ -132,16 +133,19 @@ module.exports = function (app, knex) {
         });
 
       // 2. upsert override
-      await knex('graves_dimensions')
-        .insert({
-          grave_id: id,
-          breedte,
-          lengte,
-          updated_at: knex.fn.now()
-        })
-        .onConflict('grave_id')
-        .merge();
+if (req.user?.hasPermission('admin.edit_grave_settings')) {
 
+  await knex('graves_dimensions')
+    .insert({
+      grave_id: Number(id),
+      width: width || null,
+      length: length || null,
+      updated_at: knex.fn.now()
+    })
+    .onConflict('grave_id')
+    .merge();
+
+}
       res.json({ success: true });
 
     } catch (error) {

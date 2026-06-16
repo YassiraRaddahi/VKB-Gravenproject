@@ -106,23 +106,21 @@
                     :readonly="!editMode"
                   />
                 </v-col>
-
+              
                 <!-- DIMENSIONS -->
-                <v-col cols="12" sm="6">
+                
+              <v-col cols="12" sm="6">
                   <v-text-field
-                    v-model="form.breedte"
+                    v-model="form.width"
                     label="Breedte (cm)"
                     :readonly="!editMode"
-                    type="number"
                   />
                 </v-col>
-
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    v-model="form.lengte"
+                    v-model="form.length"
                     label="Lengte (cm)"
                     :readonly="!editMode"
-                    type="number"
                   />
                 </v-col>
 
@@ -188,8 +186,8 @@ const form = ref({
   sort: '',
   latitude: '',
   longitude: '',
-  breedte: null,
-  lengte: null,
+  width: '',
+  length: '',
   remarks: ''
 })
 
@@ -220,8 +218,8 @@ const loadGrave = async () => {
     sort: data.sort || '',
     latitude: data.latitude || '',
     longitude: data.longitude || '',
-    breedte: data.breedte ?? null,
-    lengte: data.lengte ?? null,
+    width: data.width?.toString() || '',
+    length: data.length?.toString() || '',
     remarks: data.remarks || ''
   }
 }

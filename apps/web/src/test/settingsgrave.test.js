@@ -14,10 +14,11 @@ vi.mock('../stores/userStore', () => ({
 
 describe('SettingsGraveView.vue', () => {
   const mockData = {
-    dubbel: { breedte: 200, lengte: 250 },
-    enkel: { breedte: 100, lengte: 200 },
-    kind: { breedte: 80, lengte: 150 },
-    kelder: { breedte: 220, lengte: 260 }
+    dubbel: { width: 200, length: 250 },
+    enkel: { width: 100, length: 200 },
+    kind: { width: 80, length: 150 },
+    kelder: { width: 220, length: 260 },
+    urnen: { width: 0, length: 0 }
   }
 
   const hasPermissionMock = vi.fn()
@@ -127,6 +128,7 @@ describe('SettingsGraveView.vue', () => {
     expect(wrapper.text()).toContain('Enkel graf')
     expect(wrapper.text()).toContain('Kindergraf')
     expect(wrapper.text()).toContain('Keldergraf')
+    expect(wrapper.text()).toContain('Urnengraf')
   })
 
   it('toont de Wijzig knop als gebruiker rechten heeft', async () => {
@@ -156,12 +158,12 @@ describe('SettingsGraveView.vue', () => {
 
     wrapper.vm.toggleEdit()
 
-    wrapper.vm.form.dubbel.breedte = 999
+    wrapper.vm.form.dubbel.width = 999
 
     wrapper.vm.toggleEdit()
 
     expect(wrapper.vm.editMode).toBe(false)
-    expect(wrapper.vm.form.dubbel.breedte).toBe(200)
+    expect(wrapper.vm.form.dubbel.width).toBe(200)
   })
 
   it('slaat instellingen op', async () => {
