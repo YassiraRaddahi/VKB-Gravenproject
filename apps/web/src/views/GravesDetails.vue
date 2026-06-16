@@ -3,19 +3,11 @@
 
     <Breadcrumbs class="px-4 pt-3" />
 
-    <TitleUnderline
-      :title="grave?.grave_number || 'Graf details'"
-      underline-class="underlineLightBlue"
-    />
+    <TitleUnderline :title="grave?.grave_number || 'Graf details'" underline-class="underlineLightBlue" />
 
     <v-container class="d-flex justify-center py-6">
 
-      <v-card
-        class="pa-4 pa-md-6 w-100"
-        max-width="900"
-        rounded="xl"
-        color="#f1a07b"
-      >
+      <v-card class="pa-4 pa-md-6 w-100" max-width="900" rounded="xl" color="#f1a07b">
 
         <v-form @submit.prevent="saveGrave">
 
@@ -25,29 +17,14 @@
             <v-col cols="12" md="4">
               <v-card rounded="xl" class="overflow-hidden position-relative">
 
-                <v-img
-                  :src="imagePreview || grave?.image_url || ''"
-                  height="260"
-                  cover
-                  class="bg-grey-lighten-2"
-                />
+                <v-img :src="imagePreview || grave?.image_url || ''" height="260" cover class="bg-grey-lighten-2" />
 
-                <v-btn
-                  icon
-                  color="#16495d"
-                  class="position-absolute"
-                  style="right: 12px; bottom: 12px"
-                  @click="fileInput?.click()"
-                >
+                <v-btn icon color="#16495d" class="position-absolute" style="right: 12px; bottom: 12px"
+                  @click="fileInput?.click()">
                   <v-icon color="white">mdi-camera</v-icon>
                 </v-btn>
 
-                <input
-                  ref="fileInput"
-                  type="file"
-                  class="d-none"
-                  @change="handleFile"
-                />
+                <input ref="fileInput" type="file" class="d-none" @change="handleFile" />
 
               </v-card>
             </v-col>
@@ -56,82 +33,41 @@
             <v-col cols="12" md="8">
               <v-row dense>
 
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="form.grave_number"
-                    label="Grafnummer"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-text-field v-model="form.grave_number" label="Grafnummer"  :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12" sm="6">
-                  <v-select
-                    v-model="form.status"
-                    :items="statusOptions"
-                    label="Status"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-select v-model="form.status" :items="statusOptions" label="Status" :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12" sm="6">
-                  <v-select
-                    v-model="form.type"
-                    :items="typeOptions"
-                    label="Type"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-select v-model="form.type" :items="typeOptions" label="Type" :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12" sm="6">
-                  <v-select
-                    v-model="form.sort"
-                    :items="sortOptions"
-                    label="Soort"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-select v-model="form.sort" :items="sortOptions" label="Soort" :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="form.latitude"
-                    label="Latitude"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-text-field v-model="form.latitude" label="Latitude" :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="form.longitude"
-                    label="Longitude"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-text-field v-model="form.longitude" label="Longitude" :readonly="!editMode" />
                 </v-col>
-              
+
                 <!-- DIMENSIONS -->
-                
-              <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="form.width"
-                    label="Breedte (cm)"
-                    :readonly="!editMode"
-                  />
+
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-text-field v-model="form.width" label="Breedte (cm)" :readonly="!editMode" />
                 </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="form.length"
-                    label="Lengte (cm)"
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" sm="6" class="text-white">
+                  <v-text-field v-model="form.length" label="Lengte (cm)" :readonly="!editMode" />
                 </v-col>
 
-                <v-col cols="12">
-                  <v-textarea
-                    v-model="form.remarks"
-                    label="Opmerkingen"
-                    rows="5"
-                    auto-grow
-                    :readonly="!editMode"
-                  />
+                <v-col cols="12" class="text-white">
+                  <v-textarea v-model="form.remarks" label="Opmerkingen" rows="5" auto-grow :readonly="!editMode" />
                 </v-col>
 
               </v-row>
@@ -147,11 +83,7 @@
                 {{ editMode ? 'Annuleren' : 'Wijzig' }}
               </v-btn>
 
-              <v-btn
-                v-if="editMode"
-                color="#023047"
-                type="submit"
-              >
+              <v-btn v-if="editMode" color="#023047" type="submit">
                 Opslaan
               </v-btn>
 
@@ -167,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -177,8 +109,25 @@ import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 const route = useRoute()
 const API = import.meta.env.VITE_API_URL
 
+// =====================
+// ✅ SETTINGS (API)
+// =====================
+const graveSettings = ref({})
+
+const loadSettings = async () => {
+  try {
+    const res = await axios.get(`${API}/settings/grave`)
+    graveSettings.value = res.data
+  } catch (err) {
+    console.error('Fout bij laden settings', err)
+  }
+}
+
+// =====================
 // STATE
+// =====================
 const grave = ref(null)
+
 const form = ref({
   grave_number: '',
   status: '',
@@ -193,24 +142,49 @@ const form = ref({
 
 const editMode = ref(false)
 
+// =====================
 // IMAGE
+// =====================
 const fileInput = ref(null)
 const imagePreview = ref('')
 
+// =====================
 // OPTIONS
+// =====================
 const statusOptions = ['beschikbaar', 'in gebruik', 'gereserveerd']
 const typeOptions = ['algemeen graf', 'particulier graf']
-const sortOptions = ['dubbel graf', 'enkel graf', 'kindergraf', 'urnengraf', 'keldergraf']
+const sortOptions = [
+  'dubbel graf',
+  'enkel graf',
+  'kindergraf',
+  'urnengraf',
+  'keldergraf'
+]
 
-// LOAD
+// =====================
+// ✅ HELPER
+// =====================
+function getDefaultDimensions(sort) {
+  if (!sort) return null
+
+  const key = sort.trim().toLowerCase()
+
+  const match = Object.keys(graveSettings.value).find(
+    k => k.toLowerCase() === key
+  )
+
+  return match ? graveSettings.value[match] : null
+}
+
+// =====================
+// LOAD GRAVE
+// =====================
 const loadGrave = async () => {
   const res = await axios.get(`${API}/graves/${route.params.grave_id}`)
 
   const data = res.data.grave
-
   grave.value = data
 
-  // SAFE mapping (BELANGRIJK)
   form.value = {
     grave_number: data.grave_number || '',
     status: data.status || '',
@@ -218,15 +192,35 @@ const loadGrave = async () => {
     sort: data.sort || '',
     latitude: data.latitude || '',
     longitude: data.longitude || '',
-    width: data.width?.toString() || '',
-    length: data.length?.toString() || '',
+    width: data.width != null ? String(data.width) : '',
+    length: data.length != null ? String(data.length) : '',
     remarks: data.remarks || ''
   }
 }
 
-onMounted(loadGrave)
+// =====================
+// ✅ WATCH → FIX JOUW PROBLEEM
+// =====================
+watch(() => form.value.sort, (newSort) => {
+  const dims = getDefaultDimensions(newSort)
+  if (!dims) return
 
+  // 🔥 altijd overschrijven bij sort wijziging
+  form.value.width = dims.width != null ? String(dims.width) : ''
+  form.value.length = dims.length != null ? String(dims.length) : ''
+})
+
+// =====================
+// INIT
+// =====================
+onMounted(async () => {
+  await loadSettings()
+  await loadGrave()
+})
+
+// =====================
 // EDIT
+// =====================
 function toggleEdit() {
   if (editMode.value) {
     form.value = { ...grave.value }
@@ -234,7 +228,9 @@ function toggleEdit() {
   editMode.value = !editMode.value
 }
 
+// =====================
 // SAVE
+// =====================
 async function saveGrave() {
   await axios.put(
     `${API}/graves/${route.params.grave_id}`,
@@ -246,7 +242,9 @@ async function saveGrave() {
   imagePreview.value = ''
 }
 
+// =====================
 // IMAGE
+// =====================
 function handleFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
