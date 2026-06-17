@@ -31,8 +31,8 @@
                 <v-sheet class="position-relative bg-transparent">
                   <v-avatar :size="mdAndUp ? 200 : 150">
                     <!-- Profile picture or fallback icon -->
-                    <v-img data-testid="profile-picture-url" v-if="user.profile_picture_url"
-                      :src="user.profile_picture_url" :key="user.profile_picture_url + '-' + $route.fullPath"
+                    <v-img data-testid="profile-picture-url" v-if="displayImage"
+                      :src="displayImage" :key="user.profile_picture_url + '-' + $route.fullPath"
                       :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
                       <template #error>
                         <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
@@ -209,8 +209,8 @@
 
           <v-card-actions class="pa-4 px-md-8">
             <v-spacer />
-            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center
-              :disabled="!valid" :loading="loadingProfileSave" @click="saveProfile">
+            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center :disabled="!valid"
+              :loading="loadingProfileSave" @click="saveProfile">
               Opslaan
             </AppButton>
 
@@ -224,7 +224,8 @@
   <Snackbar data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success"
     v-model="showSnackbarSuccess" message="Profiel succesvol bijgewerkt!" :timeout="4000" />
   <Snackbar data-testid="snackbar-failure" variant="tonal" color="error" class="snackbar-failure"
-    v-model="showSnackbarFailure" message="Er is een fout opgetreden tijdens het bijwerken van het profiel." :timeout="4000" />
+    v-model="showSnackbarFailure" message="Er is een fout opgetreden tijdens het bijwerken van het profiel."
+    :timeout="4000" />
 </template>
 
 
@@ -241,6 +242,7 @@ import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { ref, computed, watch } from 'vue'
 import axios from 'axios'
+import { DisplaySymbol } from 'vuetify/lib/composables/display.mjs'
 
 const { mdAndUp } = useDisplay()
 
@@ -397,6 +399,10 @@ const selectFile = () => {
 const selectedFile = ref(null)
 const previewUrl = ref(null)
 
+const displayImage = computed(() => {
+ return previewUrl.value || `${import.meta.env.VITE_API_URL}/${user.value.profile_picture_url}` || null
+})
+
 const handleFileUpload = (event) => {
   const file = event.target.files[0]
 
@@ -422,9 +428,6 @@ const handleFileUpload = (event) => {
 
   // preview maken
   previewUrl.value = URL.createObjectURL(file)
-
-  // user updaten zodat v-img meteen verandert
-  user.value.profile_picture_url = previewUrl.value
 
   console.log('Geselecteerd bestand:', file)
 

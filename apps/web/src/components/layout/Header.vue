@@ -29,7 +29,7 @@
         <div class="d-flex align-center ga-2">
           <!-- Profile picture or fallback icon -->
           <v-avatar size="30">
-            <v-img v-if="user?.id && user.profile_picture_url" :src="user.profile_picture_url"
+            <v-img v-if="user?.id && user.profile_picture_url" :src="profilePictureUrl" 
               :key="user.profile_picture_url" :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
               <template #error>
                 <v-icon color="#0d475a" size="30">
@@ -59,6 +59,7 @@ import { storeToRefs } from 'pinia'
 import ContactDialog from '@/components/ContactDialog.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
 defineProps({
   showDrawerToggle: {
@@ -68,6 +69,12 @@ defineProps({
 })
 
 const logoUrl = '/images/logo/VKB_Logo.svg'
+
+const profilePictureUrl = computed(() => {
+  return user.value?.profile_picture_url
+    ? `${import.meta.env.VITE_API_URL}/${user.value.profile_picture_url}`
+    : null
+})
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)

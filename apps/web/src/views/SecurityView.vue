@@ -52,7 +52,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <SnackbarSuccess variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
+  <Snackbar variant="tonal" color="success" class="snackbar-success" v-model="showSnackbar"
     message="Wachtwoord succesvol bijgewerkt!" timeout="4000" />
 </template>
 
@@ -60,7 +60,7 @@
 
 import ProfileSideBar from '@/components/profile/ProfileSideBar.vue'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue';
-import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue';
+import Snackbar from '@/components/ui/Snackbar.vue';
 
 import { ref } from 'vue'
 import { useSecurityStore } from '@/stores/securityStore'

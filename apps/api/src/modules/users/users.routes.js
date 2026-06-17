@@ -1,6 +1,6 @@
 module.exports = function (app, conn_db) {
 
-    const {uploadImage} = require("../../middleware/uploadImage.js");
+    const { uploadImage } = require("../../middleware/uploadImage.js");
     const fs = require('fs');
     const path = require('path');
 
@@ -49,6 +49,39 @@ module.exports = function (app, conn_db) {
         }
     });
 
+    app.get('/api/users/profile-picture/:filename', verifyToken, (req, res) => {
+
+        const userId = req.user.id;
+        const filename = req.params.filename;
+
+        const filePath = path.join(process.cwd(), 'uploads/profile_pictures', filename);
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        let sql = `SELECT profile_picture_url FROM users WHERE id = ?`;
+        conn_db.query(sql, [userId], function (err, rows) {
+
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+            if (rows.length === 0) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            const profilePictureUrl = rows[0].profile_picture_url;
+
+            if (!profilePictureUrl || !profilePictureUrl.endsWith(filename)) {
+                return res.status(403).json({ error: 'Forbidden' });
+            }
+
+            res.sendFile(filePath);
+
+        });
+    });
+
     app.post('/api/users/profile-picture/', verifyToken, uploadImage.single('profile_picture'), (req, res) => {
 
         const userId = req.user.id;
@@ -58,7 +91,7 @@ module.exports = function (app, conn_db) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
-        const imageUrl = `/uploads/profile_pictures/${file.filename}`;
+        const imageUrl = `users/profile-picture/${file.filename}`;
 
         try {
 
@@ -76,9 +109,11 @@ module.exports = function (app, conn_db) {
 
                 // Deletes the old profile picture file if it exists
                 const oldImageUrl = rows[0].profile_picture_url;
-                if (oldImageUrl) {
+                const oldFilename = oldImageUrl ? path.basename(oldImageUrl) : null;
 
-                    const oldImagePath = path.join(process.cwd(), oldImageUrl.replace(/^\//, ''));
+                if (oldFilename) {
+
+                    const oldImagePath = path.join(process.cwd(), 'uploads/profile_pictures', oldFilename);
 
                     fs.unlink(oldImagePath, (err) => {
                         if (err && err.code !== 'ENOENT') {
