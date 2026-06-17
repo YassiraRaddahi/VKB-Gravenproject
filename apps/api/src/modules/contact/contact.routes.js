@@ -1,27 +1,6 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
 const escape = require('escape-html');
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
-    },
-    // debug: true,
-    // logger: true
-})
-
-
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('Mail error:', error)
-    } else {
-        console.log('Mail server klaar ✅')
-    }
-})
-
-
+const { transporter } = require('../../utils/mailer.js');
 
 module.exports = function (app) {
 

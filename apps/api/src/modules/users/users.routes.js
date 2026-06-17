@@ -3,6 +3,8 @@ module.exports = function (app, conn_db) {
     const { uploadImage } = require("../../middleware/uploadImage.js");
     const fs = require('fs');
     const path = require('path');
+    const crypto = require('crypto');
+    const { transporter } = require('../../utils/mailer.js');
 
 
     const { verifyToken } = require("../../middleware/verifyToken.js");
@@ -155,6 +157,7 @@ module.exports = function (app, conn_db) {
     app.put('/api/users/me', verifyToken, (req, res) => {
 
         const userId = req.user.id;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         const permissionFieldMap = {
             'user.edit.name': [
@@ -220,35 +223,103 @@ module.exports = function (app, conn_db) {
 
         console.log("Fields to update based on permissions:", updates);
 
-        const fields = Object.keys(updates);
-        const setClause = fields.map(field => `${field} = ?`).join(', ');
+        if (updates.email && !emailRegex.test(updates.email)) {
+            return res.status(400).json({ error: 'Invalid email format' });
+        }
+
+        if (updates.email) {
+            // Check if the new email already exists in the database
+            let sqlCheckEmail = `SELECT id FROM users WHERE email = ? AND id != ?`;
+
+            return conn_db.query(sqlCheckEmail, [updates.email, userId], async (err, rows) => {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+                if (rows.length > 0) {
+                    return res.status(400).json({ error: 'Email already exists' });
+                }
+
+                // Generates a new email verification token and sets the email_verified_at field to null when the email is updated
+                const token = crypto.randomBytes(32).toString('hex');
+                const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // Token expires in 1 hour
+
+                updates.email_verification_token = token;
+                updates.email_verification_token_expires_at = expiresAt;
+                updates.email_verified_at = null;
 
 
-        try {
-            let sql = `UPDATE users SET ${setClause} WHERE id = ?`;
+                const fields = Object.keys(updates);
+                const setClause = fields.map(field => `${field} = ?`).join(', ');
+
+                const values = Object.values(updates);
+                values.push(userId);
+
+                let sqlUpdate = `UPDATE users SET ${setClause} WHERE id = ?`;
+
+                conn_db.query(sqlUpdate, values, function (err, rows) {
+                    if (err) {
+                        console.error("Database error:", err);
+                        return res.status(500).json({ error: 'Database error' });
+                    }
+
+                    if (rows.affectedRows === 0) {
+                        return res.status(404).json({ error: 'User not found' });
+                    }
+
+                    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
+                    const mailOptions = {
+                        from: process.env.MAIL_USER,
+                        to: updates.email,
+                        subject: 'Bevestig je e-mailadres',
+                        html: `<p>Beste ${updates.first_names ? updates.first_names.trim().split(' ')[0] : 'gebruiker'},</p>
+                       <p>Je hebt je e-mailadres gewijzigd. Klik op de onderstaande link om je nieuwe e-mailadres te bevestigen:</p>
+                       <a href="${verificationLink}">Bevestig e-mailadres</a>
+                       <p>Deze link is 1 uur geldig.</p>`
+                    };
+
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.error('Error sending email verification:', error);
+                        } else {
+                            console.log('Email verification sent:', info.response);
+                        }
+                    });
+
+                    res.json({ "message": "User updated successfully and email verification sent" });
+
+                })
+
+
+            })
+        }
+        else {
+            const fields = Object.keys(updates);
+            const setClause = fields.map(field => `${field} = ?`).join(', ');
 
             const values = Object.values(updates);
             values.push(userId);
 
-            conn_db.query(sql, values, function (err, rows) {
+            let sqlUpdate = `UPDATE users SET ${setClause} WHERE id = ?`;
+
+            conn_db.query(sqlUpdate, values, function (err, rows) {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
                 }
 
-                // If there are no users, return an error message
                 if (rows.affectedRows === 0) {
-                    return res.status(404).json({ error: 'No users found' });
+                    return res.status(404).json({ error: 'User not found' });
                 }
 
-
                 res.json({ "message": "User updated successfully" });
-            })
-        } catch (error) {
-            console.error("Error during user update:", error);
-            res.status(500).json({ error: 'Internal server error' });
+            });
+
 
         }
-    });
+    })
+
 
 }
+
