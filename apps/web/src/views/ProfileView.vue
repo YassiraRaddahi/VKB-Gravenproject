@@ -182,14 +182,14 @@
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.contact')">
                       <v-col cols="12">
-                        <AppInput data-testid="phone-number" v-model="user.phone_number" :rules="phoneRules"
+                        <AppInput data-testid="phone-number" v-model="user.phone_number" :rules="telPhoneRules"
                           label="Telefoonnummer" :readonly="!userStore.hasPermission('user.edit.contact')"
                           :required="userStore.hasPermission('user.edit.contact')" />
                       </v-col>
                     </v-row>
                     <v-row v-if="userStore.hasPermission('user.view.contact')">
                       <v-col cols="12">
-                        <AppInput data-testid="mobile-number" v-model="user.mobile_number" :rules="phoneRules"
+                        <AppInput data-testid="mobile-number" v-model="user.mobile_number" :rules="mobilePhoneRules"
                           label="Mobiel nummer" :readonly="!userStore.hasPermission('user.edit.contact')"
                           :required="userStore.hasPermission('user.edit.contact')" />
                       </v-col>
@@ -314,15 +314,18 @@ const emailRules = [
   v => (v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) || 'Ongeldig e-mailadres'
 ]
 
-const phoneRules = [
+const telPhoneRules = [
   v => !!v || 'Dit veld is verplicht',
   v => (v && /^[0-9+\s()-]{8,15}$/.test(v)) || 'Ongeldig telefoonnummer'
 ]
 
+const mobilePhoneRules = [
+  v => (!v || /^[0-9+\s()-]{8,15}$/.test(v)) || 'Ongeldig mobiel nummer'
+]
+
 const positionRules = [
-  v => !!v || 'Dit veld is verplicht',
-  v => (v && /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige functie',
-  v => (v && v.length <= 100) || 'Maximaal 100 tekens toegestaan'
+  v => (!v || /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]+$/.test(v)) || 'Ongeldige functie',
+  v => (!v || v.length <= 100) || 'Maximaal 100 tekens toegestaan'
 ]
 
 function normalizeInputs() {

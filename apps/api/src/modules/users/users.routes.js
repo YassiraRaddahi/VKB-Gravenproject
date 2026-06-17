@@ -53,7 +53,6 @@ module.exports = function (app, conn_db) {
 
     app.get('/api/users/profile-picture/:filename', verifyToken, (req, res) => {
 
-        const userId = req.user.id;
         const filename = req.params.filename;
 
         const filePath = path.join(process.cwd(), 'uploads/profile_pictures', filename);
@@ -62,8 +61,8 @@ module.exports = function (app, conn_db) {
             return res.status(404).json({ error: 'File not found' });
         }
 
-        let sql = `SELECT profile_picture_url FROM users WHERE id = ?`;
-        conn_db.query(sql, [userId], function (err, rows) {
+        let sql = `SELECT id FROM users WHERE profile_picture_url LIKE ?`;
+        conn_db.query(sql, [`%${filename}`], function (err, rows) {
 
             if (err) {
                 console.error("Database error:", err);
@@ -71,12 +70,6 @@ module.exports = function (app, conn_db) {
             }
             if (rows.length === 0) {
                 return res.status(404).json({ error: 'User not found' });
-            }
-
-            const profilePictureUrl = rows[0].profile_picture_url;
-
-            if (!profilePictureUrl || !profilePictureUrl.endsWith(filename)) {
-                return res.status(403).json({ error: 'Forbidden' });
             }
 
             res.sendFile(filePath);
@@ -87,6 +80,75 @@ module.exports = function (app, conn_db) {
     app.post('/api/users/profile-picture/', verifyToken, uploadImage.single('profile_picture'), (req, res) => {
 
         const userId = req.user.id;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        const imageUrl = `users/profile-picture/${file.filename}`;
+
+        try {
+
+            // Retrieves the old profile picture URL to delete the old image file
+            let sql = `SELECT profile_picture_url FROM users WHERE id = ?`;
+            conn_db.query(sql, [userId], function (err, rows) {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+                if (rows.length === 0) {
+                    return res.status(404).json({ error: 'User not found' });
+                }
+
+
+                // Deletes the old profile picture file if it exists
+                const oldImageUrl = rows[0].profile_picture_url;
+                const oldFilename = oldImageUrl ? path.basename(oldImageUrl) : null;
+
+                if (oldFilename) {
+
+                    const oldImagePath = path.join(process.cwd(), 'uploads/profile_pictures', oldFilename);
+
+                    fs.unlink(oldImagePath, (err) => {
+                        if (err && err.code !== 'ENOENT') {
+                            console.error("Error deleting old profile picture:", err);
+                        } else {
+                            console.log("Old profile picture deleted successfully");
+                        }
+                    });
+                }
+
+
+                let sql = `UPDATE users SET profile_picture_url = ? WHERE id = ?`;
+                conn_db.query(sql, [imageUrl, userId], function (err, rows) {
+                    if (err) {
+                        console.error("Database error:", err);
+                        return res.status(500).json({ error: 'Database error' });
+                    }
+                    if (rows.affectedRows === 0) {
+                        return res.status(404).json({ error: 'User not found' });
+                    }
+
+                    res.json({
+                        "message": "Profile picture updated successfully",
+                        "profile_picture_url": imageUrl
+                    });
+
+                })
+            })
+        } catch (error) {
+            console.error("Error during profile picture update:", error);
+            res.status(500).json({ error: 'Internal server error' });
+
+        }
+
+
+    });
+
+    app.post('/api/users/:id/profile-picture/', verifyToken, uploadImage.single('profile_picture'), (req, res) => {
+
+        const userId = req.params.id;
         const file = req.file;
 
         if (!file) {
@@ -231,7 +293,7 @@ module.exports = function (app, conn_db) {
             // Check if the new email already exists in the database
             let sqlCheckEmail = `SELECT id FROM users WHERE email = ? AND id != ?`;
 
-            return conn_db.query(sqlCheckEmail, [updates.email, userId], async (err, rows) => {
+            conn_db.query(sqlCheckEmail, [updates.email, userId], async (err, rows) => {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ error: 'Database error' });
@@ -244,16 +306,37 @@ module.exports = function (app, conn_db) {
                 const token = crypto.randomBytes(32).toString('hex');
                 const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // Token expires in 1 hour
 
+
+                updates.new_email = updates.email;
+                delete updates.email;
+
                 updates.email_verification_token = token;
                 updates.email_verification_token_expires_at = expiresAt;
-                updates.email_verified_at = null;
-
 
                 const fields = Object.keys(updates);
                 const setClause = fields.map(field => `${field} = ?`).join(', ');
 
                 const values = Object.values(updates);
                 values.push(userId);
+
+                let sqlGetName = `SELECT first_names FROM users WHERE id = ?`;
+
+                const response = await new Promise((resolve, reject) => {
+                    conn_db.query(sqlGetName, [userId], async (err, rows) => {
+                        if (err) {
+                            console.error("Database error:", err);
+                            return res.status(500).json({ error: 'Database error' });
+                        }
+                        if (rows.length === 0) {
+                            return res.status(404).json({ error: 'User not found' });
+                        }
+
+                        resolve(rows[0].first_names);
+
+                    })
+                });
+
+                const firstName = response ? response.trim().split(' ')[0] : 'gebruiker'
 
                 let sqlUpdate = `UPDATE users SET ${setClause} WHERE id = ?`;
 
@@ -271,9 +354,9 @@ module.exports = function (app, conn_db) {
 
                     const mailOptions = {
                         from: process.env.MAIL_USER,
-                        to: updates.email,
+                        to: updates.new_email,
                         subject: 'Bevestig je e-mailadres',
-                        html: `<p>Beste ${updates.first_names ? updates.first_names.trim().split(' ')[0] : 'gebruiker'},</p>
+                        html: `<p>Beste ${firstName},</p>
                        <p>Je hebt je e-mailadres gewijzigd. Klik op de onderstaande link om je nieuwe e-mailadres te bevestigen:</p>
                        <a href="${verificationLink}">Bevestig e-mailadres</a>
                        <p>Deze link is 1 uur geldig.</p>`
@@ -294,7 +377,8 @@ module.exports = function (app, conn_db) {
 
             })
         }
-        else {
+
+        if (!updates.email) {
             const fields = Object.keys(updates);
             const setClause = fields.map(field => `${field} = ?`).join(', ');
 
@@ -320,6 +404,67 @@ module.exports = function (app, conn_db) {
         }
     })
 
+    app.get('/api/users/verify-email', async (req, res) => {
+
+        const token = req.query.token;
+
+        if (!token) {
+            return res.status(400).json({ error: 'Token is required' });
+        }
+
+        let sql = `
+                SELECT id, 
+                new_email, 
+                email_verification_token_expires_at 
+                FROM users WHERE email_verification_token = ?
+            `;
+
+        conn_db.query(sql, [token], function (err, rows) {
+            if (err) {
+                console.error("Database error:", err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+            if (rows.length === 0) {
+                return res.status(404).json({ error: 'Invalid token' });
+            }
+
+            const user = rows[0];
+
+            if(!user.new_email) {
+                return res.status(409).json({ error: 'No email change requested' });
+            }
+
+            if (new Date(user.email_verification_token_expires_at) < new Date()) {
+                return res.status(410).json({ error: 'Token has expired' });
+            }
+
+            
+
+            let sqlUpdate = `UPDATE users 
+                            SET email = ?, 
+                                new_email = NULL, 
+                                email_verified_at = NOW(), 
+                                email_verification_token = NULL, 
+                                email_verification_token_expires_at = NULL 
+                            WHERE id = ?`;
+
+            conn_db.query(sqlUpdate, [user.new_email, user.id], function (err, rows)
+            {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+                if (rows.affectedRows === 0) {
+                    return res.status(404).json({ error: 'User not found' });
+                }
+
+                 res.json({ message: 'Email verified successfully' });
+            })
+        });
+
+
+
+    });
 
 }
 
