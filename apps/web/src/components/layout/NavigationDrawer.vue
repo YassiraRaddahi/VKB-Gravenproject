@@ -1,73 +1,47 @@
 <template>
   <v-navigation-drawer expand-on-hover permanent rail width="256">
     <v-list nav>
-      <v-list-item
-        class="menu-title-section"
-        prepend-icon="mdi-menu-close"
-        title="Menu"
-        :subtitle="toUpperCaseFirstLetter(user?.role_name || '')"
-      />
+      <v-list-item class="menu-title-section" prepend-icon="mdi-menu-close" title="Menu"
+        :subtitle="toUpperCaseFirstLetter(user?.role_name || '')" />
     </v-list>
 
     <v-divider />
 
     <v-list class="navigation-list" density="compact" nav>
-  <template v-for="item in navigationItems" :key="item.value">
-    <v-list-group v-if="item.children" :value="item.value">
-      <template #activator="{ props }">
-        <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.title" />
-      </template>
-
-      <template v-for="child in item.children" :key="child.value">
-        <v-list-group v-if="child.children" :value="child.value">
+      <template v-for="item in navigationItems" :key="item.value">
+        <v-list-group v-if="item.children" :value="item.value">
           <template #activator="{ props }">
-            <v-list-item v-bind="props" :prepend-icon="child.icon" :title="child.title" />
+            <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.title" />
           </template>
 
-          <template v-for="subChild in child.children" :key="subChild.value">
-            <v-list-group v-if="subChild.children" :value="subChild.value">
+          <template v-for="child in item.children" :key="child.value">
+            <v-list-group v-if="child.children" :value="child.value">
               <template #activator="{ props }">
-                <v-list-item v-bind="props" :prepend-icon="subChild.icon" :title="subChild.title" />
+                <v-list-item v-bind="props" :prepend-icon="child.icon" :title="child.title" />
               </template>
 
-              <v-list-item
-                v-for="thirdChild in subChild.children"
-                :key="thirdChild.value"
-                :title="thirdChild.title"
-                :value="thirdChild.value"
-                :to="thirdChild.to"
-              />
+              <template v-for="subChild in child.children" :key="subChild.value">
+                <v-list-group v-if="subChild.children" :value="subChild.value">
+                  <template #activator="{ props }">
+                    <v-list-item v-bind="props" :prepend-icon="subChild.icon" :title="subChild.title" />
+                  </template>
+
+                  <v-list-item v-for="thirdChild in subChild.children" :key="thirdChild.value" :title="thirdChild.title"
+                    :value="thirdChild.value" :to="thirdChild.to" />
+                </v-list-group>
+
+                <v-list-item v-else :prepend-icon="subChild.icon" :title="subChild.title" :value="subChild.value"
+                  :to="subChild.to" />
+              </template>
             </v-list-group>
 
-            <v-list-item
-              v-else
-              :prepend-icon="subChild.icon"
-              :title="subChild.title"
-              :value="subChild.value"
-              :to="subChild.to"
-            />
+            <v-list-item v-else :prepend-icon="child.icon" :title="child.title" :value="child.value" :to="child.to" />
           </template>
         </v-list-group>
 
-        <v-list-item
-          v-else
-          :prepend-icon="child.icon"
-          :title="child.title"
-          :value="child.value"
-          :to="child.to"
-        />
+        <v-list-item v-else :prepend-icon="item.icon" :title="item.title" :value="item.value" :to="item.to" />
       </template>
-    </v-list-group>
-
-    <v-list-item
-      v-else
-      :prepend-icon="item.icon"
-      :title="item.title"
-      :value="item.value"
-      :to="item.to"
-    />
-  </template>
-</v-list>
+    </v-list>
   </v-navigation-drawer>
 </template>
 
@@ -94,105 +68,107 @@ const navigationItems = computed(() => {
         title: 'Dashboard',
         value: 'dashboard',
         icon: 'mdi-view-dashboard',
-        to: { name: 'Dashboard' }
+        children: [
+          {
+            title: 'Beheer Kerkhoven',
+            value: 'cemeteries',
+            icon: 'mdi-cross',
+            to: { name: 'Cemeteries' }
+          },
+          {
+            title: 'Beheer Beheerders',
+            value: 'cemetery_managers',
+            icon: 'mdi-account-multiple',
+            to: { name: 'CemeteryManagers' }
+          }
+        ]
       },
-      {
-        title: 'Beheer Kerkhoven',
-        value: 'cemeteries',
-        icon: 'mdi-cross',
-        to: { name: 'Cemeteries' }
-      },
-      {
-        title: 'Beheer Beheerders',
-        value: 'cemetery_managers',
-        icon: 'mdi-account-multiple',
-        to: { name: 'CemeteryManagers' }
-      }
+
     ]
   }
 
-if (role === 'beheerder') {
-  return [
-    {
-      title: 'Homepagina',
-      value: 'homepage',
-      icon: 'mdi-home',
-      to: { name: 'Home' }
-    },
-    {
-      title: 'Dashboard',
-      value: 'dashboard',
-      icon: 'mdi-view-dashboard',
-      children: [
-        {
-          title: 'Gekoppelde kerkhoven',
-          value: 'linked_cemeteries',
-          icon: 'mdi-cross',
-          to: {
-            name: 'Cemeteries',
-            query: { manager: user.value.id }
-          }
-        },
-        {
-          title: 'Personenbeheer',
-          value: 'user_management',
-          icon: 'mdi-account-group',
-          children: [
-            {
-              title: 'Overledenen',
-              value: 'overledenen',
-              icon: 'mdi-account',
-              children: [
-                {
-                  title: 'Beheer overledenen',
-                  value: 'beheer_overledenen',
-                  to: { name: 'Deceased' }
-                },
-                {
-                  title: 'Koppel overledene aan graf',
-                  value: 'koppel_overledene_aan_graf',
-                }
-              ]
-            },
-            {
-              title: 'Rechthebbenden',
-              value: 'rechthebbenden',
-              icon: 'mdi-account-group',
-              children: [
-                {
-                  title: 'Beheer rechthebbenden',
-                  value: 'beheer_rechthebbenden',
-                  to: { name: 'RightsHolders' }
-                },
-                {
-                  title: 'Koppel rechthebbende aan graf',
-                  value: 'koppel_rechthebbende_aan_graf',
-
-                }
-              ]
-            },
-            {
-              title: 'Grafonderhouders',
-              value: 'grafonderhouders',
-              icon: 'mdi-account-hard-hat',
-              children: [
-                {
-                  title: 'Beheer grafonderhouders',
-                  value: 'beheer_grafonderhouders',
-                  to: { name: 'GraveCaretakers' }
-                },
-                {
-                  title: 'Koppel grafonderhouder aan graf',
-                  value: 'koppel_grafonderhouder_aan_graf',
-                }
-              ]
+  if (role === 'beheerder') {
+    return [
+      {
+        title: 'Homepagina',
+        value: 'homepage',
+        icon: 'mdi-home',
+        to: { name: 'Home' }
+      },
+      {
+        title: 'Dashboard',
+        value: 'dashboard',
+        icon: 'mdi-view-dashboard',
+        children: [
+          {
+            title: 'Gekoppelde kerkhoven',
+            value: 'linked_cemeteries',
+            icon: 'mdi-cross',
+            to: {
+              name: 'Cemeteries',
+              query: { manager: user.value.id }
             }
-          ]
-        }
-      ]
-    }
-  ]
-}
+          },
+          {
+            title: 'Personenbeheer',
+            value: 'user_management',
+            icon: 'mdi-account-group',
+            children: [
+              {
+                title: 'Overledenen',
+                value: 'overledenen',
+                icon: 'mdi-account',
+                children: [
+                  {
+                    title: 'Beheer overledenen',
+                    value: 'beheer_overledenen',
+                    to: { name: 'Deceased' }
+                  },
+                  {
+                    title: 'Koppel overledene aan graf',
+                    value: 'koppel_overledene_aan_graf',
+                  }
+                ]
+              },
+              {
+                title: 'Rechthebbenden',
+                value: 'rechthebbenden',
+                icon: 'mdi-account-group',
+                children: [
+                  {
+                    title: 'Beheer rechthebbenden',
+                    value: 'beheer_rechthebbenden',
+                    to: { name: 'RightsHolders' }
+                  },
+                  {
+                    title: 'Koppel rechthebbende aan graf',
+                    value: 'koppel_rechthebbende_aan_graf',
+
+                  }
+                ]
+              },
+              {
+                title: 'Grafonderhouders',
+                value: 'grafonderhouders',
+                icon: 'mdi-account-hard-hat',
+                children: [
+                  {
+                    title: 'Beheer grafonderhouders',
+                    value: 'beheer_grafonderhouders',
+                    to: { name: 'GraveCaretakers' }
+                  },
+                  {
+                    title: 'Koppel grafonderhouder aan graf',
+                    value: 'koppel_grafonderhouder_aan_graf',
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 
 
   return [
