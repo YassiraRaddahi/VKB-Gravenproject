@@ -67,12 +67,12 @@ const router = createRouter({
       path: "/kerkhoven/:cemetery_id",
       name: "CemeteryDetails",
       component: () => import("../views/CemeteriesDetails.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Details van kerkhof | Kerkhovenbeheer Nederland",
-        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."   
+        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."
       },
     },
     {
@@ -87,12 +87,12 @@ const router = createRouter({
         description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
       },
     },
-   {
-    path: "/kerkhoven/:cemetery_id/graves/:grave_id",
-    name: "GravesDetails",
-    component: () => import("../views/GravesDetails.vue"),
-    meta: { requiresAuth: true }
-  },
+    {
+      path: "/kerkhoven/:cemetery_id/graves/:grave_id",
+      name: "GravesDetails",
+      component: () => import("../views/GravesDetails.vue"),
+      meta: { requiresAuth: true }
+    },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
@@ -161,7 +161,8 @@ const router = createRouter({
         showNavigationDrawer: true,
       },
     },
-    {   
+
+    {
       path: "/rechthebbenden",
       name: "RightsHolders",
       component: () => import("../views/RightsHoldersView.vue"),
@@ -180,6 +181,66 @@ const router = createRouter({
         showBreadcrumbs: true,
         showNavigationDrawer: true,
       }
+    },
+    {
+      path: "/personenbeheer/overledenen/beheren",
+      name: "Deceased",
+      component: () => import("../views/DeceasedView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
+      path: "/personenbeheer/rechthebbenden/beheren",
+      name: "RightsHoldersDashboard",
+      component: () => import("../views/RightsHoldersView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
+      path: "/personenbeheer/grafonderhouders/beheren",
+      name: "GraveCaretakers",
+      component: () => import("../views/GraveCaretakersView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
+      path: "/personenbeheer/overledenen/koppelen-aan-graf",
+      name: "LinkDeceasedToGrave",
+      component: () => import("../views/LinkDeceasedToGraveView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
+      path: "/personenbeheer/rechthebbenden/koppelen-aan-graf",
+      name: "LinkRightHolderToGrave",
+      component: () => import("../views/LinkRightHolderToGraveView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
+    },
+    {
+      path: "/personenbeheer/grafonderhouders/koppelen-aan-graf",
+      name: "LinkGraveCaretakerToGrave",
+      component: () => import("../views/LinkGraveCaretakerToGraveView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      },
     }
   ],
 });

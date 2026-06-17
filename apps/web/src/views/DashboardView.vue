@@ -25,7 +25,7 @@
         <v-card
           class="dashboard-card"
           elevation="3"
-          @click="goToDashboard(dashboard.routeName)"
+            @click="goToDashboard(dashboard)"
         >
           <v-card-text class="dashboard-card-text text-center">
             <div>{{ dashboard.title }}</div>
@@ -91,7 +91,8 @@ const dashboards = computed(() => {
     {
       title: 'Beheer rechthebbenden, overledenen en grafonderhouders',
       icon: 'mdi-account-group',
-      routeName: 'UserManagement'
+      routeName: 'UserManagement',
+      query: { manager: user.value.id }
     }
   ]
 }
@@ -99,8 +100,11 @@ const dashboards = computed(() => {
   return []
 })
 
-function goToDashboard(routeName) {
-  router.push({ name: routeName })
+function goToDashboard(dashboard) {
+  router.push({
+    name: dashboard.routeName,
+    query: dashboard.query || {}
+  })
 }
 </script>
 
