@@ -1,5 +1,9 @@
 module.exports = function (app, conn_db) {
 
+    const {uploadImage} = require("../../middleware/uploadImage.js");
+    const fs = require('fs');
+    const path = require('path');
+
 
     const { verifyToken } = require("../../middleware/verifyToken.js");
 
@@ -43,6 +47,73 @@ module.exports = function (app, conn_db) {
             res.status(500).json({ error: 'Internal server error' });
 
         }
+    });
+
+    app.post('/api/users/profile-picture/', verifyToken, uploadImage.single('profile_picture'), (req, res) => {
+
+        const userId = req.user.id;
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        const imageUrl = `/uploads/profile_pictures/${file.filename}`;
+
+        try {
+
+            // Retrieves the old profile picture URL to delete the old image file
+            let sql = `SELECT profile_picture_url FROM users WHERE id = ?`;
+            conn_db.query(sql, [userId], function (err, rows) {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+                if (rows.length === 0) {
+                    return res.status(404).json({ error: 'User not found' });
+                }
+
+
+                // Deletes the old profile picture file if it exists
+                const oldImageUrl = rows[0].profile_picture_url;
+                if (oldImageUrl) {
+
+                    const oldImagePath = path.join(process.cwd(), oldImageUrl.replace(/^\//, ''));
+
+                    fs.unlink(oldImagePath, (err) => {
+                        if (err && err.code !== 'ENOENT') {
+                            console.error("Error deleting old profile picture:", err);
+                        } else {
+                            console.log("Old profile picture deleted successfully");
+                        }
+                    });
+                }
+
+
+                let sql = `UPDATE users SET profile_picture_url = ? WHERE id = ?`;
+                conn_db.query(sql, [imageUrl, userId], function (err, rows) {
+                    if (err) {
+                        console.error("Database error:", err);
+                        return res.status(500).json({ error: 'Database error' });
+                    }
+                    if (rows.affectedRows === 0) {
+                        return res.status(404).json({ error: 'User not found' });
+                    }
+
+                    res.json({
+                        "message": "Profile picture updated successfully",
+                        "profile_picture_url": imageUrl
+                    });
+
+                })
+            })
+        } catch (error) {
+            console.error("Error during profile picture update:", error);
+            res.status(500).json({ error: 'Internal server error' });
+
+        }
+
+
     });
 
 
@@ -97,10 +168,10 @@ module.exports = function (app, conn_db) {
 
         for (const [permission, fields] of Object.entries(permissionFieldMap)) {
 
-            if(permissions.includes(permission)) {
+            if (permissions.includes(permission)) {
 
-                for(const field of fields) {
-                    if(req.body[field] !== undefined) {
+                for (const field of fields) {
+                    if (req.body[field] !== undefined) {
                         updates[field] = req.body[field];
                     }
                 }
@@ -108,7 +179,7 @@ module.exports = function (app, conn_db) {
             }
         }
 
-        if(Object.keys(updates).length === 0) {
+        if (Object.keys(updates).length === 0) {
             return res.status(400).json({ error: 'No permitted fields to update' });
         }
 

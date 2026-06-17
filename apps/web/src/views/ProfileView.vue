@@ -209,7 +209,8 @@
 
           <v-card-actions class="pa-4 px-md-8">
             <v-spacer />
-            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center :loading="loadingProfileSave" @click="saveProfile">
+            <AppButton v-if="canEdit" data-testid="save-button" kind="darkBlue" v-ripple.center
+              :disabled="!valid" :loading="loadingProfileSave" @click="saveProfile">
               Opslaan
             </AppButton>
 
@@ -220,14 +221,16 @@
       </v-col>
     </v-row>
   </v-container>
-  <SnackbarSuccess data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success"
-    v-model="showSnackbar" message="Profiel succesvol bijgewerkt!" timeout="4000" />
+  <Snackbar data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success"
+    v-model="showSnackbarSuccess" message="Profiel succesvol bijgewerkt!" :timeout="4000" />
+  <Snackbar data-testid="snackbar-failure" variant="tonal" color="error" class="snackbar-failure"
+    v-model="showSnackbarFailure" message="Er is een fout opgetreden tijdens het bijwerken van het profiel." :timeout="4000" />
 </template>
 
 
 <script setup>
 import ProfileSideBar from '@/components/profile/ProfileSideBar.vue'
-import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue'
+import Snackbar from '@/components/ui/Snackbar.vue'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
@@ -237,6 +240,7 @@ import { useDisplay } from 'vuetify'
 import { useUserStore } from '@/stores/userStore'
 import { storeToRefs } from 'pinia'
 import { ref, computed, watch } from 'vue'
+import axios from 'axios'
 
 const { mdAndUp } = useDisplay()
 
@@ -376,7 +380,8 @@ function getInitials(firstNames) {
     .join('')
 }
 
-watch(() => user.value.first_names, (newFirstNames, oldFirstNames) => {
+watch(() => user.value?.first_names, (newFirstNames, oldFirstNames) => {
+  if (!user.value) return
   const oldInitials = getInitials(oldFirstNames || '')
   if (!user.value.initials || user.value.initials === oldInitials) {
     user.value.initials = getInitials(newFirstNames)
@@ -389,6 +394,9 @@ const selectFile = () => {
   fileInput.value.click()
 }
 
+const selectedFile = ref(null)
+const previewUrl = ref(null)
+
 const handleFileUpload = (event) => {
   const file = event.target.files[0]
 
@@ -396,13 +404,28 @@ const handleFileUpload = (event) => {
     return
   }
 
+  if (!file.type.startsWith('image/')) {
+    alert('Ongeldig bestandstype. Selecteer een afbeelding.')
+    return
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Maximaal 2MB toegestaan')
+    return
+  }
+
+  selectedFile.value = file
+
+  if (previewUrl.value) {
+    URL.revokeObjectURL(previewUrl.value)
+  }
+
   // preview maken
-  const imageUrl = URL.createObjectURL(file)
+  previewUrl.value = URL.createObjectURL(file)
 
   // user updaten zodat v-img meteen verandert
-  user.value.profile_picture_url = imageUrl
+  user.value.profile_picture_url = previewUrl.value
 
-  // Hier zou je de upload logica implementeren, bijvoorbeeld een API call om het bestand te uploaden
   console.log('Geselecteerd bestand:', file)
 
 }
@@ -413,31 +436,55 @@ const canEdit = computed(() => {
 
 const valid = ref(true)
 
-const showSnackbar = ref(false)
+const showSnackbarSuccess = ref(false)
+const showSnackbarFailure = ref(false)
+
 
 const loadingProfileSave = ref(false)
 
 const saveProfile = async () => {
   if (!valid.value) {
+    showSnackbarFailure.value = true
     return
   }
 
+  normalizeInputs()
   loadingProfileSave.value = true
 
-
-
   try {
-    normalizeInputs()
+
     await userStore.updateUserProfile(user.value)
-    showSnackbar.value = true
+
+    if (selectedFile.value) {
+      const formData = new FormData()
+      formData.append('profile_picture', selectedFile.value)
+
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/profile-picture`,
+        formData,
+        { withCredentials: true }
+      );
+
+      user.value.profile_picture_url = response.data.profile_picture_url
+
+      if (previewUrl.value) {
+        URL.revokeObjectURL(previewUrl.value)
+        previewUrl.value = null
+      }
+    }
+
+    showSnackbarSuccess.value = true
 
   }
   catch (error) {
     console.error('Fout bij het opslaan van profiel:', error)
+    showSnackbarFailure.value = true
     return
   }
   finally {
     loadingProfileSave.value = false
+    selectedFile.value = null
   }
 
 
