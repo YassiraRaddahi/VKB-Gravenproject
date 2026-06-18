@@ -169,8 +169,49 @@ const navigationItems = computed(() => {
       }
     ]
   }
+    if (role === 'rechthebbende') {
+  return [
+    {
+      title: 'Homepagina',
+      value: 'homepage',
+      icon: 'mdi-home',
+      to: { name: 'Home' }
+    },
+    {
+      title: 'Dashboard',
+      value: 'dashboard',
+      icon: 'mdi-view-dashboard',
+      children: [
+        {
+          title: 'Gekoppelde graven',
+          value: 'linked_graves',
+          icon: 'mdi-cross',
+          to: {
+            name: 'Cemeteries',
+            query: { manager: user.value.id }
+          }
+        }
+      ]
+    }
+  ]
+}
+ if (role === 'grafonderhouder') {
+  return [
+    {
+      title: 'Homepagina',
+      value: 'homepage',
+      icon: 'mdi-home',
+      to: { name: 'Home' }
+    },
+    {
+      title: 'Dashboard',
+      value: 'dashboard',
+      icon: 'mdi-view-dashboard',
+      to: { name: 'Dashboard' }
+    }
 
-
+  ]
+ }
   return [
     {
       title: 'Homepagina',

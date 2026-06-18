@@ -96,7 +96,33 @@ const dashboards = computed(() => {
     }
   ]
 }
+    if (user.value.role_name === 'rechthebbende') {
+      return [
+        {
+          title: 'Gekoppelde graven',
+          icon: 'mdi-cross',
+          routeName: 'Cemeteries',
+          query: { manager: user.value.id }
+        },
+        {
+          title: 'Facturen',
+          icon: 'mdi-file-document',
+          routeName: 'Invoices',
+          query: { manager: user.value.id }
+        }
+      ]
+    }
 
+    if (user.value.role_name === 'grafonderhouder') {
+      return [
+        {
+          title: 'Toegewezen graven',
+          icon: 'mdi-cross',
+          routeName: 'Graves',
+          query: { manager: user.value.id }
+        }
+      ]
+    }
   return []
 })
 
