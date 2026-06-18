@@ -106,11 +106,13 @@ module.exports = function (app, conn_db) {
           iban,
           cemetery_managers: row.cemetery_managers
             ? JSON.parse(`[${row.cemetery_managers}]`)
-            : [],
-        },
+            : []
+        }
       });
     });
   });
+
+
 
   // =====================================================
   // UPDATE CEMETERY
@@ -251,35 +253,35 @@ module.exports = function (app, conn_db) {
       (err, result) => {
         if (err) return res.status(500).json({ error: err });
 
-                if (!result.affectedRows) {
-                    conn_db.query(
-                        'INSERT INTO cemetery_images (cemetery_id, image_url) VALUES (?, ?)',
-                        [req.params.id, url],
-                        () => res.json({ image_url: url })
-                    );
-                } else {
-                    res.json({ image_url: url });
-                }
-            }
-        );
-    });
-    // =====================================================
-// CREATE CEMETERY
-// =====================================================
-app.post('/api/cemeteries/add', (req, res) => {
+        if (!result.affectedRows) {
+          conn_db.query(
+            'INSERT INTO cemetery_images (cemetery_id, image_url) VALUES (?, ?)',
+            [req.params.id, url],
+            () => res.json({ image_url: url })
+          );
+        } else {
+          res.json({ image_url: url });
+        }
+      }
+    );
+  });
+  // =====================================================
+  // CREATE CEMETERY
+  // =====================================================
+  app.post('/api/cemeteries/add', (req, res) => {
     const {
-        name,
-        city,
-        street_name,
-        house_number,
-        house_letter,
-        house_number_addition,
-        zip_code,
-        email,
-        phone_number,
-        website_url,
-        remarks,
-        municipality_id
+      name,
+      city,
+      street_name,
+      house_number,
+      house_letter,
+      house_number_addition,
+      zip_code,
+      email,
+      phone_number,
+      website_url,
+      remarks,
+      municipality_id
     } = req.body;
 
     const sql = `
@@ -300,29 +302,29 @@ app.post('/api/cemeteries/add', (req, res) => {
     `;
 
     conn_db.query(sql, [
-        name,
-        city,
-        street_name,
-        house_number || null,
-        house_letter || null,
-        house_number_addition || null,
-        zip_code,
-        email || null,
-        phone_number || null,
-        website_url || null,
-        remarks || null,
-        municipality_id
+      name,
+      city,
+      street_name,
+      house_number || null,
+      house_letter || null,
+      house_number_addition || null,
+      zip_code,
+      email || null,
+      phone_number || null,
+      website_url || null,
+      remarks || null,
+      municipality_id
     ], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'DB error' });
-        }
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'DB error' });
+      }
 
-        res.status(201).json({
-            message: 'Created',
-            id: result.insertId
-        });
+      res.status(201).json({
+        message: 'Created',
+        id: result.insertId
+      });
     });
-});
+  });
 
 };
