@@ -6,7 +6,7 @@
     <TitleUnderline :title="grave?.grave_number || 'Graf details'" underline-class="underlineLightBlue" />
 
     <v-container class="d-flex justify-center py-6">
-
+<NavigationDrawer />
       <v-card class="pa-4 pa-md-6 w-100" max-width="900" rounded="xl" color="#f1a07b">
 
         <v-form @submit.prevent="saveGrave">
@@ -129,6 +129,9 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
+import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import NavigationDrawer from '@/components/layout/NavigationDrawer.vue'
 
 const route = useRoute()
 const API = import.meta.env.VITE_API_URL
