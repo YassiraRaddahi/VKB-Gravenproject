@@ -67,12 +67,12 @@ const router = createRouter({
       path: "/kerkhoven/:cemetery_id",
       name: "CemeteryDetails",
       component: () => import("../views/cemeteries/CemeteriesDetails.vue"),
-      meta: { 
-        requiresAuth: true, 
+      meta: {
+        requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
         title: "Details van kerkhof | Kerkhovenbeheer Nederland",
-        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."   
+        description: "Bekijk de details van dit kerkhof, inclusief informatie over beheerders en toegang tot graven."
       },
     },
     {
@@ -99,12 +99,12 @@ const router = createRouter({
         description: "Maak een nieuw graf aan voor uw kerkhof en houd uw gegevens up-to-date."
       },
     },
-   {
-    path: "/kerkhoven/:cemetery_id/graves/:grave_id",
-    name: "GravesDetails",
-    component: () => import("../views/graves/GravesDetails.vue"),
-    meta: { requiresAuth: true }
-  },
+    {
+      path: "/kerkhoven/:cemetery_id/graves/:grave_id",
+      name: "GravesDetails",
+      component: () => import("../views/graves/GravesDetails.vue"),
+      meta: { requiresAuth: true }
+    },
     {
       path: "/kerkhoven/toevoegen",
       name: "AddCemetery",
@@ -203,6 +203,16 @@ const router = createRouter({
         showNavigationDrawer: true,
         title: "Factuuroverzicht | Kerkhovenbeheer Nederland",
         description: "Bekijk hier uw facturen, gegroepeerd per jaar, en download ze wanneer u wilt.",
+      },
+    },
+    {
+      path: "/verify-email",
+      name: "VerifyEmail",
+      component: () => import("../views/VerifyEmailView.vue"),
+      meta: {
+        requiresAuth: false,
+        showBreadcrumbs: false,
+        showNavigationDrawer: false,
       },
     }
   ],

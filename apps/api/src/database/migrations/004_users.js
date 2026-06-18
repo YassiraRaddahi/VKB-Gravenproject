@@ -27,7 +27,10 @@ exports.up = function (knex) {
     table.string('city', 100);
 
     table.string('email', 255).notNullable().unique();
+    table.string('new_email', 255).unique();
     table.timestamp('email_verified_at').nullable();
+    table.string('email_verification_token', 255).nullable();
+    table.timestamp('email_verification_token_expires_at').nullable();
 
     table.string('phone_number', 15);
     table.string('mobile_number', 15);

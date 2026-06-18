@@ -11,8 +11,7 @@
                         <v-sheet class="position-relative bg-transparent">
                             <v-avatar :size="mdAndUp ? 200 : 150">
                                 <!-- Profile picture or fallback icon -->
-                                <v-img data-testid="profile-picture-url" v-if="cemeteryManager.profile_picture_url"
-                                    :src="cemeteryManager.profile_picture_url"
+                                <v-img data-testid="profile-picture-url" v-if="displayImage" :src="displayImage"
                                     :key="cemeteryManager.profile_picture_url + '-' + $route.fullPath"
                                     :alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`" cover>
                                     <template #error>
@@ -77,17 +76,12 @@
                                             :readonly="!isEditing" hide-details class="text-white" />
                                     </v-col>
                                 </v-row>
-   <v-row>
-  <v-col cols="12">
-    <v-text-field
-      label="Functie"
-      v-model="editManager.position"
-      :readonly="!isEditing"
-      hide-details
-      class="text-white"
-    />
-  </v-col>
-</v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field label="Functie" v-model="editManager.position"
+                                            :readonly="!isEditing" hide-details class="text-white" />
+                                    </v-col>
+                                </v-row>
                             </v-container>
                         </v-form>
 
@@ -99,7 +93,7 @@
                         <v-btn v-if="!isEditing" color="#ff2d35" variant="elevated" rounded="lg" size="large">
                             Verwijder
                         </v-btn>
-                       <v-spacer />
+                        <v-spacer />
                         <v-btn color="#16495d" variant="elevated" rounded="lg" size="large" class="px-6"
                             @click="cancelOrEdit">
                             {{ isEditing ? 'Annuleren' : 'Wijzig' }}
@@ -131,9 +125,10 @@ import AppInput from '@/components/ui/AppInput.vue'
 import FormCard from '@/components/ui/FormCard.vue'
 
 import { useRoute, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useDisplay } from 'vuetify'
+
 
 const { mdAndUp } = useDisplay()
 const route = useRoute()
@@ -146,6 +141,11 @@ const isEditing = ref(false)
 const linkedCemeteryId = ref(null)
 const fileInput = ref(null)
 
+const previewUrl = ref(null)
+
+const displayImage = computed(() => {
+    return previewUrl.value || `${import.meta.env.VITE_API_URL}/${cemeteryManager.value?.profile_picture_url}` || null
+})
 
 
 const editManager = ref({
@@ -225,12 +225,27 @@ async function saveManager() {
             position: editManager.value.position || null
         }
 
+        if (selectedFile.value) {
+            const formData = new FormData()
+            formData.append('profile_picture', selectedFile.value)
+
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}/users/${cemeteryManager.value.id}/profile-picture`,
+                formData,
+                { withCredentials: true }
+            )
+
+            cemeteryManager.value.profile_picture_url = response.data.profile_picture_url
+            selectedFile.value = null
+        }
+
         isEditing.value = false
     } catch (error) {
         console.error('Fout bij opslaan beheerder:', error.response?.data || error)
         alert('Er is een fout opgetreden bij het opslaan van de beheerder.')
     }
 }
+const selectedFile = ref(null)
 
 const selectFile = () => {
     fileInput.value?.click()
@@ -241,9 +256,23 @@ const handleFileUpload = (event) => {
 
     if (!file || !cemeteryManager.value) return
 
-    const imageUrl = URL.createObjectURL(file)
+    if (!file.type.startsWith('image/')) {
+        alert('Ongeldig bestandstype. Selecteer een afbeelding.')
+        return
+    }
 
-    cemeteryManager.value.profile_picture_url = imageUrl
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Maximaal 2MB toegestaan')
+        return
+    }
+
+    selectedFile.value = file
+
+    if (previewUrl.value) {
+        URL.revokeObjectURL(previewUrl.value)
+    }
+
+    previewUrl.value = URL.createObjectURL(file)
 
     console.log('Geselecteerd bestand:', file)
 }

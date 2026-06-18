@@ -11,7 +11,7 @@
       <v-row dense :key="$route.fullPath">
         <v-col v-for="cemeteryManager in visibleManagers" :key="cemeteryManager.id" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <ItemCard show-avatar :avatar="cemeteryManager.profile_picture_url"
+          <ItemCard show-avatar :avatar="getCemeteryManagerProfilePictureUrl(cemeteryManager)" :avatar-size="80"
             :image-alt="`Profielfoto van beheerder ${managerFullName(cemeteryManager)}`"
             :to="{ name: 'CemeteryManager', params: { manager_id: cemeteryManager.id } }"
             :title="managerFullName(cemeteryManager)" :elevation="4" />
@@ -30,6 +30,12 @@ import ItemCard from '@/components/ui/ItemCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 
 let url = `${import.meta.env.VITE_API_URL}/cemetery-managers`
+
+const getCemeteryManagerProfilePictureUrl = (manager) => {
+  return manager.profile_picture_url
+    ? `${import.meta.env.VITE_API_URL}/${manager.profile_picture_url}`
+    : null
+}
 
 const cemeteryManagers = ref([])
 

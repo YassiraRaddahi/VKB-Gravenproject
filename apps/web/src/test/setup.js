@@ -14,7 +14,7 @@ config.global.stubs = {
   'v-card': { template: '<div><slot /></div>' },
   'v-card-text': { template: '<div><slot /></div>' },
   'v-card-actions': { template: '<div><slot /></div>' },
-  'v-btn':{ template: '<button><slot /></button>' },
+  'v-btn': { template: '<button><slot /></button>' },
   'v-text-field': { template: '<input />' },
   'v-select': true,
   'v-container': { template: '<div><slot /></div>' },
@@ -26,9 +26,12 @@ config.global.stubs = {
   'v-spacer': true,
   'v-sheet': { template: '<div><slot /></div>' },
   'ProfileSideBar': true,
-  'SnackbarSuccess': {
+  'v-snackbar': {
+    template: `<div><slot /></div>`
+  },
+  'Snackbar': {
     template: `
-    <div v-if="modelValue" data-testid="snackbar-success">
+    <div v-if="modelValue" data-testid="$attrs['data-testid']">
       {{ message }}
     </div>
   `,

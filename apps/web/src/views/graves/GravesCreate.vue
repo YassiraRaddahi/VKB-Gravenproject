@@ -80,7 +80,7 @@
       </FormCard>
     </v-container>
 
-    <SnackbarSuccess v-model="showSuccess" message="Graf succesvol aangemaakt." />
+    <Snackbar v-model="showSuccess" message="Graf succesvol aangemaakt." />
 
   </v-container>
 </template>
@@ -95,7 +95,7 @@ import FormCard from '@/components/ui/FormCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import FormAlert from '@/components/ui/FormAlert.vue'
-import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue'
+import Snackbar from '@/components/ui/Snackbar.vue'
 
 const route = useRoute()
 const router = useRouter()
