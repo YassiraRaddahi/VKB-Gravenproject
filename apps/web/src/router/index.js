@@ -102,7 +102,7 @@ const router = createRouter({
         showBreadcrumbs: true,
         showNavigationDrawer: true,
       }
-    }
+    },
     {
       path: "/beheerders",
       name: "CemeteryManagers",
