@@ -1,0 +1,53 @@
+exports.seed = async function (knex) {
+  await knex("invoices").del();
+  await knex("invoices").insert([
+    {
+      id: 1,
+      user_id: 2,
+      grave_id: 2,
+      grave_right_id: 1,
+      invoice_number: "factuur_2024_0001",
+      amount: 1850.0,
+      status: "betaald",
+      issued_at: "2024-01-05 09:00:00",
+      due_date: "2024-02-05",
+      paid_at: "2024-01-20 14:30:00",
+    },
+    {
+      id: 2,
+      user_id: 3,
+      grave_id: 3,
+      grave_right_id: 2,
+      invoice_number: "factuur_2025_0002",
+      amount: 800.0,
+      status: "open",
+      issued_at: "2025-06-05 09:00:00",
+      due_date: "2025-07-05",
+      paid_at: null,
+    },
+    {
+      id: 3,
+      user_id: 5,
+      grave_id: 5,
+      grave_right_id: 3,
+      invoice_number: "factuur_2024_0003",
+      amount: 1250.0,
+      status: "verlopen",
+      issued_at: "2024-05-05 09:00:00",
+      due_date: "2024-06-05",
+      paid_at: null,
+    },
+    {
+      id: 4,
+      user_id: 2,
+      grave_id: 2,
+      grave_right_id: 1,
+      invoice_number: "factuur_2024_0004",
+      amount: 250.0,
+      status: "geannuleerd",
+      issued_at: "2024-03-01 09:00:00",
+      due_date: "2024-04-01",
+      paid_at: null,
+    },
+  ]);
+};

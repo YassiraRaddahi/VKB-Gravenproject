@@ -94,6 +94,16 @@ const router = createRouter({
     meta: { requiresAuth: true }
   },
     {
+      path: "/kerkhoven/toevoegen",
+      name: "AddCemetery",
+      component: () => import("../views/CemeteryAddView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      }
+    }
+    {
       path: "/beheerders",
       name: "CemeteryManagers",
       component: () => import("../views/CemeteryManagersView.vue"),
@@ -161,7 +171,7 @@ const router = createRouter({
         showNavigationDrawer: true,
       },
     },
-    {   
+    {
       path: "/rechthebbenden",
       name: "RightsHolders",
       component: () => import("../views/RightsHoldersView.vue"),
@@ -172,14 +182,16 @@ const router = createRouter({
       }
     },
     {
-      path: "/kerkhoven/toevoegen",
-      name: "AddCemetery",
-      component: () => import("../views/CemeteryAddView.vue"),
+      path: "/facturen",
+      name: "Invoices",
+      component: () => import("../views/InvoicesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
         showNavigationDrawer: true,
-      }
+        title: "Factuuroverzicht | Kerkhovenbeheer Nederland",
+        description: "Bekijk hier uw facturen, gegroepeerd per jaar, en download ze wanneer u wilt.",
+      },
     }
   ],
 });

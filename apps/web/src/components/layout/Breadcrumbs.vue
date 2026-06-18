@@ -47,6 +47,7 @@ const labelMap = computed(() => ({
   CemeteryManager: 'Beheerder Details',
   UserManagement: 'Personenbeheer',
   RightsHolders: 'Rechthebbenden',
+  Invoices: 'Factuuroverzicht',
   AddCemetery: 'Kerkhof toevoegen',
 
   UserManagementByRole:
@@ -70,6 +71,7 @@ const parentMap = {
   Graves: 'CemeteryDetails',
   GravesDetails: 'Graves',
   RightsHolders: 'Dashboard',
+  Invoices: 'Dashboard',
   AddCemetery: 'Cemeteries',
 }
 
