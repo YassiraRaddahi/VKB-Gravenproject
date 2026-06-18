@@ -79,13 +79,22 @@
           <v-row class="mt-4">
             <v-col cols="12" class="d-flex justify-end ga-2 flex-wrap">
 
-              <v-btn color="#16495d" @click="toggleEdit">
-                {{ editMode ? 'Annuleren' : 'Wijzig' }}
-              </v-btn>
+             <v-btn
+  v-if="canEdit"
+  color="#16495d" 
+  @click="toggleEdit"
+>
+  {{ editMode ? 'Annuleren' : 'Wijzig' }}
+</v-btn>
 
-              <v-btn v-if="editMode" color="#023047" type="submit">
-                Opslaan
-              </v-btn>
+
+             <v-btn
+  v-if="editMode && canEdit" 
+  color="#023047" 
+  type="submit"
+>
+  Opslaan
+</v-btn>
 
             </v-col>
           </v-row>
@@ -103,25 +112,14 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
-import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
-import TitleUnderline from '@/components/ui/TitleUnderline.vue'
-
 const route = useRoute()
 const API = import.meta.env.VITE_API_URL
 
 // =====================
-// ✅ SETTINGS (API)
+// ✅ PERMISSIONS
 // =====================
-const graveSettings = ref({})
+const canEdit = ref(false)
 
-const loadSettings = async () => {
-  try {
-    const res = await axios.get(`${API}/settings/grave`)
-    graveSettings.value = res.data
-  } catch (err) {
-    console.error('Fout bij laden settings', err)
-  }
-}
 
 // =====================
 // STATE
@@ -149,6 +147,20 @@ const fileInput = ref(null)
 const imagePreview = ref('')
 
 // =====================
+// SETTINGS
+// =====================
+const graveSettings = ref({})
+
+const loadSettings = async () => {
+  try {
+    const res = await axios.get(`${API}/settings/grave`)
+    graveSettings.value = res.data
+  } catch (err) {
+    console.error('Fout bij laden settings', err)
+  }
+}
+
+// =====================
 // OPTIONS
 // =====================
 const statusOptions = ['beschikbaar', 'in gebruik', 'gereserveerd']
@@ -162,7 +174,7 @@ const sortOptions = [
 ]
 
 // =====================
-// ✅ HELPER
+// HELPER DIMENSIONS
 // =====================
 function getDefaultDimensions(sort) {
   if (!sort) return null
@@ -181,8 +193,8 @@ function getDefaultDimensions(sort) {
 // =====================
 const loadGrave = async () => {
   const res = await axios.get(`${API}/graves/${route.params.grave_id}`)
-
   const data = res.data.grave
+
   grave.value = data
 
   form.value = {
@@ -199,13 +211,12 @@ const loadGrave = async () => {
 }
 
 // =====================
-// ✅ WATCH → FIX JOUW PROBLEEM
+// WATCH → auto dimensions
 // =====================
 watch(() => form.value.sort, (newSort) => {
   const dims = getDefaultDimensions(newSort)
   if (!dims) return
 
-  // 🔥 altijd overschrijven bij sort wijziging
   form.value.width = dims.width != null ? String(dims.width) : ''
   form.value.length = dims.length != null ? String(dims.length) : ''
 })
@@ -214,17 +225,39 @@ watch(() => form.value.sort, (newSort) => {
 // INIT
 // =====================
 onMounted(async () => {
-  await loadSettings()
-  await loadGrave()
+  try {
+
+   const res = await axios.get(`${API}/active-token`, {
+  withCredentials: true
+})
+
+    const user = res.data.user
+
+    console.log('USER:', user)
+
+    // ✅ hier gebeurt de magie
+    canEdit.value = user.role_name === 'admin' || user.role_name === 'beheerder'
+
+    console.log('CAN EDIT:', canEdit.value)
+
+    await loadSettings()
+    await loadGrave()
+
+  } catch (err) {
+    console.error('Fout bij laden gebruiker:', err)
+  }
 })
 
 // =====================
 // EDIT
 // =====================
 function toggleEdit() {
+  if (!canEdit.value) return
+
   if (editMode.value) {
     form.value = { ...grave.value }
   }
+
   editMode.value = !editMode.value
 }
 
@@ -232,14 +265,21 @@ function toggleEdit() {
 // SAVE
 // =====================
 async function saveGrave() {
-  await axios.put(
-    `${API}/graves/${route.params.grave_id}`,
-    form.value
-  )
+  if (!canEdit.value) return
 
-  await loadGrave()
-  editMode.value = false
-  imagePreview.value = ''
+  try {
+    await axios.put(
+      `${API}/graves/${route.params.grave_id}`,
+      form.value
+    )
+
+    await loadGrave()
+    editMode.value = false
+    imagePreview.value = ''
+
+  } catch (err) {
+    console.error('Fout bij opslaan', err)
+  }
 }
 
 // =====================
@@ -248,6 +288,10 @@ async function saveGrave() {
 function handleFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
+
   imagePreview.value = URL.createObjectURL(file)
 }
+
+
+
 </script>

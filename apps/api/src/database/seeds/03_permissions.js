@@ -70,6 +70,10 @@ exports.seed = async function (knex) {
     { id: 54, name: 'view.dashboard.user_management.right_holders.link_to_grave' },
     { id: 55, name: 'view.dashboard.user_management.grave_leaseholders.manage' },
     { id: 56, name: 'view.dashboard.user_management.grave_leaseholders.link_to_grave' },
+    
+    //dimensions permissions
+    { id: 57, name: 'user.view.grave_details' },
+    { id: 58, name: 'manager.edit.grave_details' },
 
   ]);
 };

@@ -48,6 +48,10 @@ exports.seed = async function (knex) {
     { role_id: 1, permission_id: 40 }, // edit.position
     { role_id: 1, permission_id: 41 }, // view.role
 
+    { role_id: 1, permission_id: 57 }, // viwe.grave_details
+    { role_id: 1, permission_id: 58 }, // edit.grave_details
+
+
 
     //Beheerder (role_id: 2)
     { role_id: 2, permission_id: 21 }, // view.name
@@ -70,6 +74,8 @@ exports.seed = async function (knex) {
     { role_id: 2, permission_id: 50 }, // view.dashboard.user_management.right_holders.link_to_grave
     { role_id: 2, permission_id: 51 }, // view.dashboard.user_management.grave_leaseholders.manage
     { role_id: 2, permission_id: 52 }, // view.dashboard.user_management.grave_leaseholders.link_to_grave
+    { role_id: 2, permission_id: 58 }, // edit.grave_details
+    { role_id: 2, permission_id: 57 }, // view.grave_details
 
     //Rechthebbende (role_id: 3)
     { role_id: 3, permission_id: 21 }, // view.name
@@ -89,6 +95,7 @@ exports.seed = async function (knex) {
     { role_id: 3, permission_id: 37 }, // view.profile_picture
     { role_id: 3, permission_id: 38 }, // edit.profile_picture
     { role_id: 3, permission_id: 41 }, // view.role
+    { role_id: 3, permission_id: 57 }, // view.grave_details
 
     //Grafonderhouders (role_id: 4)
     { role_id: 4, permission_id: 21 }, // view.name
@@ -100,5 +107,6 @@ exports.seed = async function (knex) {
     { role_id: 4, permission_id: 39 }, // view.position
     { role_id: 4, permission_id: 40 }, // edit.position
     { role_id: 4, permission_id: 41 }, // view.role
+    { role_id: 4, permission_id: 57 }, // view.grave_details
   ]);
 };

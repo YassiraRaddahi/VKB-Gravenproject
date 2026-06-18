@@ -1,6 +1,20 @@
 module.exports = function (app, conn_db) {
 
     // =========================
+    // ✅ MIDDLEWARE HELPER
+    // =========================
+    function hasPermission(user, permission) {
+        return user?.permissions?.includes(permission)
+    }
+
+
+app.get('/api/me', (req, res) => {
+    res.json(req.user)
+})
+
+
+
+    // =========================
     // ALL GRAVES BY CEMETERY
     // =========================
     app.get('/api/cemeteries/:cemetery_id/graves', (req, res) => {
@@ -68,7 +82,7 @@ module.exports = function (app, conn_db) {
     // =========================
     // SINGLE GRAVE + DIMENSIONS
     // =========================
-    app.get('/api/graves/:grave_id', (req, res) => {
+   app.get('/api/graves/:grave_id',(req, res) => {
 
         const sql = `
             SELECT 
@@ -96,9 +110,10 @@ module.exports = function (app, conn_db) {
 
 
     // =========================
-    // UPDATE GRAVE + DIMENSIONS (UPSERT)
+    // ✅ UPDATE GRAVE + DIMENSIONS (ALLEEN MANAGER)
     // =========================
     app.put('/api/graves/:grave_id', (req, res) => {
+
 
         const id = req.params.grave_id
 
@@ -112,7 +127,7 @@ module.exports = function (app, conn_db) {
             length = null
         } = req.body
 
-        // 1. UPDATE graves
+        // UPDATE graves
         const sqlGraves = `
             UPDATE graves
             SET grave_number = ?,
@@ -134,7 +149,7 @@ module.exports = function (app, conn_db) {
 
             if (err) return res.status(500).json({ error: err })
 
-            // 2. UPSERT dimensions
+            // UPSERT dimensions
             const sqlDim = `
                 INSERT INTO graves_dimensions (grave_id, width, length)
                 VALUES (?, ?, ?)

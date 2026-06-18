@@ -267,7 +267,7 @@
 
                                             <template v-else>
 
-                                                <div class="text-body-2">
+                                                <div class="text-body-2 text-red">
                                                     Er zijn nog geen beheerders gekoppeld aan deze begraafplaats.
                                                 </div>
 
