@@ -34,7 +34,7 @@
               <v-row dense>
 
                 <v-col cols="12" sm="6" class="text-white">
-                  <v-text-field v-model="form.grave_number" label="Grafnummer"  :readonly="!editMode" />
+                  <v-text-field v-model="form.grave_number" label="Grafnummer" :readonly="!editMode" />
                 </v-col>
 
                 <v-col cols="12" sm="6" class="text-white">
@@ -52,18 +52,44 @@
                 <v-col cols="12" sm="6" class="text-white">
                   <v-text-field v-model="form.latitude" label="Latitude" :readonly="!editMode" />
                 </v-col>
-
                 <v-col cols="12" sm="6" class="text-white">
                   <v-text-field v-model="form.longitude" label="Longitude" :readonly="!editMode" />
                 </v-col>
+                <v-col cols="12">
+                  <v-row dense>
 
-                <!-- DIMENSIONS -->
+                    <v-col cols="12" sm="4" class="text-white">
+                      <v-text-field :model-value="formatDate(form.last_opened_at)" label="Laatst geopend" readonly />
+                    </v-col>
 
-                <v-col cols="12" sm="6" class="text-white">
-                  <v-text-field v-model="form.width" label="Breedte (cm)" :readonly="!editMode" />
+                    <v-col cols="12" sm="4" class="text-white">
+                      <v-text-field :model-value="getGrafrustTot(form.last_opened_at)" label="Grafrust tot" readonly />
+                    </v-col>
+
+                    <v-col cols="12" sm="4" class="text-white">
+                      <v-text-field :model-value="form.last_cleared_at
+                        ? new Date(form.last_cleared_at).toLocaleDateString('nl-NL')
+                        : '-'" label="Laatst geruimd" readonly />
+                    </v-col>
+
+                  </v-row>
                 </v-col>
-                <v-col cols="12" sm="6" class="text-white">
-                  <v-text-field v-model="form.length" label="Lengte (cm)" :readonly="!editMode" />
+                <v-col cols="12">
+                  <v-row dense>
+
+                    <template v-if="form.sort !== 'urnengraf'">
+
+                      <v-col cols="12" sm="6" class="text-white">
+                        <v-text-field v-model="form.width" label="Breedte (cm)" :readonly="!editMode" />
+                      </v-col>
+
+                      <v-col cols="12" sm="6" class="text-white">
+                        <v-text-field v-model="form.length" label="Lengte (cm)" :readonly="!editMode" />
+                      </v-col>
+
+                    </template>
+
+                  </v-row>
                 </v-col>
 
                 <v-col cols="12" class="text-white">
@@ -79,22 +105,14 @@
           <v-row class="mt-4">
             <v-col cols="12" class="d-flex justify-end ga-2 flex-wrap">
 
-             <v-btn
-  v-if="canEdit"
-  color="#16495d" 
-  @click="toggleEdit"
->
-  {{ editMode ? 'Annuleren' : 'Wijzig' }}
-</v-btn>
+              <v-btn v-if="canEdit" color="#16495d" @click="toggleEdit">
+                {{ editMode ? 'Annuleren' : 'Wijzig' }}
+              </v-btn>
 
 
-             <v-btn
-  v-if="editMode && canEdit" 
-  color="#023047" 
-  type="submit"
->
-  Opslaan
-</v-btn>
+              <v-btn v-if="editMode && canEdit" color="#023047" type="submit">
+                Opslaan
+              </v-btn>
 
             </v-col>
           </v-row>
@@ -120,7 +138,6 @@ const API = import.meta.env.VITE_API_URL
 // =====================
 const canEdit = ref(false)
 
-
 // =====================
 // STATE
 // =====================
@@ -135,7 +152,9 @@ const form = ref({
   longitude: '',
   width: '',
   length: '',
-  remarks: ''
+  remarks: '',
+  last_opened_at: null,
+  last_cleared_at: null
 })
 
 const editMode = ref(false)
@@ -206,7 +225,9 @@ const loadGrave = async () => {
     longitude: data.longitude || '',
     width: data.width != null ? String(data.width) : '',
     length: data.length != null ? String(data.length) : '',
-    remarks: data.remarks || ''
+    remarks: data.remarks || '',
+    last_opened_at: data.last_opened_at,
+    last_cleared_at: data.last_cleared_at
   }
 }
 
@@ -227,9 +248,9 @@ watch(() => form.value.sort, (newSort) => {
 onMounted(async () => {
   try {
 
-   const res = await axios.get(`${API}/active-token`, {
-  withCredentials: true
-})
+    const res = await axios.get(`${API}/active-token`, {
+      withCredentials: true
+    })
 
     const user = res.data.user
 
@@ -281,7 +302,14 @@ async function saveGrave() {
     console.error('Fout bij opslaan', err)
   }
 }
+function getGrafrustTot(date) {
+  if (!date) return '-'
 
+  const d = new Date(date)
+  d.setFullYear(d.getFullYear() + 10)
+
+  return d.toLocaleDateString('nl-NL')
+}
 // =====================
 // IMAGE
 // =====================
@@ -291,7 +319,10 @@ function handleFile(e) {
 
   imagePreview.value = URL.createObjectURL(file)
 }
+function formatDate(date) {
+  if (!date) return '-'
 
-
+  return new Date(date).toLocaleDateString('nl-NL')
+}
 
 </script>

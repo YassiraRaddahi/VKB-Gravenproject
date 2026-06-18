@@ -14,11 +14,11 @@ vi.mock('../stores/userStore', () => ({
 
 describe('SettingsGraveView.vue', () => {
   const mockData = {
-    dubbel: { width: 200, length: 250 },
-    enkel: { width: 100, length: 200 },
-    kind: { width: 80, length: 150 },
-    kelder: { width: 220, length: 260 },
-    urnen: { width: 0, length: 0 }
+    'dubbel graf': { width: 200, length: 250 },
+    'enkel graf': { width: 100, length: 200 },
+    kindergraf: { width: 80, length: 150 },
+    keldergraf: { width: 220, length: 260 },
+    urnengraf: { width: 0, length: 0 }
   }
 
   const hasPermissionMock = vi.fn()
@@ -27,7 +27,6 @@ describe('SettingsGraveView.vue', () => {
     return mount(SettingsGraveView, {
       global: {
         stubs: {
-          // Eigen componenten
           TitleUnderline: true,
 
           FormCard: {
@@ -54,7 +53,6 @@ describe('SettingsGraveView.vue', () => {
             `
           },
 
-          // Vuetify componenten
           'v-container': {
             template: '<div><slot /></div>'
           },
@@ -158,12 +156,15 @@ describe('SettingsGraveView.vue', () => {
 
     wrapper.vm.toggleEdit()
 
-    wrapper.vm.form.dubbel.width = 999
+    wrapper.vm.form['dubbel graf'].width = 999
 
     wrapper.vm.toggleEdit()
 
     expect(wrapper.vm.editMode).toBe(false)
-    expect(wrapper.vm.form.dubbel.width).toBe(200)
+
+    expect(
+      wrapper.vm.form['dubbel graf'].width
+    ).toBe(200)
   })
 
   it('slaat instellingen op', async () => {
