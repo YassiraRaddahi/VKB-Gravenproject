@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import GravesDetails from '@/views/GravesDetails.vue'
+import GravesDetails from '@/views/graves/GravesDetails.vue'
 import axios from 'axios'
 
 vi.mock('axios')
@@ -115,13 +115,17 @@ describe('GravesDetails', () => {
     await wrapper.vm.saveGrave()
     await flushPromises()
 
-    expect(axios.put).toHaveBeenCalledWith(
-      expect.stringContaining('/graves/1'),
-      expect.objectContaining({
-        grave_number: 'B-202',
-        status: 'in gebruik'
-      })
-    )
+
+    expect(axios.put).toHaveBeenCalled()
+
+    const [url, formData] = axios.put.mock.calls[0]
+
+    expect(url).toContain('/graves/1')
+
+    expect(formData).toBeInstanceOf(FormData)
+    expect(formData.get('grave_number')).toBe('B-202')
+    expect(formData.get('status')).toBe('in gebruik')
+
 
     expect(wrapper.vm.editMode).toBe(false)
     expect(wrapper.vm.imagePreview).toBe('')
