@@ -177,16 +177,41 @@ async function addCemetery() {
     }
 
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/cemeteries/add`, {
-            ...form.value,
-            municipality_id: form.value.municipality_id || 1
-        })
-        router.push('/kerkhoven')
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/cemeteries/add`,
+            {
+                ...form.value,
+                municipality_id: form.value.municipality_id || 1
+            }
+        )
+
+        const cemeteryId = response.data.id
+
+        if (selectedImage.value) {
+            const reader = new FileReader()
+
+            reader.onload = async () => {
+                const base64 = reader.result.split(',')[1]
+
+                await axios.post(
+                    `${import.meta.env.VITE_API_URL}/cemeteries/${cemeteryId}/image`,
+                    {
+                        file_name: selectedImage.value.name,
+                        data: base64
+                    }
+                )
+
+                router.push('/kerkhoven')
+            }
+
+            reader.readAsDataURL(selectedImage.value)
+        } else {
+            router.push('/kerkhoven')
+        }
     } catch (error) {
         console.error(error)
         alert(error.response?.data?.error || 'Kerkhof kon niet opgeslagen worden')
     }
 }
-
 
 </script>
