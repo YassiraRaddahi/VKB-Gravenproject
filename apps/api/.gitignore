@@ -1,0 +1,3 @@
+# Geüploade afbeeldingen (alleen de map-structuur committen, niet de bestanden)
+uploads/graves/*
+!uploads/graves/.gitkeep

@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: "/kerkhoven",
       name: "Cemeteries",
-      component: () => import("../views/CemeteriesView.vue"),
+      component: () => import("../views/cemeteries/CemeteriesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -54,7 +54,7 @@ const router = createRouter({
     {
       path: "/beheerder/:manager_id/kerkhoven",
       name: "CemeteriesOfManager",
-      component: () => import("../views/CemeteriesView.vue"),
+      component: () => import("../views/cemeteries/CemeteriesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -66,7 +66,7 @@ const router = createRouter({
     {
       path: "/kerkhoven/:cemetery_id",
       name: "CemeteryDetails",
-      component: () => import("../views/CemeteriesDetails.vue"),
+      component: () => import("../views/cemeteries/CemeteriesDetails.vue"),
       meta: { 
         requiresAuth: true, 
         showBreadcrumbs: true,
@@ -78,7 +78,7 @@ const router = createRouter({
     {
       path: "/kerkhoven/:cemetery_id/graven",
       name: "Graves",
-      component: () => import("../views/GravesView.vue"),
+      component: () => import("../views/graves/GravesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -87,10 +87,22 @@ const router = createRouter({
         description: "Beheer al uw graven van uw kerkhof op één plek. Zoek, filter of klik op een graf en bekijk de details, voeg nieuwe graven toe en houd uw gegevens up-to-date."
       },
     },
+    {
+      path: "/kerkhoven/:cemetery_id/graven/nieuw",
+      name: "GravesCreate",
+      component: () => import("../views/graves/GravesCreate.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Graf aanmaken | Kerkhovenbeheer Nederland",
+        description: "Maak een nieuw graf aan voor uw kerkhof en houd uw gegevens up-to-date."
+      },
+    },
    {
     path: "/kerkhoven/:cemetery_id/graves/:grave_id",
     name: "GravesDetails",
-    component: () => import("../views/GravesDetails.vue"),
+    component: () => import("../views/graves/GravesDetails.vue"),
     meta: { requiresAuth: true }
   },
     {
@@ -106,7 +118,7 @@ const router = createRouter({
     {
       path: "/beheerders",
       name: "CemeteryManagers",
-      component: () => import("../views/CemeteryManagersView.vue"),
+      component: () => import("../views/managers/CemeteryManagersView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -118,7 +130,7 @@ const router = createRouter({
     {
       path: "/beheerders/:manager_id",
       name: "CemeteryManager",
-      component: () => import("../views/CemeteryManagerView.vue"),
+      component: () => import("../views/managers/CemeteryManagerView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -130,7 +142,7 @@ const router = createRouter({
     {
       path: "/profiel",
       name: "Profile",
-      component: () => import("../views/ProfileView.vue"),
+      component: () => import("../views/profile/ProfileView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: false,
@@ -142,7 +154,7 @@ const router = createRouter({
     {
       path: "/profiel/beveiliging",
       name: "Security",
-      component: () => import("../views/SecurityView.vue"),
+      component: () => import("../views/profile/SecurityView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: false,
@@ -154,7 +166,7 @@ const router = createRouter({
     {
       path: "/personenbeheer",
       name: "UserManagement",
-      component: () => import("../views/UserManagementView.vue"),
+      component: () => import("../views/persons/UserManagementView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -164,7 +176,7 @@ const router = createRouter({
     {
       path: "/personenbeheer/type/:role",
       name: "UserManagementByRole",
-      component: () => import("../views/PersonSubdashboardView.vue"),
+      component: () => import("../views/persons/PersonSubdashboardView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,

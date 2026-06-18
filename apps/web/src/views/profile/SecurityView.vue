@@ -11,7 +11,7 @@
         <v-card color="#f08360" class="py-6 security-card">
 
           <v-card-text class="px-4 px-md-8">
-            <v-alert v-if="formError" type="error" class="mb-4">{{ formError }}</v-alert>
+            <FormAlert :message="formError" />
 
             <v-row>
               <v-col cols="12">
@@ -61,6 +61,7 @@
 import ProfileSideBar from '@/components/profile/ProfileSideBar.vue'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue';
 import SnackbarSuccess from '@/components/ui/SnackbarSuccess.vue';
+import FormAlert from '@/components/ui/FormAlert.vue';
 
 import { ref } from 'vue'
 import { useSecurityStore } from '@/stores/securityStore'

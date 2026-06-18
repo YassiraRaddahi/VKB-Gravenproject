@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import axios from 'axios'
 
 // Mock the Vue component
-vi.mock('../views/CemeteriesView.vue', () => ({
+vi.mock('../views/cemeteries/CemeteriesView.vue', () => ({
   default: {
     name: 'CemeteriesView',
     data() {

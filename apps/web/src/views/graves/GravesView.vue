@@ -17,7 +17,7 @@
       <v-row density="comfortable">
         <v-col v-for="grave in visibleGraves" :key="grave.grave_number" cols="12" sm="6" md="4" lg="3"
           class="d-flex align-stretch">
-          <ItemCard :image="grave.image_url"
+          <ItemCard :image="assetUrl(grave.image_url)"
             :image-alt="`Vooraanzicht van graf ${grave.grave_number} op ${cemetery?.name}`" :title="grave.grave_number"
             title-class="text-h6" :to="{ name: 'GravesDetails', params: { cemetery_id: cemetery_id.value, grave_id: grave.id } }">
             <div class="text-caption">Status: {{ grave.status }}</div>
@@ -36,6 +36,7 @@ import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import SearchAddBar from '@/components/ui/SearchAddBar.vue'
 import ItemCard from '@/components/ui/ItemCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
+import { assetUrl } from '@/utils/assetUrl'
 import { useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 
@@ -100,7 +101,10 @@ useHead(() => ({
 
 
 function addCemetery() {
-  alert('Toevoegen graf knop geklikt (functie is nog niet gemaakt)')
+  router.push({
+    name: 'GravesCreate',
+    params: { cemetery_id: cemetery_id.value },
+  })
 }
 
 onMounted(() => {

@@ -29,13 +29,14 @@
               <v-card rounded="xl" class="overflow-hidden position-relative">
 
                 <v-img
-                  :src="imagePreview || grave?.image_url"
+                  :src="imagePreview || assetUrl(grave?.image_url)"
                   height="260"
                   cover
                   class="bg-grey-lighten-2"
                 />
 
                 <v-btn
+                  v-if="editMode"
                   icon
                   color="#16495d"
                   class="position-absolute"
@@ -170,6 +171,7 @@ import axios from 'axios'
 
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 import TitleUnderline from '@/components/ui/TitleUnderline.vue'
+import { assetUrl } from '@/utils/assetUrl'
 
 const route = useRoute()
 const API = import.meta.env.VITE_API_URL
@@ -180,6 +182,7 @@ const editMode = ref(false)
 
 const fileInput = ref(null)
 const imagePreview = ref('')
+const imageFile = ref(null)
 
 const statusOptions = ['beschikbaar', 'in gebruik', 'gereserveerd']
 const typeOptions = ['algemeen graf', 'particulier graf']
@@ -196,22 +199,38 @@ onMounted(loadGrave)
 function toggleEdit() {
   if (editMode.value) {
     form.value = { ...grave.value }
+    imagePreview.value = ''
+    imageFile.value = null
   }
   editMode.value = !editMode.value
 }
 
 async function saveGrave() {
-  await axios.put(`${API}/graves/${route.params.grave_id}`, form.value)
+  try {
+    const payload = new FormData()
+    Object.entries(form.value).forEach(([key, value]) => {
+      payload.append(key, value ?? '')
+    })
+    if (imageFile.value) {
+      payload.append('image', imageFile.value)
+    }
 
-  await loadGrave()
-  editMode.value = false
-  imagePreview.value = ''
+    await axios.put(`${API}/graves/${route.params.grave_id}`, payload)
+
+    await loadGrave()
+    editMode.value = false
+    imagePreview.value = ''
+    imageFile.value = null
+  } catch (error) {
+    console.error('Fout bij opslaan graf:', error.response?.data || error)
+  }
 }
 
 function handleFile(e) {
   const file = e.target.files?.[0]
   if (!file) return
 
+  imageFile.value = file
   imagePreview.value = URL.createObjectURL(file)
 }
 </script>

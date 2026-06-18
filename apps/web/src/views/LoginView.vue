@@ -5,9 +5,7 @@
 
   <FormCard bg-color="darkBlue">
     <v-form @submit.prevent="submit">
-      <v-alert v-if="loginError" type="error" class="mb-4">
-        {{ loginError }}
-      </v-alert>
+      <FormAlert :message="loginError" />
 
       <AppInput v-model="state.email" label="E-mailadres" variant="solo" bg-color="white" color="darkBlue" rounded="xl"
         class="mb-6" :error-messages="emailErrors" @blur="v$.email.$touch" />
@@ -34,7 +32,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { email, minLength, required, helpers } from '@vuelidate/validators'
+import { email, required, helpers } from '@vuelidate/validators'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/userStore'
@@ -42,6 +40,7 @@ import TitleUnderline from '@/components/ui/TitleUnderline.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppInput from '@/components/ui/AppInput.vue'
 import FormCard from '@/components/ui/FormCard.vue'
+import FormAlert from '@/components/ui/FormAlert.vue'
 
 const userStore = useUserStore()
 const router = useRouter()

@@ -1,7 +1,7 @@
 module.exports = function (app, conn_db) {
   const bcrypt = require("bcrypt");
   const jwt = require("jsonwebtoken");
-  const rateLimit = require("express-rate-limit");
+  const { rateLimit, ipKeyGenerator } = require("express-rate-limit");
   const isProduction = process.env.NODE_ENV === "production";
 
   const loginLimiter = rateLimit({
