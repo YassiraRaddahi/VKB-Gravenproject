@@ -221,14 +221,19 @@
       </v-col>
     </v-row>
   </v-container>
-  <Snackbar data-testid="snackbar-email-verification" variant="tonal" color="info"
+  <v-snackbar-queue
+    v-model="messages"
+    closable
+    >
+  </v-snackbar-queue>
+  <!-- <Snackbar data-testid="snackbar-email-verification" variant="tonal" color="info"
     v-model="showSnackbarEmailVerification"
     message="Uw e-mailadres is gewijzigd. Controleer uw inbox voor een verificatiemail." :timeout="4000" />
   <Snackbar data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success"
     v-model="showSnackbarSuccess" message="Profiel succesvol bijgewerkt!" :timeout="4000" />
   <Snackbar data-testid="snackbar-failure" variant="tonal" color="error" class="snackbar-failure"
     v-model="showSnackbarFailure" message="Er is een fout opgetreden tijdens het bijwerken van het profiel."
-    :timeout="4000" />
+    :timeout="4000" /> -->
 </template>
 
 
@@ -251,6 +256,22 @@ const { mdAndUp } = useDisplay()
 
 const userStore = useUserStore()
 const { user, permissions } = storeToRefs(userStore)
+
+const messages = ref([])
+
+function showSnackbar(message, color, variant = 'tonal', location="bottom right", timeout = 4000) {
+ 
+ 
+  messages.value.push({
+    id: Date.now() + Math.random(),
+    text: message, 
+    color, 
+    contentClass: color === 'success' ? 'snackbar-success' : '',
+    variant, 
+    location, 
+    timeout})
+
+}
 
 const initialsRules = [
   v => !!v || 'Dit veld is verplicht',
@@ -445,9 +466,9 @@ const canEdit = computed(() => {
 
 const valid = ref(true)
 
-const showSnackbarSuccess = ref(false)
-const showSnackbarFailure = ref(false)
-const showSnackbarEmailVerification = ref(false)
+// const showSnackbarSuccess = ref(false)
+// const showSnackbarFailure = ref(false)
+// const showSnackbarEmailVerification = ref(false)
 
 
 const loadingProfileSave = ref(false)
@@ -459,7 +480,8 @@ const saveProfile = async () => {
 
 
   if (!valid.value) {
-    showSnackbarFailure.value = true
+    // showSnackbarFailure.value = true
+    showSnackbar('Er is een fout opgetreden tijdens het bijwerken van het profiel."', 'error')
     return
   }
 
@@ -493,15 +515,15 @@ const saveProfile = async () => {
 
     const emailChanged = user.value.email !== oldMail;
     if (emailChanged) {
-      showSnackbarEmailVerification.value = true
+      showSnackbar('Uw e-mailadres is gewijzigd. Controleer uw inbox voor een verificatiemail.', 'info')
     }
 
-       showSnackbarSuccess.value = true
+       showSnackbar('Profiel succesvol bijgewerkt.', 'success')
 
   }
   catch (error) {
     console.error('Fout bij het opslaan van profiel:', error)
-    showSnackbarFailure.value = true
+    showSnackbar('Er is een fout opgetreden tijdens het bijwerken van het profiel.', 'error')
     return
   }
   finally {

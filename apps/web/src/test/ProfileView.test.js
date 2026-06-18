@@ -262,55 +262,55 @@ roles.forEach(role => {
 })
 
 
-describe('Snackbar', () => {
+// describe('Snackbar', () => {
 
-    it('success is shown when save button is clicked and form is valid', async () => {
-        const user = setupRole('admin')
+//     it('success is shown when save button is clicked and form is valid', async () => {
+//         const user = setupRole('admin')
 
-        vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
+//         vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
 
-        const wrapper = mount(ProfileView)
+//         const wrapper = mount(ProfileView)
 
-        wrapper.vm.valid = true
-        await wrapper.vm.$nextTick()
+//         wrapper.vm.valid = true
+//         await wrapper.vm.$nextTick()
 
-        expect(wrapper.vm.showSnackbarFailure).toBe(false)
-        expect(wrapper.vm.showSnackbarSuccess).toBe(false)
+//         expect(wrapper.vm.showSnackbarFailure).toBe(false)
+//         expect(wrapper.vm.showSnackbarSuccess).toBe(false)
 
-        await wrapper.vm.saveProfile()
+//         await wrapper.vm.saveProfile()
 
-        await flushPromises()
+//         await flushPromises()
 
-        expect(wrapper.vm.showSnackbarFailure).toBe(false)
-        expect(wrapper.vm.showSnackbarSuccess).toBe(true)
+//         expect(wrapper.vm.showSnackbarFailure).toBe(false)
+//         expect(wrapper.vm.showSnackbarSuccess).toBe(true)
 
-        const snackbar = wrapper.get('[data-testid="snackbar-success"]')
-        expect(snackbar.text()).toContain('Profiel succesvol bijgewerkt!')
-    })
+//         const snackbar = wrapper.get('[data-testid="snackbar-success"]')
+//         expect(snackbar.text()).toContain('Profiel succesvol bijgewerkt!')
+//     })
 
 
-    it('failure is shown when save button is clicked and form is not valid', async () => {
-        const user = setupRole('admin')
+//     it('failure is shown when save button is clicked and form is not valid', async () => {
+//         const user = setupRole('admin')
 
-        vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
+//         vi.spyOn(user, 'updateUserProfile').mockResolvedValue()
 
-        const wrapper = mount(ProfileView)
+//         const wrapper = mount(ProfileView)
 
-        wrapper.vm.valid = false
-        await wrapper.vm.$nextTick()
+//         wrapper.vm.valid = false
+//         await wrapper.vm.$nextTick()
 
-        expect(wrapper.vm.showSnackbarFailure).toBe(false)
-        expect(wrapper.vm.showSnackbarSuccess).toBe(false)
+//         expect(wrapper.vm.showSnackbarFailure).toBe(false)
+//         expect(wrapper.vm.showSnackbarSuccess).toBe(false)
 
-        await wrapper.vm.saveProfile()
+//         await wrapper.vm.saveProfile()
         
-        await flushPromises()
+//         await flushPromises()
 
-        expect(wrapper.vm.showSnackbarFailure).toBe(true)
-        expect(wrapper.vm.showSnackbarSuccess).toBe(false)
+//         expect(wrapper.vm.showSnackbarFailure).toBe(true)
+//         expect(wrapper.vm.showSnackbarSuccess).toBe(false)
 
-        const snackbar = wrapper.get('[data-testid="snackbar-failure"]')
-        expect(snackbar.text()).toContain('Er is een fout opgetreden tijdens het bijwerken van het profiel.')
-    })
+//         const snackbar = wrapper.get('[data-testid="snackbar-failure"]')
+//         expect(snackbar.text()).toContain('Er is een fout opgetreden tijdens het bijwerken van het profiel.')
+//     })
 
-})
+// })

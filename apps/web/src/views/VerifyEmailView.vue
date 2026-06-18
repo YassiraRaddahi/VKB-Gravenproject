@@ -29,9 +29,12 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import FormCard from '@/components/ui/FormCard.vue'
 import { ref, onMounted } from 'vue'
+import {useUserStore} from '@/stores/userStore'
 
 const route = useRoute()
 const token = route.query.token
+
+const userStore = useUserStore()
 
 const status = ref('verifying')
 
@@ -52,6 +55,8 @@ onMounted(async () => {
             );
 
             status.value = 'success'
+
+            await userStore.fetchUser()
 
 
         } catch (error) {

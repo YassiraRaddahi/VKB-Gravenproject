@@ -27,7 +27,7 @@ exports.seed = async function (knex) {
       email_verified_at: '2026-03-01 09:00:00',
       phone_number: '+31622549453',
       mobile_number: '+31622549453',
-      profile_picture_url: 'users/profile-picture/daf588fc-cc03-459e-af80-1a5f6069e09b.jpg',
+      profile_picture_url: 'users/profile-picture/6cd44480-1c45-4c74-83b3-f3240d15b40b.jpg',
       relation_to_deceased: null,
       position: 'Kerkrentmeester',
       password_hash: '$2b$12$.JizUB38W3lUYps543hJy.o7TaM8NVHzeK6fUb2Km.iVALPWjArd.',
