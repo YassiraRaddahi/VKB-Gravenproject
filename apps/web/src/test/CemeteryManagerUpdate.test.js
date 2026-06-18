@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import CemeteryManagerView from '@/views/CemeteryManagerView.vue'
+import CemeteryManagerView from '@/views/managers/CemeteryManagerView.vue'
 import axios from 'axios'
 import { ref } from 'vue'
 

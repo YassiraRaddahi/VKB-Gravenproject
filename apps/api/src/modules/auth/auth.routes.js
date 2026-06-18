@@ -9,7 +9,8 @@ module.exports = function (app, conn_db) {
     max: 5,
 
     keyGenerator: (req) => {
-      return (req.body.email || "").toLocaleString().trim() || req.ip;
+      const ip = (req.body.email || "").toLowerCase().trim() || req.ip;
+      return ipKeyGenerator(ip);
     },
 
 

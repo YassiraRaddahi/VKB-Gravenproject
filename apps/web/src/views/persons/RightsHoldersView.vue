@@ -25,7 +25,7 @@
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 
-import TitleUnderline from '../components/ui/TitleUnderline.vue'
+import TitleUnderline from '../../components/ui/TitleUnderline.vue'
 import SearchAddBar from '@/components/ui/SearchAddBar.vue'
 import ItemCard from '@/components/ui/ItemCard.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'

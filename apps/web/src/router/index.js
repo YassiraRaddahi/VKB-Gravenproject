@@ -186,7 +186,7 @@ const router = createRouter({
     {
       path: "/rechthebbenden",
       name: "RightsHolders",
-      component: () => import("../views/RightsHoldersView.vue"),
+      component: () => import("../views/persons/RightsHoldersView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,

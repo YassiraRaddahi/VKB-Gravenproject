@@ -13,7 +13,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import TitleUnderline from '../components/ui/TitleUnderline.vue'
+import TitleUnderline from '../../components/ui/TitleUnderline.vue'
 import Subdashboard from '@/components/Subdashboard.vue'
 
 const route = useRoute()
