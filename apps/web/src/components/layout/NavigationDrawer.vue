@@ -207,7 +207,13 @@ const navigationItems = computed(() => {
       title: 'Dashboard',
       value: 'dashboard',
       icon: 'mdi-view-dashboard',
-      to: { name: 'Dashboard' }
+      children: [
+        {
+          title: 'Toegewezen graven',
+          value: 'assigned_graves',
+          icon: 'mdi-cross',
+        }
+      ]
     }
 
   ]
