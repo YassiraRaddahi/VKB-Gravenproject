@@ -94,6 +94,16 @@ const router = createRouter({
     meta: { requiresAuth: true }
   },
     {
+      path: "/kerkhoven/toevoegen",
+      name: "AddCemetery",
+      component: () => import("../views/CemeteryAddView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+      }
+    }
+    {
       path: "/beheerders",
       name: "CemeteryManagers",
       component: () => import("../views/CemeteryManagersView.vue"),
@@ -182,7 +192,7 @@ const router = createRouter({
         title: "Factuuroverzicht | Kerkhovenbeheer Nederland",
         description: "Bekijk hier uw facturen, gegroepeerd per jaar, en download ze wanneer u wilt.",
       },
-    },
+    }
   ],
 });
 
@@ -192,12 +202,13 @@ router.beforeEach(async (to, from) => {
 
   const userStore = useUserStore()
 
-  // If the user is not loaded yet, try to fetch it
-  if (!userStore.user) {
-    try {
-      await userStore.fetchUser()
-    } catch {
-    }
+  // Bij elke navigatie controleren of het token nog geldig is.
+  // Is het token verlopen/ongeldig, dan wordt de gebruiker uitgelogd.
+  try {
+    await userStore.fetchUser()
+  } catch {
+    userStore.user = null
+    userStore.permissions = []
   }
 
   // If the route requires authentication and the user is not logged in, redirect to login
