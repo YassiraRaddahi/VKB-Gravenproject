@@ -1,0 +1,57 @@
+/* ============================================================
+   VKB Kerkrentmeesters — Design Tokens
+   Eén bron van waarheid voor kleuren, typografie en stijl.
+   Gebaseerd op de officiële stijlgids.
+   ============================================================ */
+
+:root {
+  /* ---------- Kleuren (huisstijl) ---------- */
+  --color-darkBlue:   #0d475a;   /* donkerblauw — lopende teksten */
+  --color-orange:     #f08360;   /* oranje */
+  --color-lightBlue:  #bee1e0;   /* lichtblauw */
+  --color-yellow:     #feca00;   /* geel */
+  --color-darkOrange: #ea5a0b;   /* donker oranje */
+
+  /* Semantische aliassen */
+  --color-text:       var(--color-darkBlue);
+  --color-link:       var(--color-darkOrange);
+  --color-bg:         #ffffff;
+
+  /* ---------- Typografie ---------- */
+  /* Hero New is commercieel; Manrope is de gratis vervanger met
+     vergelijkbare geometrische sans-serif uitstraling. */
+  --font-body:    'Manrope', system-ui, sans-serif;
+  --font-heading: 'Manrope', system-ui, sans-serif;
+
+  /* Arno Pro is commercieel; Cormorant Garamond italic is de gratis
+     vervanger voor chapeau en streamer-auteur. */
+  --font-italic:  'Cormorant Garamond', Georgia, serif;
+
+  /* Font-weights */
+  --font-weight-light:   300;
+  --font-weight-regular: 400;
+  --font-weight-semi:    600;
+  --font-weight-bold:    700;
+
+  /* Type-schaal — gebaseerd op stijlgids verhoudingen
+     (chapeau = 0.5x titel, titel = 2x chapeau) */
+  --font-size-body:     1rem;       /* 16px — platte tekst */
+  --font-size-chapeau:  0.875rem;   /* 14px — Arno italic, 0.5x titel */
+  --font-size-title:    1.75rem;    /* 28px — Hero New bold, 2x chapeau */
+  --font-size-streamer: 1.25rem;    /* 20px — Hero New bold */
+  --font-size-initial:  2rem;       /* 32px — drop cap */
+
+  /* Mobile titel (override uit oude main.css) */
+  --font-size-title-mobile: 1.25rem; /* 20px */
+
+  /* Line-heights */
+  --line-height-body:     1.6;
+  --line-height-title:    1.2;
+  --line-height-streamer: 1.4;
+
+  /* ---------- Titel-onderstreping (stijlgids-element) ---------- */
+  /* Op 26pt titel is de lijn 8pt → ratio ~0.31 */
+  --title-underline-thickness: 8pt;
+  --title-underline-thickness-mobile: 6.15pt;
+  --title-underline-indent: 0.25em;
+}
