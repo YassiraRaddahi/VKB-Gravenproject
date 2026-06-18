@@ -215,7 +215,7 @@ const router = createRouter({
     {
       path: "/personenbeheer/overledenen/koppelen-aan-graf",
       name: "LinkDeceasedToGrave",
-      component: () => import("../views/LinkDeceasedToGraveView.vue"),
+      component: () => import("../views/GravesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -225,7 +225,7 @@ const router = createRouter({
     {
       path: "/personenbeheer/rechthebbenden/koppelen-aan-graf",
       name: "LinkRightHolderToGrave",
-      component: () => import("../views/LinkRightHolderToGraveView.vue"),
+      component: () => import("../views/GravesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
@@ -235,7 +235,7 @@ const router = createRouter({
     {
       path: "/personenbeheer/grafonderhouders/koppelen-aan-graf",
       name: "LinkGraveCaretakerToGrave",
-      component: () => import("../views/LinkGraveCaretakerToGraveView.vue"),
+      component: () => import("../views/GravesView.vue"),
       meta: {
         requiresAuth: true,
         showBreadcrumbs: true,
