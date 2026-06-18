@@ -19,11 +19,6 @@
                             <!-- FOTO -->
                             <v-img :src="imagePreview || cemetery.image_url" :alt="`Foto van ${cemetery.name}`" cover
                                 height="260">
-                                <template #placeholder>
-                                    <div class="d-flex align-center justify-center fill-height">
-                                        <v-progress-circular indeterminate color="white" />
-                                    </div>
-                                </template>
                             </v-img>
 
                             <!-- CAMERA BUTTON -->

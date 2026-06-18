@@ -14,6 +14,8 @@
         :to="{ name: 'Cemeteries' }"></v-list-item>
       <v-list-item prepend-icon="mdi-account-multiple" title="Beheerders" value="cemetery_managers"
         :to="{ name: 'CemeteryManagers' }"></v-list-item>
+      <v-list-item v-if="user?.role_name === 'rechthebbende'" prepend-icon="mdi-file-document-outline"
+        title="Factuuroverzicht" value="invoices" :to="{ name: 'Invoices' }"></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

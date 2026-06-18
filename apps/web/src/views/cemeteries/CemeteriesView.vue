@@ -181,7 +181,7 @@ const visibleCemeteries = computed(() => {
 
 // knop toevoegen
 function addCemetery() {
-  alert('Toevoegen kerkhof knop geklikt (Helaas is de functie nog niet gemaakt)')
+  router.push({ name: 'AddCemetery' })
 }
 
 onMounted(() => {
