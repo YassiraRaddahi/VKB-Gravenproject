@@ -14,7 +14,6 @@ exports.seed = async function (knex) {
       amount_burial_right: 1200.0,
       amount_maintenance: 400.0,
       amount_additional_interment: 250.0,
-      amount_prepaid: 0.0,
       status: "lopend",
     },
     {
@@ -30,7 +29,6 @@ exports.seed = async function (knex) {
       amount_burial_right: 600.0,
       amount_maintenance: 200.0,
       amount_additional_interment: 0.0,
-      amount_prepaid: 200.0,
       status: "lopend",
     },
     {
@@ -46,7 +44,6 @@ exports.seed = async function (knex) {
       amount_burial_right: 700.0,
       amount_maintenance: 300.0,
       amount_additional_interment: 250.0,
-      amount_prepaid: 0.0,
       status: "verlopen",
     },
   ]);

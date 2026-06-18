@@ -161,7 +161,7 @@ const router = createRouter({
         showNavigationDrawer: true,
       },
     },
-    {   
+    {
       path: "/rechthebbenden",
       name: "RightsHolders",
       component: () => import("../views/RightsHoldersView.vue"),
@@ -170,6 +170,18 @@ const router = createRouter({
         showBreadcrumbs: true,
         showNavigationDrawer: true,
       }
+    },
+    {
+      path: "/facturen",
+      name: "Invoices",
+      component: () => import("../views/InvoicesView.vue"),
+      meta: {
+        requiresAuth: true,
+        showBreadcrumbs: true,
+        showNavigationDrawer: true,
+        title: "Factuuroverzicht | Kerkhovenbeheer Nederland",
+        description: "Bekijk hier uw facturen, gegroepeerd per jaar, en download ze wanneer u wilt.",
+      },
     },
   ],
 });
