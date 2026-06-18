@@ -1,14 +1,24 @@
 <template>
-    <v-container fluid>
-        <v-row>
-            
-            <div v-if="status === 'verifying'">Bezig met verifiëren...</div>
-            <div v-else-if="status === 'success'">E-mailadres geverifieerd</div>
-            <div v-else-if="status === 'required'">Token is vereist</div>
-            <div v-else-if="status === 'invalid'">Ongeldige token</div>
-            <div v-else-if="status === 'expired'">Token is verlopen</div>
-            <div v-else-if="status === 'verification_error'">Fout bij het verifiëren van het e-mailadres</div>
-            <div v-else>Er ging iets mis</div>
+    <v-container fluid class="fill-height">
+        <v-row align="center" justify="center" class="fill-height">
+            <v-card class="pa-6" color="orange" :variant="variant" max-width="800" title="E-mailadres verificatie">
+                <v-card-text class="pb-2">Bedankt voor het laten verifiëren van uw e-mailadres. Hieronder is de status
+                    van uw
+                    verificatie
+                    te zien:
+                </v-card-text>
+                <v-card-text class="pt-0" color="primary">
+                    <span v-if="status === 'verifying'">Bezig met verifiëren...</span>
+                    <span v-else-if="status === 'success'">E-mailadres geverifieerd</span>
+                    <span v-else-if="status === 'required'">Token is vereist</span>
+                    <span v-else-if="status === 'invalid'">Ongeldige token</span>
+                    <span v-else-if="status === 'expired'">Token is verlopen</span>
+                    <span v-else-if="status === 'verification_error'">
+                        Fout bij het verifiëren van het e-mailadres</span>
+                    <span v-else>Er ging iets mis</span>
+                </v-card-text>
+
+            </v-card>
         </v-row>
     </v-container>
 </template>

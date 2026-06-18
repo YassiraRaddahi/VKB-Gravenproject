@@ -31,8 +31,8 @@
                 <v-sheet class="position-relative bg-transparent">
                   <v-avatar :size="mdAndUp ? 200 : 150">
                     <!-- Profile picture or fallback icon -->
-                    <v-img data-testid="profile-picture-url" v-if="displayImage"
-                      :src="displayImage" :key="user.profile_picture_url + '-' + $route.fullPath"
+                    <v-img data-testid="profile-picture-url" v-if="displayImage" :src="displayImage"
+                      :key="user.profile_picture_url + '-' + $route.fullPath"
                       :alt="`Profielfoto van ingelogde gebruiker ${userFullName()}`" cover>
                       <template #error>
                         <v-icon color="#0d475a" :size="mdAndUp ? 200 : 150">
@@ -221,6 +221,9 @@
       </v-col>
     </v-row>
   </v-container>
+  <Snackbar data-testid="snackbar-email-verification" variant="tonal" color="info"
+    v-model="showSnackbarEmailVerification"
+    message="Uw e-mailadres is gewijzigd. Controleer uw inbox voor een verificatiemail." :timeout="4000" />
   <Snackbar data-testid="snackbar-success" variant="tonal" color="success" class="snackbar-success"
     v-model="showSnackbarSuccess" message="Profiel succesvol bijgewerkt!" :timeout="4000" />
   <Snackbar data-testid="snackbar-failure" variant="tonal" color="error" class="snackbar-failure"
@@ -403,7 +406,7 @@ const selectedFile = ref(null)
 const previewUrl = ref(null)
 
 const displayImage = computed(() => {
- return previewUrl.value || `${import.meta.env.VITE_API_URL}/${user.value.profile_picture_url}` || null
+  return previewUrl.value || `${import.meta.env.VITE_API_URL}/${user.value.profile_picture_url}` || null
 })
 
 const handleFileUpload = (event) => {
@@ -444,11 +447,17 @@ const valid = ref(true)
 
 const showSnackbarSuccess = ref(false)
 const showSnackbarFailure = ref(false)
+const showSnackbarEmailVerification = ref(false)
 
 
 const loadingProfileSave = ref(false)
 
 const saveProfile = async () => {
+
+
+  const oldMail = userStore.user.email;
+
+
   if (!valid.value) {
     showSnackbarFailure.value = true
     return
@@ -480,7 +489,14 @@ const saveProfile = async () => {
       }
     }
 
-    showSnackbarSuccess.value = true
+ 
+
+    const emailChanged = user.value.email !== oldMail;
+    if (emailChanged) {
+      showSnackbarEmailVerification.value = true
+    }
+
+       showSnackbarSuccess.value = true
 
   }
   catch (error) {
