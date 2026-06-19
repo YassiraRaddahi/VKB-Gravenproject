@@ -25,7 +25,7 @@
         <v-card
           class="dashboard-card"
           elevation="3"
-          @click="goToDashboard(dashboard.routeName)"
+            @click="goToDashboard(dashboard)"
         >
           <v-card-text class="dashboard-card-text text-center">
             <div>{{ dashboard.title }}</div>
@@ -91,16 +91,46 @@ const dashboards = computed(() => {
     {
       title: 'Beheer rechthebbenden, overledenen en grafonderhouders',
       icon: 'mdi-account-group',
-      routeName: 'UserManagement'
+      routeName: 'UserManagement',
+      query: { manager: user.value.id }
     }
   ]
 }
+    if (user.value.role_name === 'rechthebbende') {
+      return [
+        {
+          title: 'Gekoppelde graven',
+          icon: 'mdi-cross',
+          routeName: 'Cemeteries',
+          query: { manager: user.value.id }
+        },
+        {
+          title: 'Facturen',
+          icon: 'mdi-file-document',
+          routeName: 'Invoices',
+          query: { manager: user.value.id }
+        }
+      ]
+    }
 
+    if (user.value.role_name === 'grafonderhouder') {
+      return [
+        {
+          title: 'Toegewezen graven',
+          icon: 'mdi-cross',
+          routeName: 'Graves',
+          query: { manager: user.value.id }
+        }
+      ]
+    }
   return []
 })
 
-function goToDashboard(routeName) {
-  router.push({ name: routeName })
+function goToDashboard(dashboard) {
+  router.push({
+    name: dashboard.routeName,
+    query: dashboard.query || {}
+  })
 }
 </script>
 
