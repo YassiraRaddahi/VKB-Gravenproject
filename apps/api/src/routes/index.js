@@ -11,4 +11,5 @@ module.exports = function (app) {
     require('../modules/cemeteries/cemeteries.routes.js')(app,conn_db);
     require('../modules/graves/graves.routes.js')(app,conn_db);
     require('../modules/contact/contact.routes.js')(app);
+    require('../modules/invoices/invoices.routes.js')(app, conn_db);
 }
